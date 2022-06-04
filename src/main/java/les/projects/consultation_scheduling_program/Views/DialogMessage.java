@@ -4,6 +4,7 @@ import les.projects.consultation_scheduling_program.Components.ButtonStandard;
 import les.projects.consultation_scheduling_program.Components.DialogBase;
 import les.projects.consultation_scheduling_program.Components.DialogText;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class DialogMessage extends DialogBase {
 
@@ -20,7 +21,7 @@ public class DialogMessage extends DialogBase {
     private void build(String m) {
         this.center.getChildren().add(new DialogText(m));
 
-        ButtonStandard ok = new ButtonStandard("OK");
+        ButtonStandard ok = new ButtonStandard(lrb.getString("ok"));
         ok.setOnMouseClicked(e -> this.close());
         this.bottom.getChildren().add(ok);
     }

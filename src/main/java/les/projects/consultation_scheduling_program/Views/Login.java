@@ -8,16 +8,19 @@ import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.User;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.ExternalData.DTC;
 import les.projects.consultation_scheduling_program.ExternalData.LoginActivity;
 import les.projects.consultation_scheduling_program.Main;
 
+import static les.projects.consultation_scheduling_program.Main.lrb;
+
 public class Login extends DialogBase {
-    private final TextFieldLabeledLarge userId = new TextFieldLabeledLarge("User ID", "", false);
-    private final TextFieldLabeledLarge password = new TextFieldLabeledLarge("Password", "", false);
-    private final TextFieldLabeledLarge timeZone = new TextFieldLabeledLarge("Timezone", "Eastern Standard Time", true);
+    private final TextFieldLabeledLarge userId = new TextFieldLabeledLarge(lrb.getString("user_id"), "", false);
+    private final TextFieldLabeledLarge password = new TextFieldLabeledLarge(lrb.getString("password"), "", false);
+    private final TextFieldLabeledLarge timeZone = new TextFieldLabeledLarge(lrb.getString("timezone"), DTC.getLocalTimeZone(), true);
 
     public Login() {
-        super("Consultation Scheduling Program");
+        super(lrb.getString("program_title"));
         this.addUsers();
 
         VBox center = new VBox();
@@ -25,9 +28,9 @@ public class Login extends DialogBase {
             this.center.getChildren().add(center);
 
         //Add Buttons
-        ButtonStandard login = new ButtonStandard("Login", 1, 4);
+        ButtonStandard login = new ButtonStandard(lrb.getString("login"), 1, 4);
         login.setOnMouseClicked(attemptLogin);
-        ButtonStandard cancel = new ButtonStandard("Cancel", 2, 4);
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"), 2, 4);
         cancel.setOnMouseClicked(e -> Platform.exit());
         this.bottom.getChildren().addAll(login,new ButtonGap(),cancel);
         this.setOnCloseRequest(e -> Platform.exit());

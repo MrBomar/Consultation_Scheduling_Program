@@ -7,6 +7,7 @@ import les.projects.consultation_scheduling_program.Components.ButtonStandard;
 import les.projects.consultation_scheduling_program.Components.DialogBase;
 import les.projects.consultation_scheduling_program.Components.DialogText;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class DialogConfirmation extends DialogBase {
     private Boolean result = false;
@@ -14,7 +15,7 @@ public class DialogConfirmation extends DialogBase {
     public DialogConfirmation(Message message) {
         super(message.title);
         this.center.getChildren().add(new DialogText(message.message));
-        ButtonStandard ok = new ButtonStandard("OK");
+        ButtonStandard ok = new ButtonStandard(lrb.getString("ok"));
         ok.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -22,7 +23,7 @@ public class DialogConfirmation extends DialogBase {
                 close();
             }
         });
-        ButtonStandard cancel = new ButtonStandard("Cancel");
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
         cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

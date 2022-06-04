@@ -12,25 +12,27 @@ import les.projects.consultation_scheduling_program.DataClasses.Contact;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Message;
 
+import static les.projects.consultation_scheduling_program.Main.lrb;
+
 public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment = null;
-    private final TextFieldLabeled id = new TextFieldLabeled("Appointment ID", true);
-    private final TextFieldLabeled location = new TextFieldLabeled("Location");
+    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), true);
+    private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("location"));
     private final ComboBoxSelector customer = new ComboBoxSelector(Customer.getAllCustomers());
     private final ComboBoxSelector contact = new ComboBoxSelector(Contact.getAllContacts());
-    private final TextFieldLabeled type = new TextFieldLabeled("Type");
-    private final DateTimePickerLabeled start = new DateTimePickerLabeled("Start Date and Time");
-    private final DateTimePickerLabeled end = new DateTimePickerLabeled("End Date and Time");
-    private final TextFieldLabeled title = new TextFieldLabeled("Title");
-    private final TextAreaLabeled description = new TextAreaLabeled("Description");
+    private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"));
+    private final DateTimePickerLabeled start = new DateTimePickerLabeled(lrb.getString("start_date_and_time"));
+    private final DateTimePickerLabeled end = new DateTimePickerLabeled(lrb.getString("end_date_and_time"));
+    private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("title"));
+    private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("description"));
 
     public AddUpdateAppointment() {
-        super("Create New Appointment");
+        super(lrb.getString("create_new_appointment"));
         this.build();
     }
 
     public AddUpdateAppointment(Appointment appointment) {
-        super("Edit Appointment");
+        super(lrb.getString("edit_appointment"));
         this.build();
         //FIXME - Insert logic to pull customer record and populate the fields.
         this.currentAppointment = appointment;
@@ -47,10 +49,10 @@ public class AddUpdateAppointment extends DialogBase {
             this.center.getChildren().add(center);
 
         //Add Buttons
-        ButtonStandard save = new ButtonStandard("Save");
+        ButtonStandard save = new ButtonStandard(lrb.getString("save"));
         //Used Lambda Here
         save.setOnMouseClicked(saveClick);
-        ButtonStandard cancel = new ButtonStandard("Cancel");
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
         //Used Lambda Here
         cancel.setOnMouseClicked(cancelClick);
         this.bottom.getChildren().addAll(save, new ButtonGap(), cancel);
@@ -70,6 +72,7 @@ public class AddUpdateAppointment extends DialogBase {
                         this.contact.getID());
             }
         } catch (Exception e) {
+            //FIXME - Need to create this message in french and english.
             DialogMessage dialog = new DialogMessage("Error", "Something went wrong.");
             dialog.showAndWait();
         }

@@ -9,12 +9,16 @@ import les.projects.consultation_scheduling_program.DataClasses.*;
 import les.projects.consultation_scheduling_program.Views.Login;
 
 import java.io.IOException;
+import java.util.*;
 
 public class Main extends Application {
     public static Stage appStage;
     public static double appWidth = 1305;
     public static double appHeight = 800;
     public static User currentUser = null;
+    public static final Locale locale = Locale.forLanguageTag("fr");
+    public static final ResourceBundle lrb = ResourceBundle.getBundle("Labels", locale);
+    public static final ResourceBundle mrb = ResourceBundle.getBundle("Messages", locale);
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,10 +29,11 @@ public class Main extends Application {
         appStage.setMaxHeight(appHeight);
         appStage.setMinHeight(appHeight);
         appStage.setHeight(appHeight);
-        appStage.setTitle("Consultation Scheduling Program");
+        appStage.setTitle(lrb.getString("program_title"));
         appStage.setResizable(false);
 
         logoutView();
+        System.out.println(Locale.getDefault());
     }
 
     public static void main(String[] args) {

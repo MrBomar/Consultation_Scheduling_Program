@@ -10,8 +10,8 @@ import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
-
 import java.time.ZonedDateTime;
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class AppointmentsView extends BorderPane {
 
@@ -21,14 +21,14 @@ public class AppointmentsView extends BorderPane {
 
             //Appointment header objects
             //First label
-            Label label1 = new Label("View Appointments by:");
+            Label label1 = new Label(lrb.getString("view_appointments_by"));
             label1.setFont(Styles.DefaultFont18);
 
             //Radio Button Group
             final ToggleGroup appointmentsSelector = new ToggleGroup();
-            RadioButton currentMonth = new RadioButton("Current Month");
-            RadioButton currentWeek = new RadioButton("Current Week");
-            RadioButton allAppointments = new RadioButton("All Appointments");
+            RadioButton currentMonth = new RadioButton(lrb.getString("current_month"));
+            RadioButton currentWeek = new RadioButton(lrb.getString("current_week"));
+            RadioButton allAppointments = new RadioButton(lrb.getString("all_appointments"));
             currentMonth.setFont(Styles.DefaultFont16);
             currentWeek.setFont(Styles.DefaultFont16);
             allAppointments.setFont(Styles.DefaultFont16);
@@ -63,17 +63,16 @@ public class AppointmentsView extends BorderPane {
         footerSpacer1.setMinWidth(555);
         footerSpacer2.setMinWidth(30);
         footerSpacer3.setMinWidth(30);
-        ButtonWide addAppointment = new ButtonWide("Add Appointment");
+        ButtonWide addAppointment = new ButtonWide(lrb.getString("add_appointment"));
         //Used Lambda Here
         addAppointment.setOnMouseClicked(addAppointmentClick);
-        ButtonWide updateAppointment = new ButtonWide("Update Appointment");
+        ButtonWide updateAppointment = new ButtonWide(lrb.getString("update_appointment"));
         //Used Lambda Here
         updateAppointment.setOnMouseClicked(updateAppointmentClick);
-        ButtonWide deleteAppointment = new ButtonWide("Delete Appointment");
+        ButtonWide deleteAppointment = new ButtonWide(lrb.getString("delete_appointment"));
         //Used Lambda Here
         deleteAppointment.setOnMouseClicked(deleteAppointmentClick);
         footer.getChildren().addAll(footerSpacer1, addAppointment, footerSpacer3, updateAppointment, footerSpacer2, deleteAppointment);
-
 
         //Adjust view properties and add children to parent
         this.setPadding(new Insets(30));
@@ -99,27 +98,21 @@ public class AppointmentsView extends BorderPane {
     private EventHandler<MouseEvent> deleteAppointmentClick = event -> {
         DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmAppointmentCancellation);
         dialog.showAndWait();
-
-        if(dialog.getResult() == true) {
-            System.out.println("Appointment Deleted");
-        } else {
-            System.out.println("Nothing Deleted");
-        }
     };
 
     private TableView<Appointment> apptTable() {
         TableView<Appointment> table = new TableView();
         table.setItems(Appointment.getAllAppointments());
-        TableColumn<Appointment, Integer> idCol = new TableColumn<Appointment, Integer>("ID");
-        TableColumn<Appointment, String> titleCol = new TableColumn<Appointment, String>("Title");
-        TableColumn<Appointment, String> descCol = new TableColumn<Appointment, String>("Description");
-        TableColumn<Appointment, String> locCol = new TableColumn<Appointment, String>("Location");
-        TableColumn<Appointment, String> typeCol = new TableColumn<Appointment, String>("Type");
-        TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<Appointment, ZonedDateTime>("Start");
-        TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<Appointment, ZonedDateTime>("End");
-        TableColumn<Appointment, Integer> customerCol = new TableColumn<Appointment, Integer>("Customer");
-        TableColumn<Appointment, Integer> userCol = new TableColumn<Appointment, Integer>("User");
-        TableColumn<Appointment, Integer> contactCol = new TableColumn<Appointment, Integer>("Contact");
+        TableColumn<Appointment, Integer> idCol = new TableColumn<Appointment, Integer>(lrb.getString("appointment_id"));
+        TableColumn<Appointment, String> titleCol = new TableColumn<Appointment, String>(lrb.getString("title"));
+        TableColumn<Appointment, String> descCol = new TableColumn<Appointment, String>(lrb.getString("description"));
+        TableColumn<Appointment, String> locCol = new TableColumn<Appointment, String>(lrb.getString("location"));
+        TableColumn<Appointment, String> typeCol = new TableColumn<Appointment, String>(lrb.getString("type"));
+        TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<Appointment, ZonedDateTime>(lrb.getString("start"));
+        TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<Appointment, ZonedDateTime>(lrb.getString("end"));
+        TableColumn<Appointment, Integer> customerCol = new TableColumn<Appointment, Integer>(lrb.getString("customer"));
+        TableColumn<Appointment, Integer> userCol = new TableColumn<Appointment, Integer>(lrb.getString("user"));
+        TableColumn<Appointment, Integer> contactCol = new TableColumn<Appointment, Integer>(lrb.getString("contact"));
 
         //Bind values to columns
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));

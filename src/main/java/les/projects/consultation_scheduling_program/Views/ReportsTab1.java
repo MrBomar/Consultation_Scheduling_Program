@@ -10,6 +10,8 @@ import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Main;
 
+import static les.projects.consultation_scheduling_program.Main.lrb;
+
 public class ReportsTab1 extends VBox {
     private ComboBoxSelector selectContact = new ComboBoxSelector(Customer.getAllCustomers());
     private TableView appointments = new TableView();
@@ -20,7 +22,7 @@ public class ReportsTab1 extends VBox {
         this.setBackground(Styles.BackgroundWhite);
 
         HBox dropDownGroup = new HBox();
-            Label comboBoxLabel = new Label("Select Desired Customer");
+            Label comboBoxLabel = new Label(lrb.getString("select_desired_customer"));
             comboBoxLabel.setFont(Styles.DefaultFont24);
             comboBoxLabel.setPadding(new Insets(0,30,30,0));
             dropDownGroup.getChildren().addAll(comboBoxLabel, selectContact);

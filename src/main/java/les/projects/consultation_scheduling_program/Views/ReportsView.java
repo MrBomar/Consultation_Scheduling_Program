@@ -7,15 +7,16 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import les.projects.consultation_scheduling_program.Components.TabLeftStyled;
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class ReportsView extends Pane {
 
     public ReportsView() {
         TabPane tabPane = new TabPane();
 
-        Tab tab1 = new TabLeftStyled("Customer Appointments by Type and Month");
-        Tab tab2 = new TabLeftStyled("Customer Appointment Schedule");
-        Tab tab3 = new TabLeftStyled("Contact Appointment Schedule");
+        Tab tab1 = new TabLeftStyled(lrb.getString("customer_appointments_by_type_and_month"));
+        Tab tab2 = new TabLeftStyled(lrb.getString("customer_appointment_schedule"));
+        Tab tab3 = new TabLeftStyled(lrb.getString("contact_appointment_schedule"));
 
         tabPane.getSelectionModel().selectedItemProperty().addListener(
             new ChangeListener<Tab>() {

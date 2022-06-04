@@ -1,21 +1,21 @@
 package les.projects.consultation_scheduling_program.Views;
 
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonUserLogout;
 import les.projects.consultation_scheduling_program.Components.TabConsole;
-import les.projects.consultation_scheduling_program.DataClasses.*;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Main;
 
+import static les.projects.consultation_scheduling_program.Main.lrb;
+
 public class Console extends VBox {
     //Instantiate tabs
-    TabConsole appointmentsTab = new TabConsole("Appointments", Styles.BackgroundWhite, false);
-    TabConsole customersTab = new TabConsole("Customers", Styles.BackgroundGrey, false);
-    TabConsole reportsTab = new TabConsole("Reports", Styles.BackgroundGrey, false);
+    TabConsole appointmentsTab = new TabConsole(lrb.getString("appointments"), Styles.BackgroundWhite, false);
+    TabConsole customersTab = new TabConsole(lrb.getString("customers"), Styles.BackgroundGrey, false);
+    TabConsole reportsTab = new TabConsole(lrb.getString("reports"), Styles.BackgroundGrey, false);
     private static Pane currentView;
 
     public Console(Pane view) {

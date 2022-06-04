@@ -19,14 +19,16 @@ import les.projects.consultation_scheduling_program.Components.Title;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Main;
 
+import static les.projects.consultation_scheduling_program.Main.lrb;
+
 public class AddUpdateCustomer extends Stage {
 
     public AddUpdateCustomer() {
-        this.build("Add New Customer");
+        this.build(lrb.getString("add_new_customer"));
     }
 
     public AddUpdateCustomer(int appointmentId) {
-        this.build("Update Customer");
+        this.build(lrb.getString("update_customer"));
     }
 
     private void build(String windowTitle) {
@@ -37,24 +39,24 @@ public class AddUpdateCustomer extends Stage {
         borderPane.setTop(new Title(windowTitle));
 
         VBox center = new VBox();
-        TextFieldLabeled id = new TextFieldLabeled("Customer ID");
-        TextFieldLabeled name = new TextFieldLabeled("Customer Name");
-        TextFieldLabeled address = new TextFieldLabeled("Address");
-        TextFieldLabeled zip = new TextFieldLabeled("ZIP Code");
-        TextFieldLabeled country = new TextFieldLabeled("Country");
-        TextFieldLabeled division = new TextFieldLabeled("Division");
-        TextFieldLabeled phone = new TextFieldLabeled("Phone Number");
+        TextFieldLabeled id = new TextFieldLabeled(lrb.getString("customer_id"));
+        TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"));
+        TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"));
+        TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"));
+        TextFieldLabeled country = new TextFieldLabeled(lrb.getString("country"));
+        TextFieldLabeled division = new TextFieldLabeled(lrb.getString("division"));
+        TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"));
         center.setPadding(new Insets(30,20,30,20));
         center.getChildren().addAll(id,name,address,zip,country,division,phone);
         borderPane.setCenter(center);
 
         HBox bottom = new HBox();
-        ButtonStandard save = new ButtonStandard("Save");
+        ButtonStandard save = new ButtonStandard(lrb.getString("save"));
         Pane gap = new Pane();
         gap.setMinWidth(30);
         gap.setMaxWidth(30);
         gap.setPrefWidth(30);
-        ButtonStandard cancel = new ButtonStandard("Cancel");
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
         bottom.getChildren().addAll(save, gap, cancel);
         bottom.setAlignment(Pos.CENTER_RIGHT);
         borderPane.setBottom(bottom);

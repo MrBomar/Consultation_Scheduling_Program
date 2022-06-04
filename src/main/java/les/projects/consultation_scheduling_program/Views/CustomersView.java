@@ -10,12 +10,13 @@ import les.projects.consultation_scheduling_program.Components.ComboBoxSelector;
 import les.projects.consultation_scheduling_program.DataClasses.Country;
 import les.projects.consultation_scheduling_program.DataClasses.FirstLevelDivision;
 import les.projects.consultation_scheduling_program.Enums.Styles;
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class CustomersView extends BorderPane {
     private final ComboBoxSelector countryDropdown = new ComboBoxSelector(Country.getAllCountries());
     private final ComboBoxSelector divisionDropdown = new ComboBoxSelector(FirstLevelDivision.getAllDivisions());
-    private final RadioButton countryRadio = new RadioButton("Country");
-    private final RadioButton allCustomersRadio = new RadioButton("All Customers");
+    private final RadioButton countryRadio = new RadioButton(lrb.getString("country"));
+    private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("all_customers"));
     private final ToggleGroup radioGroup = new ToggleGroup();
 
     public CustomersView() {
@@ -24,7 +25,7 @@ public class CustomersView extends BorderPane {
 
             //Customer header objects
             //First label
-            Label label1 = new Label("View Customers by:");
+            Label label1 = new Label(lrb.getString("view_customers_by"));
             label1.setFont(Styles.DefaultFont18);
             Insets padding = new Insets(0,20,30,20);
             label1.setPadding(padding);
@@ -36,7 +37,7 @@ public class CustomersView extends BorderPane {
                 HBox dropDownGroup = new HBox();
 
                     //Dropdown group items
-                    Label divisionLabel = new Label("and First-Level Division");
+                    Label divisionLabel = new Label(lrb.getString("and_first_level_division"));
 
                     //Set fonts
                     this.countryRadio.setFont(Styles.DefaultFont16);
@@ -76,21 +77,21 @@ public class CustomersView extends BorderPane {
         footerSpacer1.setMinWidth(555);
         footerSpacer2.setMinWidth(30);
         footerSpacer3.setMinWidth(30);
-        ButtonWide addCustomer = new ButtonWide("Add Customer");
+        ButtonWide addCustomer = new ButtonWide(lrb.getString("add_customer"));
         addCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 addCustomer();
             }
         });
-        ButtonWide updateCustomer = new ButtonWide("Update Customer");
+        ButtonWide updateCustomer = new ButtonWide(lrb.getString("update_customer"));
         updateCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 updateCustomer();
             }
         });
-        ButtonWide deleteCustomer = new ButtonWide("Delete Customer");
+        ButtonWide deleteCustomer = new ButtonWide(lrb.getString("delete_customer"));
         footer.getChildren().addAll(footerSpacer1, addCustomer, footerSpacer3, updateCustomer, footerSpacer2, deleteCustomer);
 
         //Adjust view properties and add children to parent

@@ -1,0 +1,57 @@
+package les.projects.consultation_scheduling_program;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import les.projects.consultation_scheduling_program.DataClasses.*;
+import les.projects.consultation_scheduling_program.Views.Login;
+
+import java.io.IOException;
+
+public class Main extends Application {
+    public static Stage appStage;
+    public static double appWidth = 1305;
+    public static double appHeight = 800;
+    public static User currentUser = null;
+
+    @Override
+    public void start(Stage stage) throws IOException {
+        appStage = stage;
+        appStage.setMaxWidth(appWidth);
+        appStage.setMinWidth(appWidth);
+        appStage.setWidth(appWidth);
+        appStage.setMaxHeight(appHeight);
+        appStage.setMinHeight(appHeight);
+        appStage.setHeight(appHeight);
+        appStage.setTitle("Consultation Scheduling Program");
+        appStage.setResizable(false);
+
+        logoutView();
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    public static void logoutView() {
+        //Create Scene
+        currentUser = null;
+        Scene scene = new Scene(new Pane());
+        scene.setFill(Color.DARKGRAY);
+
+        appStage.setScene(scene);
+        appStage.show();
+        Login login = new Login();
+        login.show();
+    }
+
+    public static void loadData() {
+        Appointment.loadData();
+        Contact.loadData();
+        Country.loadData();
+        Customer.loadData();
+        FirstLevelDivision.loadData();
+    }
+}

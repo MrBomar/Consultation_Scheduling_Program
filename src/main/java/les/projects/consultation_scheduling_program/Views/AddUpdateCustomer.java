@@ -11,43 +11,54 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import les.projects.consultation_scheduling_program.Components.ButtonStandard;
-import les.projects.consultation_scheduling_program.Components.TextFieldLabeled;
-import les.projects.consultation_scheduling_program.Components.Title;
+import les.projects.consultation_scheduling_program.Components.*;
+import les.projects.consultation_scheduling_program.DataClasses.Customer;
+import les.projects.consultation_scheduling_program.DataClasses.FirstLevelDivision;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Main;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
-public class AddUpdateCustomer extends Stage {
+public class AddUpdateCustomer extends DialogBase {
+    private Customer currentCustomer;
+    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("customer_id"), true);
+    private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"));
+    private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"));
+    private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"));
+    private final ComboBoxBorderPane division = new ComboBoxBorderPane(lrb.getString("division"), FirstLevelDivision.getAllDivisions());
+    private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"));
 
     public AddUpdateCustomer() {
-        this.build(lrb.getString("add_new_customer"));
+        super(lrb.getString("add_new_customer"));
+        this.id.setPromptText("(Auto generated)");
+        this.build();
     }
 
-    public AddUpdateCustomer(int appointmentId) {
-        this.build(lrb.getString("update_customer"));
+    public AddUpdateCustomer(Customer customer) {
+        super(lrb.getString("update_customer"));
+        this.build();
+
+        //FIXME - Insert logic to pull customer record and populate fields.
+        this.currentCustomer = customer;
+        this.id.setInput(this.currentCustomer.getIDString());
+        this.name.setInput(this.currentCustomer.getCustomerName());
+        this.address.setInput(this.currentCustomer.getAddress());
+        this.zip.setInput(this.currentCustomer.getPostalCode());
+        this.phone.setInput(this.currentCustomer.getPhone());
+        this.division.setValue(this.currentCustomer.getDivisionID());
     }
 
-    private void build(String windowTitle) {
+    private void build() {
         BorderPane borderPane = new BorderPane();
         Scene scene = new Scene(borderPane);
         this.setScene(scene);
 
-        borderPane.setTop(new Title(windowTitle));
+        this.division.setComboBoxWidth(200);
 
         VBox center = new VBox();
-        TextFieldLabeled id = new TextFieldLabeled(lrb.getString("customer_id"));
-        TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"));
-        TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"));
-        TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"));
-        TextFieldLabeled country = new TextFieldLabeled(lrb.getString("country"));
-        TextFieldLabeled division = new TextFieldLabeled(lrb.getString("division"));
-        TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"));
         center.setPadding(new Insets(30,20,30,20));
-        center.getChildren().addAll(id,name,address,zip,country,division,phone);
+        center.getChildren().addAll(id,name,address,zip,division,phone);
         borderPane.setCenter(center);
 
         HBox bottom = new HBox();

@@ -1,47 +1,51 @@
 package les.projects.consultation_scheduling_program.Enums;
 
+import static les.projects.consultation_scheduling_program.Main.mrb;
+
 public enum Message {
     AppointmentCanceled(
-            "Appointment Canceled",
-            "FIXME - Should display appointment type and record ID."
-    ),
-    HoursViolation(
-            "Invalid Appointment Hours",
-            "This appointment cannot be scheduled during the time specified." +
-                    "\n\n" +
-                    "All appointments must be scheduled between 08:00 a.m. and 10:00 p.m. EST"
-    ),
-    ConflictingAppointment(
-            "Conflicting Appointment",
-            "This appointment cannot be scheduled during the time specified." +
-                    "\n\n" +
-                    "This customer already has an appointment scheduled during the specified hours."
-    ),
-    LoginFail (
-            "Login Failed",
-            "The username and password combination you provided does not match our records."),
-    NoUpcomingAppointment(
-            "No Upcoming Appointments",
-            "You have no upcoming appointments within the next 15 minutes."),
-    CustomerDeleted(
-            "Customer Deleted",
-            "FIXME - Should display customer name."
+            mrb.getString("appointment_canceled_title"),
+            mrb.getString("appointment_canceled_message")
     ),
     ConfirmAppointmentCancellation(
-            "Cancel Selected Appointment?",
-            "Are you sure you want to cancel this appointment?"
+            mrb.getString("confirm_appointment_cancellation_title"),
+            mrb.getString("confirm_appointment_cancellation_message")
     ),
     ConfirmCustomerDelete(
-            "Delete Customer Records?",
-            "Deleting this customer will also delete all of their records.\n Are you sure you want to cancel?"
-    ),
-    ConfirmLogout(
-            "Confirm Logout",
-            "Are you sure you want to log out?"
+            mrb.getString("confirm_customer_delete_title"),
+            mrb.getString("confirm_customer_delete_message")
     ),
     ConfirmDropChanges(
-            "Drop Changes?",
-            "Closing this form will drop all changes you have made. \n\n Are you sure you want to close?"
+            mrb.getString("confirm_drop_changes_title"),
+            mrb.getString("confirm_drop_changes_message")
+    ),
+    ConfirmLogout(
+            mrb.getString("confirm_logout_title"),
+            mrb.getString("confirm_logout_message")
+    ),
+    ConflictingAppointment(
+            mrb.getString("conflicting_appointment_title"),
+            mrb.getString("conflicting_appointment_message")
+    ),
+    CustomerDeleted(
+            mrb.getString("customer_deleted_title"),
+            mrb.getString("customer_deleted_message")
+    ),
+    HoursViolation(
+            mrb.getString("hours_violation_title"),
+            mrb.getString("hours_violation_message")
+    ),
+    LoginFail (
+            mrb.getString("login_failed_title"),
+            mrb.getString("login_failed_message")
+    ),
+    NoSelectedCustomer (
+            mrb.getString("no_selected_customer_title"),
+            mrb.getString("no_selected_customer_message")
+    ),
+    NoUpcomingAppointment(
+            mrb.getString("no_upcoming_appointment_title"),
+            mrb.getString("no_upcoming_appointment_message")
     );
 
     public final String title, message;

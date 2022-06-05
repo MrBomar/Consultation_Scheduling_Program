@@ -7,11 +7,11 @@ import java.time.ZonedDateTime;
 
 public class DTC {
     public static ZonedDateTime toUniversal(ZonedDateTime ldt) {
-        return ldt.withZoneSameInstant(ZoneId.of("GMT"));
+        return ldt.withZoneSameInstant(ZoneId.of("UTC"));
     }
 
     public static ZonedDateTime toUniversal(LocalDate ld, LocalTime lt) {
-        return ZonedDateTime.of(ld,lt,ZoneId.of("GMT"));
+        return ZonedDateTime.of(ld,lt,ZoneId.of("UTC"));
     }
 
     public static ZonedDateTime toLocal(ZonedDateTime udt) {

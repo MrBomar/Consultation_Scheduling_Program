@@ -3,20 +3,20 @@ package les.projects.consultation_scheduling_program.DataClasses;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.ZonedDateTime;
-import java.time.chrono.ChronoZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.LocalTime.now;
-
 public class Customer {
-    private int customerId, divisionId;
-    private String customerName, address, postalCode, phone;
+    private int id;
+    private int divisionId;
+    private String customerName;
+    private String address;
+    private String postalCode;
+    private String phone;
     private static ObservableList<Customer> allCustomers;
 
-    public Customer(int customerId, String customerName, String address, String postalCode, String phone, int divisionId) {
-        this.customerId = customerId;
+    public Customer(int id, String customerName, String address, String postalCode, String phone, int divisionId) {
+        this.id = id;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
@@ -71,8 +71,13 @@ public class Customer {
         allCustomers = FXCollections.observableList(new ArrayList<Customer>(List.of(customers)));
     }
 
-    public String getName() {
+    public int getId() { return this.id; }
+    public String getIDString() { return "" + this.id; }
+    public String getCustomerName() {
         return this.customerName;
     }
-    public int getID() {return this.customerId; }
+    public String getAddress() { return this.address; }
+    public String getPostalCode() { return this.postalCode; }
+    public String getPhone() { return this.phone; }
+    public int getDivisionID() { return this.divisionId; }
 }

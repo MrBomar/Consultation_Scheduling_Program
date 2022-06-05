@@ -14,9 +14,9 @@ public class ComboBoxSelector extends ComboBox {
     public ComboBoxSelector(ObservableList li) {
         super(li);
 
-        this.setPrefWidth(170);
-        this.setMinWidth(170);
-        this.setMaxWidth(170);
+        this.setPrefWidth(200);
+        this.setMinWidth(200);
+        this.setMaxWidth(200);
         this.setStyle("--fx-font: 16px \"Segoe UI\";");
         this.setButtonCell(cellFactory.call(null));
         this.setCellFactory(cellFactory);
@@ -44,7 +44,7 @@ public class ComboBoxSelector extends ComboBox {
                         setText(country.getName());
                     } else if(item.getClass().equals(Customer.class)) {
                         Customer customer = (Customer) item;
-                        setText(customer.getName());
+                        setText(customer.getCustomerName());
                     } else if(item.getClass().equals(FirstLevelDivision.class)) {
                         FirstLevelDivision division = (FirstLevelDivision) item;
                         setText(division.getName());
@@ -69,7 +69,7 @@ public class ComboBoxSelector extends ComboBox {
                 return country.getID();
             case "Customer":
                 Customer customer = (Customer) obj;
-                return customer.getID();
+                return customer.getId();
             case "FirstLevelDivision":
                 FirstLevelDivision division = (FirstLevelDivision) obj;
                 return division.getID();

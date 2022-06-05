@@ -3,12 +3,15 @@ package les.projects.consultation_scheduling_program.Views;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.Components.ComboBoxSelector;
 import les.projects.consultation_scheduling_program.DataClasses.Country;
+import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.FirstLevelDivision;
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
@@ -18,6 +21,7 @@ public class CustomersView extends BorderPane {
     private final RadioButton countryRadio = new RadioButton(lrb.getString("country"));
     private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("all_customers"));
     private final ToggleGroup radioGroup = new ToggleGroup();
+    private final TableView<Customer> customerTable;
 
     public CustomersView() {
         //Customer header
@@ -65,8 +69,8 @@ public class CustomersView extends BorderPane {
             header.getChildren().addAll(label1, selectorGroup);
 
         //TableView
-        TableView customers = new TableView();
-        HBox.setHgrow(customers, Priority.ALWAYS);
+        this.customerTable = this.buildCustomerTable();
+        HBox.setHgrow(customerTable, Priority.ALWAYS);
 
         //Footer
         HBox footer = new HBox();
@@ -99,7 +103,7 @@ public class CustomersView extends BorderPane {
         this.setBackground(Styles.BackgroundWhite);
         VBox.setVgrow(this, Priority.ALWAYS);
         this.setTop(header);
-        this.setCenter(customers);
+        this.setCenter(customerTable);
         this.setBottom(footer);
     }
 
@@ -109,7 +113,34 @@ public class CustomersView extends BorderPane {
     }
 
     private void updateCustomer() {
-        AddUpdateCustomer modal = new AddUpdateCustomer(1);
-        modal.showAndWait();
+        if(!this.customerTable.getSelectionModel().isEmpty()) {
+            Customer customer = (Customer) this.customerTable.getSelectionModel().getSelectedItem();
+            AddUpdateCustomer modal = new AddUpdateCustomer(customer);
+            modal.showAndWait();
+        } else {
+            DialogMessage dialog = new DialogMessage(Message.NoSelectedCustomer);
+            dialog.showAndWait();
+        }
+
+    }
+
+    private TableView<Customer> buildCustomerTable() {
+        TableView<Customer> table = new TableView<>(Customer.getAllCustomers());
+        TableColumn<Customer, Integer> idCol = new TableColumn<>(lrb.getString("id"));
+        TableColumn<Customer, Integer> nameCol = new TableColumn<>(lrb.getString("customer_name"));
+        TableColumn<Customer, Integer> addressCol = new TableColumn<>(lrb.getString("customer_address"));
+        TableColumn<Customer, Integer> postalCol = new TableColumn<>(lrb.getString("zip_code"));
+        TableColumn<Customer, Integer> phoneCol = new TableColumn<>(lrb.getString("phone_number"));
+        TableColumn<Customer, Integer> divisionCol = new TableColumn<>(lrb.getString("division"));
+
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+        postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
+
+        table.getColumns().addAll(idCol,nameCol,addressCol,postalCol,phoneCol,divisionCol);
+        return table;
     }
 }

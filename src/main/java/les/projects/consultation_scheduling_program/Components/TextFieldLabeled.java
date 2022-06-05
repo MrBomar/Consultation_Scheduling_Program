@@ -17,6 +17,7 @@ public class TextFieldLabeled extends BorderPane {
     public TextFieldLabeled(String labelText, Boolean disabled) {
         this.formatIt(labelText);
         this.textField.setDisable(true);
+        this.textField.setStyle("-fx-prompt-text-fill: rgb(0,0,0)");
     }
 
     private void formatIt(String labelText) {
@@ -40,5 +41,6 @@ public class TextFieldLabeled extends BorderPane {
     public String getInput() {
         return this.textField.getText();
     }
-    public void setInput(String s) {this.textField.setText(s);}
+    public void setInput(String s) { this.textField.setText(s); }
+    public void setPromptText(String s) { this.textField.setPromptText(s); }
 }

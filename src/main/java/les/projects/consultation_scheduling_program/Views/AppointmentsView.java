@@ -15,6 +15,7 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class AppointmentsView extends BorderPane {
 
+
     public AppointmentsView() {
         //Appointment header
         HBox header = new HBox();

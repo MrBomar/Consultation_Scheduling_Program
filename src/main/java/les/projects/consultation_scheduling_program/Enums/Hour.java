@@ -24,7 +24,8 @@ public enum Hour {
     }
 
     public static ObservableList<Hour> getHours() {
-        return FXCollections.observableArrayList(values());
+        ObservableList<Hour> list = FXCollections.observableArrayList(values());
+        return list;
     }
 };
 

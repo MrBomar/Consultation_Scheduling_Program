@@ -16,7 +16,7 @@ public class Main extends Application {
     public static double appWidth = 1305;
     public static double appHeight = 800;
     public static User currentUser = null;
-    public static final Locale locale = Locale.forLanguageTag("fr");
+    public static final Locale locale = Locale.forLanguageTag("en");
     public static final ResourceBundle lrb = ResourceBundle.getBundle("Labels", locale);
     public static final ResourceBundle mrb = ResourceBundle.getBundle("Messages", locale);
 

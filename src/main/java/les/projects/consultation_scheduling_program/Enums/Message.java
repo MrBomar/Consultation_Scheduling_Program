@@ -39,6 +39,10 @@ public enum Message {
             mrb.getString("login_failed_title"),
             mrb.getString("login_failed_message")
     ),
+    NoAppointmentSelected (
+            mrb.getString("no_appointment_selected_title"),
+            mrb.getString("no_appointment_selected_message")
+    ),
     NoSelectedCustomer (
             mrb.getString("no_selected_customer_title"),
             mrb.getString("no_selected_customer_message")

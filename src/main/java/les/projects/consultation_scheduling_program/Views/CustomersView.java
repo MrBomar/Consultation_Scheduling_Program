@@ -113,7 +113,7 @@ public class CustomersView extends BorderPane {
     }
 
     private void updateCustomer() {
-        if(!this.customerTable.getSelectionModel().isEmpty()) {
+        if(this.customerTable.getSelectionModel().getSelectedItems().stream().count() > 0) {
             Customer customer = (Customer) this.customerTable.getSelectionModel().getSelectedItem();
             AddUpdateCustomer modal = new AddUpdateCustomer(customer);
             modal.showAndWait();

@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class AppointmentsView extends BorderPane {
-
+    private final TableView<Appointment> appointmentTable = new TableView<>(Appointment.getAllAppointments());
 
     public AppointmentsView() {
         //Appointment header
@@ -52,8 +52,8 @@ public class AppointmentsView extends BorderPane {
         header.getChildren().addAll(label1,currentMonth,currentWeek,allAppointments);
 
         //TableView
-        TableView<Appointment> appointmentsTable = this.apptTable();
-        HBox.setHgrow(appointmentsTable, Priority.ALWAYS);
+        this.buildTable();
+        HBox.setHgrow(this.appointmentTable, Priority.ALWAYS);
 
         //Footer
         HBox footer = new HBox();
@@ -80,7 +80,7 @@ public class AppointmentsView extends BorderPane {
         this.setBackground(Styles.BackgroundWhite);
         VBox.setVgrow(this, Priority.ALWAYS);
         this.setTop(header);
-        this.setCenter(appointmentsTable);
+        this.setCenter(this.appointmentTable);
         this.setBottom(footer);
     }
 
@@ -90,10 +90,14 @@ public class AppointmentsView extends BorderPane {
     };
 
     private EventHandler<MouseEvent> updateAppointmentClick = event -> {
-        Appointment.add("Coffee Meeting", "Discuss Contract","Java Joes", "Coffee",
-                ZonedDateTime.now(), ZonedDateTime.now(),1,1);
-        AddUpdateAppointment modal = new AddUpdateAppointment(Appointment.getAppointment(0));
-        modal.showAndWait();
+        if(this.appointmentTable.getSelectionModel().getSelectedItems().stream().count() > 0) {
+            Appointment appointment = (Appointment) this.appointmentTable.getSelectionModel().getSelectedItem();
+            AddUpdateAppointment modal = new AddUpdateAppointment(appointment);
+            modal.showAndWait();
+        } else {
+            DialogMessage dialog = new DialogMessage(Message.NoAppointmentSelected);
+            dialog.showAndWait();
+        }
     };
 
     private EventHandler<MouseEvent> deleteAppointmentClick = event -> {
@@ -101,9 +105,7 @@ public class AppointmentsView extends BorderPane {
         dialog.showAndWait();
     };
 
-    private TableView<Appointment> apptTable() {
-        TableView<Appointment> table = new TableView();
-        table.setItems(Appointment.getAllAppointments());
+    private void buildTable() {
         TableColumn<Appointment, Integer> idCol = new TableColumn<Appointment, Integer>(lrb.getString("appointment_id"));
         TableColumn<Appointment, String> titleCol = new TableColumn<Appointment, String>(lrb.getString("title"));
         TableColumn<Appointment, String> descCol = new TableColumn<Appointment, String>(lrb.getString("description"));
@@ -127,7 +129,6 @@ public class AppointmentsView extends BorderPane {
         userCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contactID"));
 
-        table.getColumns().addAll(idCol,titleCol,descCol,locCol,typeCol,startCol,endCol,customerCol,userCol,contactCol);
-        return table;
+        this.appointmentTable.getColumns().addAll(idCol,titleCol,descCol,locCol,typeCol,startCol,endCol,customerCol,userCol,contactCol);
     }
 }

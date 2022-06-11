@@ -18,6 +18,11 @@ public class FirstLevelDivision {
         this.countryId = countryId;
     }
 
+    @Override
+    public String toString() {
+        return this.divisionName;
+    }
+
     public static FirstLevelDivision add(String divisionName, int countryId) {
         //FIXME - Should take supplied inputs, create a new division, and return the new object from the database.
         return new FirstLevelDivision(0, "London", 2);

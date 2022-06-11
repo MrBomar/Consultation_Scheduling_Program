@@ -17,6 +17,11 @@ public class Contact {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return this.contactName;
+    }
+
     public static Contact add(String contactName, String email) {
         //FIXME - Need to connect to database, add contact and return object from database
         return new Contact(1,"Customer1", "customer@company.com");

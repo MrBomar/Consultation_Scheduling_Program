@@ -15,6 +15,11 @@ public class User {
         this.userPassword = password;
     }
 
+    @Override
+    public String toString() {
+        return this.userName;
+    }
+
     public static void addUser(String name, String password) {
         int nextID = (allUsers.size() > 0)?Collections.max(allUsers, Comparator.comparing(i -> i.getUserID())).getUserID() + 1:1;
         allUsers.add(new User(

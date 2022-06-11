@@ -16,6 +16,11 @@ public class Country {
         this.countryName = countryName;
     }
 
+    @Override
+    public String toString() {
+        return this.countryName;
+    }
+
     public static Country add(String countryName) {
         //FIXME -- Needs to add this entry to the database and return the new data object.
         return new Country(1,"Lestopia");

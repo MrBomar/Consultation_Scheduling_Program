@@ -36,6 +36,11 @@ public class Appointment {
         this.contactID = contactId;
     }
 
+    @Override
+    public String toString() {
+        return this.title;
+    }
+
     public static void add(String title, String description, String location,
                                   String type, ZonedDateTime start, ZonedDateTime end, int customerId, int contactId) {
         //FIXME - Update this method to save the Appointment to the database then refresh allAppointments

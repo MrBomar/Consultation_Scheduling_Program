@@ -24,6 +24,11 @@ public class Customer {
         this.divisionId = divisionId;
     }
 
+    @Override
+    public String toString() {
+        return this.customerName;
+    }
+
     public static Customer add(String customerName, String address, String postalCode, String phone, int divisionId) {
         //FIXME - Need to add to database and return the data object
         return new Customer(1, customerName, address, postalCode, phone, divisionId);

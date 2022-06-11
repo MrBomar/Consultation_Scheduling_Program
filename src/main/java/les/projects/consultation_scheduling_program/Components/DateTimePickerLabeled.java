@@ -11,6 +11,7 @@ import les.projects.consultation_scheduling_program.Enums.Minute;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
@@ -43,5 +44,17 @@ public class DateTimePickerLabeled extends BorderPane {
         LocalDate date = this.datePicker.getValue();
         LocalTime time = LocalTime.of(this.hourPicker.getValue(), this.minutePicker.getValue());
         return ZonedDateTime.of(date,time, TimeZone.getDefault().toZoneId());
+    }
+
+    public void setValue(ZonedDateTime zTime) {
+        this.datePicker.setValue(zTime.toLocalDate());
+        this.hourPicker.setValue(zTime.toLocalTime().getHour());
+        this.minutePicker.setValue(zTime.toLocalTime().getMinute());
+        if(zTime.toLocalTime().compareTo(LocalTime.NOON) > 0) {
+            //Time is PM
+            this.meridiemPicker.setValue("PM");
+        } else {
+            this.meridiemPicker.setValue("AM");
+        }
     }
 }

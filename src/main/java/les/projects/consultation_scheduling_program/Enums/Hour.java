@@ -3,6 +3,8 @@ package les.projects.consultation_scheduling_program.Enums;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.Optional;
+
 public enum Hour {
     One(1),
     Two(2),

@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import les.projects.consultation_scheduling_program.DataClasses.*;
 import les.projects.consultation_scheduling_program.Enums.Hour;
+import les.projects.consultation_scheduling_program.Enums.Meridiem;
 import les.projects.consultation_scheduling_program.Enums.Minute;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
@@ -44,6 +45,8 @@ public class ComboBoxBorderPane extends BorderPane {
 
     public int getID() {
         Object obj = comboBox.getSelectionModel().getSelectedItem();
+
+
         switch(obj.getClass().getName()) {
             case "Appointment":
                 Appointment a = (Appointment) obj;
@@ -123,8 +126,27 @@ public class ComboBoxBorderPane extends BorderPane {
                     this.comboBox.setValue(division);
                     break;
                 }
+            } else if(obj.getClass().equals(Hour.class)) {
+                Hour hr = (Hour) obj;
+                if(hr.number == id) {
+                    this.comboBox.setValue(hr);
+                    break;
+                }
+            } else if(obj.getClass().equals(Minute.class)) {
+                Minute min = (Minute) obj;
+                if (min.number == id) {
+                    this.comboBox.setValue(min);
+                    break;
+                }
             }
         }
+    }
 
+    public void setValue(String s) {
+        for(Object o: this.list) {
+            if(o.getClass().equals(Meridiem.class)){
+                this.comboBox.setValue(Meridiem.valueOf(s));
+            }
+        }
     }
 }

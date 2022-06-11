@@ -22,12 +22,12 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class AddUpdateCustomer extends DialogBase {
     private Customer currentCustomer;
-    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("customer_id"), true);
-    private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"));
-    private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"));
-    private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"));
+    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("customer_id"), false, true);
+    private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"), true, false);
+    private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"), true, false);
+    private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"), true, false);
     private final ComboBoxBorderPane division = new ComboBoxBorderPane(lrb.getString("division"), FirstLevelDivision.getAllDivisions(), true);
-    private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"));
+    private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"), true, false);
 
     public AddUpdateCustomer() {
         super(lrb.getString("add_new_customer"));

@@ -27,4 +27,8 @@ public class TextAreaLabeled extends VBox {
     public String getInput() {
         return this.text.getText();
     }
+
+    public void setInput(String s) {
+        this.text.setText(s);
+    }
 }

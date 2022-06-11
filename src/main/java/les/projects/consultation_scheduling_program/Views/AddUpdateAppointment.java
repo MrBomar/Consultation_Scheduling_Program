@@ -16,14 +16,14 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment;
-    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), true);
-    private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("location"));
+    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), false, true);
+    private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("location"), true, false);
     private final ComboBoxBorderPane customer = new ComboBoxBorderPane(lrb.getString("customer"), Customer.getAllCustomers(), true);
     private final ComboBoxBorderPane contact = new ComboBoxBorderPane(lrb.getString("contact"), Contact.getAllContacts(), true);
-    private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"));
+    private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"), false, false);
     private final DateTimePickerLabeled start = new DateTimePickerLabeled(lrb.getString("start_date_and_time"));
     private final DateTimePickerLabeled end = new DateTimePickerLabeled(lrb.getString("end_date_and_time"));
-    private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("title"));
+    private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("title"), true, false);
     private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("description"));
 
     public AddUpdateAppointment() {
@@ -39,6 +39,13 @@ public class AddUpdateAppointment extends DialogBase {
         this.currentAppointment = appointment;
         this.id.setInput("" + this.currentAppointment.getId()+ "");
         this.location.setInput(this.currentAppointment.getLocation());
+        this.customer.setValue(this.currentAppointment.getCustomerID());
+        this.contact.setValue(this.currentAppointment.getContactID());
+        this.type.setInput(this.currentAppointment.getType());
+        this.start.setValue(this.currentAppointment.getStart());
+        this.end.setValue(this.currentAppointment.getEnd());
+        this.title.setInput(this.currentAppointment.getTitle());
+        this.description.setInput(this.currentAppointment.getDescription());
     }
 
     private void build() {

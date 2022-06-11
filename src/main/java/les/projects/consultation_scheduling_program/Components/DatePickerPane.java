@@ -24,4 +24,8 @@ public class DatePickerPane extends BorderPane {
     public void setPrefWidth(int i) {
         this.datePicker.setPrefWidth(i);
     }
+
+    public void setValue(LocalDate date) {
+        this.datePicker.setValue(date);
+    }
 }

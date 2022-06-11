@@ -10,17 +10,7 @@ public class TextFieldLabeled extends BorderPane {
     private Label label;
     private TextField textField;
 
-    public TextFieldLabeled(String labelText) {
-        this.formatIt(labelText);
-    }
-
-    public TextFieldLabeled(String labelText, Boolean disabled) {
-        this.formatIt(labelText);
-        this.textField.setDisable(true);
-        this.textField.setStyle("-fx-prompt-text-fill: rgb(0,0,0)");
-    }
-
-    private void formatIt(String labelText) {
+    public TextFieldLabeled(String labelText, boolean required, boolean disabled) {
         this.label = new Label(labelText);
         this.label.setFont(Styles.DefaultFont18);
 
@@ -36,6 +26,18 @@ public class TextFieldLabeled extends BorderPane {
         this.setPrefWidth(400);
         this.setLeft(this.label);
         this.setRight(this.textField);
+
+        //Disabled properties
+        if(disabled) {
+            this.textField.setDisable(true);
+            this.textField.setStyle("-fx-prompt-text-fill: rgb(0,0,0)");
+        }
+
+        //Required properties
+        if(required) {
+            this.textField.setPromptText("(Required)");
+            this.textField.setStyle("-fx-prompt-text-fill: rgb(255,0,0)");
+        }
     }
 
     public String getInput() {

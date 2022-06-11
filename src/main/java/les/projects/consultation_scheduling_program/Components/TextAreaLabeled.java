@@ -9,6 +9,8 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 public class TextAreaLabeled extends VBox {
     private Label label;
     private TextArea text;
+    private String initValue = "";
+    private boolean changed = false;
 
     public TextAreaLabeled(String labelText) {
         this.label = new Label(labelText);
@@ -22,13 +24,21 @@ public class TextAreaLabeled extends VBox {
 
         this.setPadding(new Insets(10,0,0,0));
         this.getChildren().addAll(this.label, this.text);
+
+        //Event listeners
+        this.text.focusedProperty().addListener(
+                (x,y,z) -> changed = !this.initValue.equals(this.text.getText())
+        );
     }
 
     public String getInput() {
         return this.text.getText();
     }
 
-    public void setInput(String s) {
+    public void setInitialValue(String s) {
+        this.initValue = s;
         this.text.setText(s);
     }
+
+    public boolean isChanged() { return this.changed; }
 }

@@ -2,6 +2,9 @@ package les.projects.consultation_scheduling_program.Enums;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Views.DialogMessage;
+
+import java.util.NoSuchElementException;
 
 public enum Minute {
     Zero(0),
@@ -78,5 +81,15 @@ public enum Minute {
     @Override
     public String toString() {
         return "" + this.number;
+    }
+
+    public static Minute getObjById(int id) {
+        try {
+            return FXCollections.observableArrayList(values()).stream().filter(m -> m.number == id).findFirst().get();
+        } catch (NoSuchElementException e) {
+            DialogMessage dialog = new DialogMessage(Message.MissingMinuteRecord);
+            dialog.showAndWait();
+            return Minute.One;
+        }
     }
 }

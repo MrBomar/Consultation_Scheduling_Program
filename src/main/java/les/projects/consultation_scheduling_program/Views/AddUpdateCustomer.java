@@ -41,12 +41,12 @@ public class AddUpdateCustomer extends DialogBase {
 
         //FIXME - Insert logic to pull customer record and populate fields.
         this.currentCustomer = customer;
-        this.id.setInput(this.currentCustomer.getIDString());
-        this.name.setInput(this.currentCustomer.getCustomerName());
-        this.address.setInput(this.currentCustomer.getAddress());
-        this.zip.setInput(this.currentCustomer.getPostalCode());
-        this.phone.setInput(this.currentCustomer.getPhone());
-        this.division.setValue(this.currentCustomer.getDivisionID());
+        this.id.setInitialValue(this.currentCustomer.getIDString());
+        this.name.setInitialValue(this.currentCustomer.getCustomerName());
+        this.address.setInitialValue(this.currentCustomer.getAddress());
+        this.zip.setInitialValue(this.currentCustomer.getPostalCode());
+        this.phone.setInitialValue(this.currentCustomer.getPhone());
+        this.division.setInitialValue(FirstLevelDivision.getObjById(this.currentCustomer.getDivisionID()));
     }
 
     private void build() {

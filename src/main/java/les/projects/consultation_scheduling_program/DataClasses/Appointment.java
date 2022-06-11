@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class Appointment {
+public class Appointment extends Object {
     private int id;
     private int customerID;
     private int userID;

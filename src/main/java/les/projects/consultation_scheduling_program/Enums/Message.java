@@ -39,6 +39,26 @@ public enum Message {
             mrb.getString("login_failed_title"),
             mrb.getString("login_failed_message")
     ),
+    MissingContactRecord(
+            "No Contact Record",
+            "The record for the specified customer could not be found."
+    ),
+    MissingCustomerRecord(
+            "No Customer Record",
+            "The record for the specified customer could not be found."
+    ),
+    MissingDivisionRecord(
+            "Do Division Record",
+            "The record for the specified division could not be found."
+    ),
+    MissingHourRecord(
+            "No Hour Record",
+            "The record for the specified hour could not be found."
+    ),
+    MissingMinuteRecord(
+            "No Minute Record",
+            "The record for the specified minute could not be found."
+    ),
     NoAppointmentSelected (
             mrb.getString("no_appointment_selected_title"),
             mrb.getString("no_appointment_selected_message")
@@ -50,7 +70,16 @@ public enum Message {
     NoUpcomingAppointment(
             mrb.getString("no_upcoming_appointment_title"),
             mrb.getString("no_upcoming_appointment_message")
-    );
+    ),
+    NoValueSelected(
+            mrb.getString("no_value_selected_title"),
+            mrb.getString("no_value_selected_message")
+    ),
+    ProgrammingError_MissingClass(
+            mrb.getString("prog_error_missing_class_title"),
+            mrb.getString("prog_error_missing_class_message")
+    ),
+    ;
 
     public final String title, message;
 

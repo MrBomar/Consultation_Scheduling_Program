@@ -2,9 +2,12 @@ package les.projects.consultation_scheduling_program.DataClasses;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Customer {
     private int id;
@@ -85,4 +88,14 @@ public class Customer {
     public String getPostalCode() { return this.postalCode; }
     public String getPhone() { return this.phone; }
     public int getDivisionID() { return this.divisionId; }
+
+    public static Customer getObjById(int id) {
+        try {
+            return allCustomers.stream().filter(i -> i.getId() == id).findFirst().get();
+        } catch (NoSuchElementException e) {
+            DialogMessage dialog = new DialogMessage(Message.MissingCustomerRecord);
+            dialog.showAndWait();
+            return allCustomers.stream().findFirst().get();
+        }
+    }
 }

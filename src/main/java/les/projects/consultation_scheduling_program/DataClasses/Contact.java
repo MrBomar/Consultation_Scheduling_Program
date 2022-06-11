@@ -2,9 +2,12 @@ package les.projects.consultation_scheduling_program.DataClasses;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Contact {
     private int contactId;
@@ -39,8 +42,8 @@ public class Contact {
     public static void loadData() {
         //FIXME - Need to load from Database
         Contact[] contacts = new Contact[] {
-            new Contact(1,"Contact2", "contact2@company.com"),
-            new Contact(0,"Contact1", "contact1@company.com"),
+            new Contact(1,"Contact1", "contact2@company.com"),
+            new Contact(0,"Contact2", "contact1@company.com"),
             new Contact(2,"Contact3", "contact3@company.com"),
             new Contact(3,"Contact4", "contact4@company.com"),
             new Contact(4,"Contact5", "contact5@company.com"),
@@ -59,4 +62,14 @@ public class Contact {
         return this.contactName;
     }
     public int getID() { return this.contactId; }
+
+    public static Contact getObjById(int id) {
+        try {
+            return allContacts.stream().filter(i -> i.getID() == id).findFirst().get();
+        } catch (NoSuchElementException e) {
+            DialogMessage dialog = new DialogMessage(Message.MissingContactRecord);
+            dialog.showAndWait();
+            return allContacts.stream().findFirst().get();
+        }
+    }
 }

@@ -9,6 +9,8 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 public class TextFieldLabeled extends BorderPane {
     private Label label;
     private TextField textField;
+    private String initValue = "";
+    private boolean changed = false;
 
     public TextFieldLabeled(String labelText, boolean required, boolean disabled) {
         this.label = new Label(labelText);
@@ -38,11 +40,21 @@ public class TextFieldLabeled extends BorderPane {
             this.textField.setPromptText("(Required)");
             this.textField.setStyle("-fx-prompt-text-fill: rgb(255,0,0)");
         }
+
+        //Event listeners
+        this.textField.focusedProperty().addListener(
+                (x, y, z) -> changed = !this.initValue.equals(this.textField.getText())
+        );
     }
 
     public String getInput() {
         return this.textField.getText();
     }
-    public void setInput(String s) { this.textField.setText(s); }
+    public void setInitialValue(String s) {
+        this.initValue = s;
+        this.textField.setText(s);
+    }
+
     public void setPromptText(String s) { this.textField.setPromptText(s); }
+    public boolean isChanged() { return this.changed; }
 }

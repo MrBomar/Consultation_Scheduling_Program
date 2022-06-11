@@ -2,9 +2,12 @@ package les.projects.consultation_scheduling_program.DataClasses;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class FirstLevelDivision {
     private int divisionId;
@@ -72,5 +75,15 @@ public class FirstLevelDivision {
                 new FirstLevelDivision(9, "Division 10", 9)
         };
         allDivisions = FXCollections.observableList(new ArrayList<FirstLevelDivision>(List.of(divisions)));
+    }
+
+    public static FirstLevelDivision getObjById(int id) {
+        try {
+            return allDivisions.stream().filter(d -> d.getID() == id).findFirst().get();
+        } catch (NoSuchElementException e) {
+            DialogMessage dialog = new DialogMessage(Message.MissingDivisionRecord);
+            dialog.showAndWait();
+            return allDivisions.stream().findFirst().get();
+        }
     }
 }

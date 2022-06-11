@@ -9,6 +9,8 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 public class TextFieldLabeledLarge extends BorderPane {
     private Label label = new Label();
     private TextField textField = new TextField();
+    private String initValue = "";
+    boolean changed = false;
 
     public TextFieldLabeledLarge(String labelText, String placeholder, Boolean disabled) {
         this.setPadding(new Insets(0,0,20,0));
@@ -32,6 +34,11 @@ public class TextFieldLabeledLarge extends BorderPane {
             );
         }
         this.setRight(this.textField);
+
+        //Event listeners
+        this.textField.focusedProperty().addListener(
+                (x, y, z) -> changed = !this.initValue.equals(this.textField.getText())
+        );
     }
 
     public String getInput() {
@@ -41,4 +48,11 @@ public class TextFieldLabeledLarge extends BorderPane {
     public void resetInput() {
         this.textField.setText("");
     }
+
+    public void setInitialValue(String s) {
+        this.initValue = s;
+        this.textField.setText(s);
+    }
+
+    public boolean isChanged() { return this.changed; }
 }

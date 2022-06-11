@@ -6,15 +6,16 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import les.projects.consultation_scheduling_program.DataClasses.*;
-import les.projects.consultation_scheduling_program.Enums.Hour;
-import les.projects.consultation_scheduling_program.Enums.Meridiem;
-import les.projects.consultation_scheduling_program.Enums.Minute;
-import les.projects.consultation_scheduling_program.Enums.Styles;
+import les.projects.consultation_scheduling_program.Enums.*;
+import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 public class ComboBoxBorderPane extends BorderPane {
     private Label label;
     private ComboBox comboBox = new ComboBox<>();
     private ObservableList list;
+    private Class listClass;
+    private Object initValue;
+    private boolean changed = false;
 
     public ComboBoxBorderPane(ObservableList list, boolean padding) {
         this.format(list, padding);
@@ -33,6 +34,9 @@ public class ComboBoxBorderPane extends BorderPane {
     }
 
     private void format(ObservableList list, boolean padding) {
+        //Set the list class
+        this.listClass = list.stream().findFirst().getClass();
+
         this.list = list;
         this.comboBox.setItems(this.list);
         this.comboBox.setEditable(true);
@@ -45,8 +49,6 @@ public class ComboBoxBorderPane extends BorderPane {
 
     public int getID() {
         Object obj = comboBox.getSelectionModel().getSelectedItem();
-
-
         switch(obj.getClass().getName()) {
             case "Appointment":
                 Appointment a = (Appointment) obj;
@@ -90,56 +92,43 @@ public class ComboBoxBorderPane extends BorderPane {
         this.comboBox.setPrefWidth(i);
     }
 
-    public int getValue() {
-        return 1;
+    public boolean itemIsSelected() {
+        return !this.comboBox.getSelectionModel().isEmpty();
     }
 
-    public void setValue(int id) {
-        for(Object obj: this.list) {
-            if(obj.getClass().equals(Appointment.class)){
-                Appointment appointment = (Appointment) obj;
-                if(appointment.getId() == id){
-                    this.comboBox.setValue(appointment);
-                    break;
-                }
-            } else if(obj.getClass().equals(Contact.class)) {
-                Contact contact = (Contact) obj;
-                if(contact.getID() == id){
-                    this.comboBox.setValue(contact);
-                    break;
-                }
-            } else if(obj.getClass().equals(Country.class)) {
-                Country country = (Country) obj;
-                if(country.getID() == id) {
-                    this.comboBox.setValue(country);
-                    break;
-                }
-            } else if(obj.getClass().equals(Customer.class)) {
-                Customer customer = (Customer) obj;
-                if(customer.getId() == id) {
-                    this.comboBox.setValue(customer);
-                    break;
-                }
-            } else if(obj.getClass().equals(FirstLevelDivision.class)) {
-                FirstLevelDivision division = (FirstLevelDivision) obj;
-                if (division.getID() == id) {
-                    this.comboBox.setValue(division);
-                    break;
-                }
-            } else if(obj.getClass().equals(Hour.class)) {
-                Hour hr = (Hour) obj;
-                if(hr.number == id) {
-                    this.comboBox.setValue(hr);
-                    break;
-                }
-            } else if(obj.getClass().equals(Minute.class)) {
-                Minute min = (Minute) obj;
-                if (min.number == id) {
-                    this.comboBox.setValue(min);
-                    break;
-                }
+    public Object getSelectedItem() {
+        return this.comboBox.getSelectionModel().getSelectedItem();
+    }
+
+    public int getValue() {
+        //Using a try_catch block just in case the user hasn't made a selection.
+        try {
+            if(this.list.stream().findFirst().getClass().equals(Hour.class)) {
+                Hour hr = (Hour) this.comboBox.getSelectionModel().getSelectedItem();
+                return hr.number;
+            } else if(this.list.stream().findFirst().getClass().equals(Minute.class)) {
+                Minute min = (Minute) this.comboBox.getSelectionModel().getSelectedItem();
+                return min.number;
+            } else {
+                DialogMessage dialog = new DialogMessage(Message.ProgrammingError_MissingClass);
+                dialog.showAndWait();
+                throw new RuntimeException("Cannot complete this operation.");
             }
+        } catch (NullPointerException e) {
+            DialogMessage dialog = new DialogMessage(Message.NoValueSelected);
+            dialog.showAndWait();
+            return 0;
         }
+    }
+
+    /**
+     * This method takes in an object and sets it as the initial value and sets the current value of the
+     * combo box to the object.
+     * @param obj
+     */
+    public void setInitialValue(Object obj) {
+        this.initValue = obj;
+        this.comboBox.setValue(obj);
     }
 
     public void setValue(String s) {

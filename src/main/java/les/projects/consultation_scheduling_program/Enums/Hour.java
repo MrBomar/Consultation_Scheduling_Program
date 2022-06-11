@@ -2,8 +2,10 @@ package les.projects.consultation_scheduling_program.Enums;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
-import java.util.Optional;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public enum Hour {
     One(1),
@@ -33,6 +35,17 @@ public enum Hour {
     @Override
     public String toString() {
         return "" + this.number;
+    }
+
+    public static Hour getObjById(int id) {
+        int value = (id > 12)? id - 12: id;
+        try {
+            return FXCollections.observableArrayList(values()).stream().filter(h -> h.number == value).findFirst().get();
+        } catch (NoSuchElementException e) {
+            DialogMessage dialog = new DialogMessage(Message.MissingHourRecord);
+            dialog.showAndWait();
+            return Hour.One;
+        }
     }
 };
 

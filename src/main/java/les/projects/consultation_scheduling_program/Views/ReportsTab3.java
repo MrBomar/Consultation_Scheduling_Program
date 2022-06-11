@@ -5,14 +5,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import les.projects.consultation_scheduling_program.Components.ComboBoxSelector;
+import les.projects.consultation_scheduling_program.Components.ComboBoxBorderPane;
 import les.projects.consultation_scheduling_program.DataClasses.Contact;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Main;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class ReportsTab3 extends VBox {
-    private ComboBoxSelector selectContact = new ComboBoxSelector(Contact.getAllContacts());
+    private ComboBoxBorderPane selectContact = new ComboBoxBorderPane(Contact.getAllContacts(), false);
     private TableView appointments = new TableView();
 
     public ReportsTab3() {

@@ -26,7 +26,7 @@ public class AddUpdateCustomer extends DialogBase {
     private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"));
     private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"));
     private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"));
-    private final ComboBoxBorderPane division = new ComboBoxBorderPane(lrb.getString("division"), FirstLevelDivision.getAllDivisions());
+    private final ComboBoxBorderPane division = new ComboBoxBorderPane(lrb.getString("division"), FirstLevelDivision.getAllDivisions(), true);
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"));
 
     public AddUpdateCustomer() {

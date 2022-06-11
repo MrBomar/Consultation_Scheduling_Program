@@ -15,30 +15,30 @@ public class ComboBoxBorderPane extends BorderPane {
     private ComboBox comboBox = new ComboBox<>();
     private ObservableList list;
 
-    public ComboBoxBorderPane(ObservableList list) {
-        this.format(list);
+    public ComboBoxBorderPane(ObservableList list, boolean padding) {
+        this.format(list, padding);
     }
 
-    public ComboBoxBorderPane(String label, ObservableList list) {
+    public ComboBoxBorderPane(String label, ObservableList list, boolean padding) {
         this.label = new Label(label);
         this.label.setFont(Styles.DefaultFont18);
         this.setLeft(this.label);
-        this.format(list);
+        this.format(list, padding);
     }
 
-    public ComboBoxBorderPane(ObservableList list, String placeholder) {
+    public ComboBoxBorderPane(ObservableList list, String placeholder, boolean padding) {
         this.comboBox.setPromptText(placeholder);
-        this.format(list);
+        this.format(list, padding);
     }
 
-    private void format(ObservableList list) {
+    private void format(ObservableList list, boolean padding) {
         this.list = list;
         this.comboBox.setItems(this.list);
         this.comboBox.setEditable(true);
         this.comboBox.setBorder(Styles.ButtonBorder);
         this.comboBox.setMaxWidth(200);
         this.comboBox.setStyle("--fx-font: 16px \"Segoe UI\";");
-        this.setPadding(new Insets(10,0,10,0));
+        if(padding) this.setPadding(new Insets(10,0,10,0));
         this.setRight(this.comboBox);
     }
 

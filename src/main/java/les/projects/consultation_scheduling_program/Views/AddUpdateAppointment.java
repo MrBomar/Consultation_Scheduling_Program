@@ -18,8 +18,8 @@ public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment;
     private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), true);
     private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("location"));
-    private final ComboBoxBorderPane customer = new ComboBoxBorderPane(lrb.getString("customer"), Customer.getAllCustomers());
-    private final ComboBoxBorderPane contact = new ComboBoxBorderPane(lrb.getString("contact"), Contact.getAllContacts());
+    private final ComboBoxBorderPane customer = new ComboBoxBorderPane(lrb.getString("customer"), Customer.getAllCustomers(), true);
+    private final ComboBoxBorderPane contact = new ComboBoxBorderPane(lrb.getString("contact"), Contact.getAllContacts(), true);
     private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"));
     private final DateTimePickerLabeled start = new DateTimePickerLabeled(lrb.getString("start_date_and_time"));
     private final DateTimePickerLabeled end = new DateTimePickerLabeled(lrb.getString("end_date_and_time"));

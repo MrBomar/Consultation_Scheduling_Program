@@ -18,9 +18,9 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 public class DateTimePickerLabeled extends BorderPane {
     private final Label label;
     private final DatePickerPane datePicker = new DatePickerPane(LocalDate.now());
-    private final ComboBoxBorderPane hourPicker = new ComboBoxBorderPane(Hour.getHours(), lrb.getString("h"));
-    private final ComboBoxBorderPane minutePicker = new ComboBoxBorderPane(Minute.getMinutes(), lrb.getString("m"));
-    private final ComboBoxBorderPane meridiemPicker = new ComboBoxBorderPane(Meridiem.getMeridiems(), lrb.getString("am_pm"));
+    private final ComboBoxBorderPane hourPicker = new ComboBoxBorderPane(Hour.getHours(), lrb.getString("h"), true);
+    private final ComboBoxBorderPane minutePicker = new ComboBoxBorderPane(Minute.getMinutes(), lrb.getString("m"), true);
+    private final ComboBoxBorderPane meridiemPicker = new ComboBoxBorderPane(Meridiem.getMeridiems(), lrb.getString("am_pm"), true);
 
     public DateTimePickerLabeled(String labelText) {
         this.label = new Label(labelText);
@@ -33,7 +33,7 @@ public class DateTimePickerLabeled extends BorderPane {
         this.setRight(picker);
 
         //Format the fields
-        this.datePicker.setPrefWidth(100);
+        this.datePicker.setPrefWidth(115);
         this.hourPicker.setComboBoxWidth(60);
         this.minutePicker.setComboBoxWidth(60);
         this.meridiemPicker.setComboBoxWidth(60);

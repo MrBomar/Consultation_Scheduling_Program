@@ -4,13 +4,9 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
-import javafx.util.Callback;
 import les.projects.consultation_scheduling_program.DataClasses.*;
 import les.projects.consultation_scheduling_program.Enums.Hour;
-import les.projects.consultation_scheduling_program.Enums.Meridiem;
 import les.projects.consultation_scheduling_program.Enums.Minute;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
@@ -42,49 +38,8 @@ public class ComboBoxBorderPane extends BorderPane {
         this.comboBox.setBorder(Styles.ButtonBorder);
         this.comboBox.setMaxWidth(200);
         this.comboBox.setStyle("--fx-font: 16px \"Segoe UI\";");
-        this.comboBox.setCellFactory(i -> listFactory());
-        System.out.println("setCellFactory():");
-        this.comboBox.setButtonCell(listFactory());
-        System.out.println("setButtonCell():");
         this.setPadding(new Insets(10,0,10,0));
         this.setRight(this.comboBox);
-    }
-
-    private ListCell<Object> listFactory() {
-        return new ListCell<Object>() {
-            @Override
-            protected void updateItem(Object item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setGraphic(null);
-                } else if(item.getClass().equals(Appointment.class)) {
-                    Appointment appointment = (Appointment) item;
-                    setText(appointment.getTitle());
-                } else if(item.getClass().equals((Contact.class))) {
-                    Contact contact = (Contact) item;
-                    setText(contact.getName());
-                } else if(item.getClass().equals(Country.class)) {
-                    Country country = (Country) item;
-                    setText(country.getName());
-                } else if(item.getClass().equals(Customer.class)) {
-                    Customer customer = (Customer) item;
-                    setText(customer.getCustomerName());
-                } else if(item.getClass().equals(FirstLevelDivision.class)) {
-                    FirstLevelDivision division = (FirstLevelDivision) item;
-                    setText(division.getName());
-                } else if(item.getClass().equals(Hour.class)) {
-                    Hour hour = (Hour) item;
-                    setText("" + hour.number);
-                } else if(item.getClass().equals(Minute.class)) {
-                    Minute minute = (Minute) item;
-                    setText("" + minute.number);
-                    setValue(minute.number);
-                } else if(item.getClass().equals(Meridiem.class)) {
-                    Meridiem meridiem = (Meridiem) item;
-                    setText("" + meridiem.s);
-                }
-            }
-        };
     }
 
     public int getID() {

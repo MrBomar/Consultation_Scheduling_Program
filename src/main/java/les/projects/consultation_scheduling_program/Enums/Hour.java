@@ -27,5 +27,10 @@ public enum Hour {
         ObservableList<Hour> list = FXCollections.observableArrayList(values());
         return list;
     }
+
+    @Override
+    public String toString() {
+        return "" + this.number;
+    }
 };
 

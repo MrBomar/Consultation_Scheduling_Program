@@ -74,4 +74,9 @@ public enum Minute {
     public static ObservableList<Minute> getMinutes() {
         return FXCollections.observableArrayList(values());
     }
+
+    @Override
+    public String toString() {
+        return "" + this.number;
+    }
 }

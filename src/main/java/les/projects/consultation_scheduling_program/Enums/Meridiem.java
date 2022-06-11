@@ -16,4 +16,9 @@ public enum Meridiem {
     public static ObservableList<Meridiem> getMeridiems() {
         return FXCollections.observableArrayList(values());
     }
+
+    @Override
+    public String toString() {
+        return this.s;
+    }
 }

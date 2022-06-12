@@ -38,11 +38,11 @@ public class Country {
         return true;
     }
 
-    public FirstLevelDivision[] getDivisions() {
+    public Division[] getDivisions() {
         //FIXME - Need to return the values present in the database.
-        FirstLevelDivision[] divisionData = new FirstLevelDivision[2];
-        divisionData[0] = new FirstLevelDivision(1,"Lestertown", 1);
-        divisionData[1] = new FirstLevelDivision(2, "Lestervinia", 2);
+        Division[] divisionData = new Division[2];
+        divisionData[0] = new Division(1,"Lestertown", 1);
+        divisionData[1] = new Division(2, "Lestervinia", 2);
         return divisionData;
     }
 

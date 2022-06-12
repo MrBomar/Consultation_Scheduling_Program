@@ -7,17 +7,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
-import les.projects.consultation_scheduling_program.Components.ComboBoxBorderPane;
+import les.projects.consultation_scheduling_program.Components.ComboBox_Country;
+import les.projects.consultation_scheduling_program.Components.ComboBox_Division;
 import les.projects.consultation_scheduling_program.DataClasses.Country;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
-import les.projects.consultation_scheduling_program.DataClasses.FirstLevelDivision;
+import les.projects.consultation_scheduling_program.DataClasses.Division;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class CustomersView extends BorderPane {
-    private final ComboBoxBorderPane countryDropdown = new ComboBoxBorderPane(Country.getAllCountries(), false);
-    private final ComboBoxBorderPane divisionDropdown = new ComboBoxBorderPane(FirstLevelDivision.getAllDivisions(), false);
+    private final ComboBox_Country countryDropdown = new ComboBox_Country(Country.getAllCountries(), false);
+    private final ComboBox_Division divisionDropdown = new ComboBox_Division(Division.getAllDivisions(), false);
     private final RadioButton countryRadio = new RadioButton(lrb.getString("country"));
     private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("all_customers"));
     private final ToggleGroup radioGroup = new ToggleGroup();

@@ -57,6 +57,6 @@ public class Main extends Application {
         Contact.loadData();
         Country.loadData();
         Customer.loadData();
-        FirstLevelDivision.loadData();
+        Division.loadData();
     }
 }

@@ -20,7 +20,7 @@ public class TextAreaLabeled extends VBox {
         this.text.setMinSize(400, 120);
         this.text.setMaxSize(400, 120);
         this.text.setPrefSize(400, 120);
-        this.text.setBorder(Styles.ButtonBorder);
+        this.text.setStyle(Styles.StyleTextArea);
 
         this.setPadding(new Insets(10,0,0,0));
         this.getChildren().addAll(this.label, this.text);

@@ -20,7 +20,7 @@ public class TextFieldLabeled extends BorderPane {
         this.textField.setMinSize(200,25);
         this.textField.setMaxSize(200,25);
         this.textField.setPrefSize(200,25);
-        this.textField.setBorder(Styles.ButtonBorder);
+        this.textField.setStyle(Styles.StyleTextField);
 
         this.setPadding(new Insets(10,0,10,0));
         this.setMinWidth(400);
@@ -38,7 +38,7 @@ public class TextFieldLabeled extends BorderPane {
         //Required properties
         if(required) {
             this.textField.setPromptText("(Required)");
-            this.textField.setStyle("-fx-prompt-text-fill: rgb(255,0,0)");
+            this.textField.setStyle(Styles.StyleTextFieldRequired);
         }
 
         //Event listeners
@@ -57,4 +57,14 @@ public class TextFieldLabeled extends BorderPane {
 
     public void setPromptText(String s) { this.textField.setPromptText(s); }
     public boolean isChanged() { return this.changed; }
+
+    public boolean isNotBlank() {
+        switch(this.textField.getText()) {
+            case "":
+            case " ":
+                return false;
+            default:
+                return true;
+        }
+    }
 }

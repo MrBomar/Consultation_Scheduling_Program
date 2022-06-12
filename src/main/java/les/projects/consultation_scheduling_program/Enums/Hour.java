@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public enum Hour {
@@ -32,11 +31,6 @@ public enum Hour {
         return list;
     }
 
-    @Override
-    public String toString() {
-        return "" + this.number;
-    }
-
     public static Hour getObjById(int id) {
         int value = (id > 12)? id - 12: id;
         try {
@@ -46,6 +40,11 @@ public enum Hour {
             dialog.showAndWait();
             return Hour.One;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "" + this.number;
     }
 };
 

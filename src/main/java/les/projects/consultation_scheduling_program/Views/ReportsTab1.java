@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import les.projects.consultation_scheduling_program.Components.ComboBoxBorderPane;
+import les.projects.consultation_scheduling_program.Components.ComboBox_Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Main;
@@ -13,7 +13,7 @@ import les.projects.consultation_scheduling_program.Main;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class ReportsTab1 extends VBox {
-    private ComboBoxBorderPane selectContact = new ComboBoxBorderPane(Customer.getAllCustomers(), false);
+    private ComboBox_Customer selectContact = new ComboBox_Customer(Customer.getAllCustomers(), false);
     private TableView appointments = new TableView();
 
     public ReportsTab1() {

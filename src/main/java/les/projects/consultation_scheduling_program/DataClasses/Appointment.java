@@ -42,7 +42,7 @@ public class Appointment extends Object {
     }
 
     public static void add(String title, String description, String location,
-                                  String type, ZonedDateTime start, ZonedDateTime end, int customerId, int contactId) {
+                           String type, ZonedDateTime start, ZonedDateTime end, Customer customer, Contact contact) {
         //FIXME - Update this method to save the Appointment to the database then refresh allAppointments
         //FIXME - ZonedDateTime needs to be converted to UTC before saving changes.
 
@@ -50,24 +50,24 @@ public class Appointment extends Object {
                 Collections.max(allAppointments, Comparator.comparing(i -> i.getId())).getId() + 1 :
                 1;
         allAppointments.add(
-                new Appointment(nextID,title,description,location,type,start,end,customerId,
-                        Main.currentUser.getUserID(),contactId)
+                new Appointment(nextID,title,description,location,type,start,end, customer.getId(),
+                        Main.currentUser.getUserID(),contact.getID())
         );
 
     }
 
     public boolean update(String title, String description, String location, String type,
-                          ZonedDateTime start, ZonedDateTime end, int customerId,
-                          int userId, int contactId) {
+                          ZonedDateTime start, ZonedDateTime end, Customer customer,
+                          User user, Contact contact) {
         this.title = title;
         this.description = description;
         this.location = location;
         this.type = type;
         this.start = start;
         this.end = end;
-        this.customerID = customerId;
-        this.userID = userId;
-        this.contactID = contactId;
+        this.customerID = customer.getId();
+        this.userID = user.getUserID();
+        this.contactID = contact.getID();
         return true;
     }
 

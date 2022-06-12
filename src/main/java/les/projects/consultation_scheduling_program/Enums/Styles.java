@@ -22,4 +22,28 @@ public class Styles {
     public static final Font DefaultFont16 = new Font("Segoe UI", 16);
     public static final InnerShadow ButtonInnerShadow = new InnerShadow(3,3,3, Styles.TextColor);
     public static final Insets Padding30px = new Insets(30);
+    public static final String StyleTextField =
+            "-fx-border-style: solid;" +
+            "-fx-border-width: 1px;" +
+            "-fx-border-color: black;" +
+            "-fx-font-family: 'Segoe UI';" +
+            "-fx-font-size: 14;" +
+            "-fx-padding: 2px;" +
+            "-fx-min-height: 30px;";
+    public static final String StyleTextFieldRequired = StyleTextField + "-fx-prompt-text-fill: rgb(255,0,0);";
+    public static final String StyleComboBox =
+            "-fx-border-style: solid;" +
+            "-fx-border-width: 1px;" +
+            "-fx-border-color: black;" +
+            "-fx-font-family: 'Segoe UI';" +
+            "-fx-font-size: 14;" +
+            "-fx-combo-box-background-color: white;" +
+            "-fx-min-height: 30px;";
+    public static final String StyleComboBoxRequired = StyleComboBox + "-fx-prompt-text-fill: rgb(255,0,0);";
+    public static final String StyleTextArea =
+            "-fx-border-style: solid;" +
+            "-fx-border-width: 1px;" +
+            "-fx-border-color: black;" +
+            "-fx-font-family: 'Segoe UI';" +
+            "-fx-font-size: 14;";
 }

@@ -14,7 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.WindowEvent;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
-import les.projects.consultation_scheduling_program.DataClasses.FirstLevelDivision;
+import les.projects.consultation_scheduling_program.DataClasses.Division;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Main;
 
@@ -26,7 +26,7 @@ public class AddUpdateCustomer extends DialogBase {
     private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"), true, false);
     private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"), true, false);
     private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"), true, false);
-    private final ComboBoxBorderPane division = new ComboBoxBorderPane(lrb.getString("division"), FirstLevelDivision.getAllDivisions(), true);
+    private final ComboBox_Division division = new ComboBox_Division(lrb.getString("division"), Division.getAllDivisions(), true);
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"), true, false);
 
     public AddUpdateCustomer() {
@@ -46,7 +46,7 @@ public class AddUpdateCustomer extends DialogBase {
         this.address.setInitialValue(this.currentCustomer.getAddress());
         this.zip.setInitialValue(this.currentCustomer.getPostalCode());
         this.phone.setInitialValue(this.currentCustomer.getPhone());
-        this.division.setInitialValue(FirstLevelDivision.getObjById(this.currentCustomer.getDivisionID()));
+        this.division.setInitialValue(Division.getObjById(this.currentCustomer.getDivisionID()));
     }
 
     private void build() {

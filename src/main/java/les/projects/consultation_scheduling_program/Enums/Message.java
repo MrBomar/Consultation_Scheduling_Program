@@ -35,6 +35,11 @@ public enum Message {
             mrb.getString("hours_violation_title"),
             mrb.getString("hours_violation_message")
     ),
+    InvalidInput(
+            "Invalid Input",
+            "This for contains invalid information or there are required fields that have not been filled." +
+                    "Please verify the data entered."
+    ),
     LoginFail (
             mrb.getString("login_failed_title"),
             mrb.getString("login_failed_message")
@@ -67,6 +72,10 @@ public enum Message {
             mrb.getString("no_selected_customer_title"),
             mrb.getString("no_selected_customer_message")
     ),
+    NothingChanged(
+            "Nothing Changes",
+            "You haven't made any changes to the data, so nothing needs to be saved."
+    ),
     NoUpcomingAppointment(
             mrb.getString("no_upcoming_appointment_title"),
             mrb.getString("no_upcoming_appointment_message")
@@ -79,6 +88,10 @@ public enum Message {
             mrb.getString("prog_error_missing_class_title"),
             mrb.getString("prog_error_missing_class_message")
     ),
+    RecordSaved(
+            "Record Saved",
+            "Your changes have been saved."
+    )
     ;
 
     public final String title, message;

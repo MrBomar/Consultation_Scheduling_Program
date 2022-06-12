@@ -11,6 +11,7 @@ import les.projects.consultation_scheduling_program.DataClasses.Appointment;
 import les.projects.consultation_scheduling_program.DataClasses.Contact;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Main;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
@@ -23,18 +24,15 @@ public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment;
 
     //Fields
-    private final ComboBoxBorderPane contact = new ComboBoxBorderPane(lrb.getString("contact"), Contact.getAllContacts(), true);
-    private final ComboBoxBorderPane customer = new ComboBoxBorderPane(lrb.getString("customer"), Customer.getAllCustomers(), true);
+    private final ComboBox_Contact contact = new ComboBox_Contact(lrb.getString("contact"), Contact.getAllContacts(), true);
+    private final ComboBox_Customer customer = new ComboBox_Customer(lrb.getString("customer"), Customer.getAllCustomers(), true);
     private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("description"));
-    private final DateTimePickerLabeled end = new DateTimePickerLabeled(lrb.getString("end_date_and_time"));
+    private final DateTimePicker end = new DateTimePicker("End");
     private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), false, true);
     private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("location"), true, false);
-    private final DateTimePickerLabeled start = new DateTimePickerLabeled(lrb.getString("start_date_and_time"));
+    private final DateTimePicker start = new DateTimePicker("Start");
     private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("title"), true, false);
     private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"), false, false);
-
-    //Properties
-    private boolean changed = false;
 
     /**
      * <p>Method instantiates a dialog without any appointment record. Used for new appointment records.</p>
@@ -92,35 +90,127 @@ public class AddUpdateAppointment extends DialogBase {
 
     private final EventHandler<MouseEvent> cancelClick = event -> this.confirmCancel(event);
 
+    /**
+     * This event handler saves the data from the form into the Appointment object.
+     * The Appointment object will handle the database updates.
+     */
     private final EventHandler<MouseEvent> saveClick = event -> {
         //Before attempting to save data we must make sure that changes have been made to the data.
-
-        try {
-            if (currentAppointment == null) {
-                Appointment.add(this.title.getInput(), this.description.getInput(),this.location.getInput(),
-                        this.type.getInput(), this.start.getInput(), this.end.getInput(), this.customer.getID(),
-                        this.contact.getID());
+        if(this.changesHaveBeenMade()) {
+            //We also need to verify that no required fields are blank.
+            if(this.requiredFieldsFilled()) {
+                if (currentAppointment == null) {
+                    //There is no current appointment, so we need to add a new one.
+                    Appointment.add(
+                            this.title.getInput(),
+                            this.description.getInput(),
+                            this.location.getInput(),
+                            this.type.getInput(),
+                            this.start.getEntry(),
+                            this.end.getEntry(),
+                            this.customer.getSelectedItem(),
+                            this.contact.getSelectedItem()
+                    );
+                } else {
+                    //We have an appointment to update.
+                    this.currentAppointment.update(
+                            this.title.getInput(),
+                            this.description.getInput(),
+                            this.location.getInput(),
+                            this.type.getInput(),
+                            this.start.getEntry(),
+                            this.end.getEntry(),
+                            this.customer.getSelectedItem(),
+                            Main.currentUser,
+                            this.contact.getSelectedItem()
+                    );
+                }
+                DialogMessage dialog = new DialogMessage(Message.RecordSaved);
+                dialog.showAndWait();
+                this.close();
+            } else {
+                //We have fields that require filling out.
+                DialogMessage dialog = new DialogMessage(Message.InvalidInput);
+                dialog.showAndWait();
             }
-        } catch (Exception e) {
-            //FIXME - Need to create this message in french and english.
-            DialogMessage dialog = new DialogMessage("Error", "Something went wrong.");
+        } else {
+            //No changes were detects
+            DialogMessage dialog = new DialogMessage(Message.NothingChanged);
             dialog.showAndWait();
-            System.out.print(e.getStackTrace());
         }
     };
 
     /**
      * This method launches a new dialog confirming the user wants to drop changes and close the appointment dialog.
-     * @param event
+     * @param event The event is only used as a trigger.
      */
     private void confirmCancel(Event event) {
-        DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmDropChanges);
-        dialog.showAndWait();
-
-        if(dialog.getResult()) {
-            this.close();
+        if(this.changesHaveBeenMade()) {
+            DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmDropChanges);
+            dialog.showAndWait();
+            if(dialog.getResult()) {
+                this.close();
+            } else {
+                event.consume();
+            }
         } else {
-            event.consume();
+            this.close();
+        }
+    }
+
+    /**
+     * This method checks all input elements on the form to see if their data changed from their initial state.
+     * @return Returns true if any of the data have been changed from initial state.
+     */
+    private boolean changesHaveBeenMade() {
+        if(contact.isChanged()) return true;
+        if(customer.isChanged()) return true;
+        if(description.isChanged()) return true;
+        if(end.validEntry()) return true;
+        if(location.isChanged()) return true;
+        if(start.validEntry()) return true;
+        if(title.isChanged()) return true;
+        if(type.isChanged()) return true;
+        return false;
+    }
+
+    /**
+     * This method checks all input elements to ensure that they have valid data.
+     * @return Returns true if all input elements contain valid data.
+     */
+    private boolean requiredFieldsFilled() {
+        if(!contact.itemIsSelected()) {
+            //Contact is not selected
+            DialogMessage dialog = new DialogMessage("Invalid Input", "No contact is selected. Please select a contact before saving.");
+            dialog.showAndWait();
+            return false;
+        } else if (!customer.itemIsSelected()) {
+            //Customer is not selected
+            DialogMessage dialog = new DialogMessage("Invalid Input", "No customer is selected. Please select a customer before saving.");
+            dialog.showAndWait();
+            return false;
+        } else if (!end.validEntry()) {
+            //End time is not valid
+            DialogMessage dialog = new DialogMessage("Invalid Input", "The 'End' time and date specified is invalid. Please review your entry.");
+            dialog.showAndWait();
+            return false;
+        } else if (!location.isNotBlank()) {
+            //Location is blank
+            DialogMessage dialog = new DialogMessage("Invalid Input", "You must type a location, any location will do.");
+            dialog.showAndWait();
+            return false;
+        } else if (!start.validEntry()) {
+            //Start time is not valid
+            DialogMessage dialog = new DialogMessage("Invalid Input", "The 'Start' time and date specified is invalid. Please review your entry.");
+            dialog.showAndWait();
+            return false;
+        } else if (!title.isNotBlank()) {
+            //Title is blank
+            DialogMessage dialog = new DialogMessage("Invalid Input", "You must type a title, any title will do.");
+            dialog.showAndWait();
+            return false;
+        } else {
+            return true;
         }
     }
 }

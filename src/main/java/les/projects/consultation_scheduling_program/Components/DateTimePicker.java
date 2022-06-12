@@ -66,7 +66,8 @@ public class DateTimePicker extends BorderPane {
         }
 
         try {
-            this.lt = LocalTime.of(this.hourPicker.getSelectionModel().getSelectedItem().number, this.minutePicker.getSelectionModel().getSelectedItem().number);
+            int h = (this.meridiemPicker.getValue().equals(Meridiem.PM) && this.hourPicker.getValue().number < 12)? this.hourPicker.getValue().number + 12: this.hourPicker.getValue().number;
+            this.lt = LocalTime.of(h, this.minutePicker.getValue().number);
         } catch (Exception e) {
             return false;
         }
@@ -95,5 +96,19 @@ public class DateTimePicker extends BorderPane {
         this.minutePicker.setValue(this.minutePicker.getItems().stream().filter(m -> m.number == this.initialValue.getMinute()).findFirst().get());
         Meridiem meridiem = (hour1 > 11) ? Meridiem.PM : Meridiem.AM;
         this.meridiemPicker.setValue(meridiem);
+    }
+
+    public boolean isChanged() {
+        if(this.validEntry()) {
+            if(getEntry().getMonth() == this.initialValue.getMonth() &&
+            getEntry().getDayOfMonth() == this.initialValue.getDayOfMonth() &&
+            getEntry().getYear() == this.initialValue.getYear() &&
+            getEntry().getHour() == this.initialValue.getHour() &&
+            getEntry().getMinute() == this.initialValue.getMinute())
+            return false;
+        } else {
+            return true;
+        }
+        return true;
     }
 }

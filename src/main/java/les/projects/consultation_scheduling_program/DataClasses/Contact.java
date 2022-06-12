@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 public class Contact {
     private int contactId;
     private String contactName, email;
-    private static ObservableList<Contact> allContacts;
+    public static ObservableList<Contact> allContacts;
 
     public Contact(int contactId, String contactName, String email) {
         this.contactId = contactId;
@@ -33,10 +33,6 @@ public class Contact {
     public boolean delete() {
         //FIXME - Send delete request and return status
         return true;
-    }
-
-    public static ObservableList<Contact> getAllContacts() {
-        return allContacts;
     }
 
     public static void loadData() {

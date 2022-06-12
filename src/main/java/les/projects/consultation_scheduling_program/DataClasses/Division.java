@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -13,7 +12,7 @@ public class Division {
     private int divisionId;
     private String divisionName;
     private int countryId;
-    private static ObservableList<Division> allDivisions;
+    public static ObservableList<Division> allDivisions;
 
     public Division(int divisionId, String divisionName, int countryId) {
         this.divisionId = divisionId;
@@ -45,7 +44,8 @@ public class Division {
 
     public ObservableList<Customer> getCustomers() {
         //FIXME - Should filter all customers for instances related to this object.
-        return Customer.getAllCustomers();
+        Customer[] filteredCustomers = Customer.allCustomers.stream().filter(c -> c.getDivisionID() == this.divisionId).toArray(Customer[]::new);
+        return FXCollections.observableArrayList(filteredCustomers);
     }
 
     public int getID() {
@@ -85,5 +85,9 @@ public class Division {
             dialog.showAndWait();
             return allDivisions.stream().findFirst().get();
         }
+    }
+
+    public int getCountryId() {
+        return this.countryId;
     }
 }

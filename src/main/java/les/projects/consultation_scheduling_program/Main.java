@@ -56,7 +56,7 @@ public class Main extends Application {
         Appointment.loadData();
         Contact.loadData();
         Country.loadData();
-        Customer.loadData();
         Division.loadData();
+        Customer.loadData();
     }
 }

@@ -33,7 +33,7 @@ public class ComboBox_Division extends BorderPane {
 
     private void format(ObservableList<Division> list, boolean padding) {
         this.comboBox.setItems(list);
-        this.comboBox.setEditable(true);
+        this.comboBox.setEditable(false);
         this.comboBox.setBorder(Styles.ButtonBorder);
         this.comboBox.setMaxWidth(200);
         this.comboBox.setStyle(Styles.StyleComboBoxRequired);
@@ -42,11 +42,10 @@ public class ComboBox_Division extends BorderPane {
 
         //Listeners
         this.comboBox.focusedProperty().addListener((x,y,z) -> {
-            if((this.initValue != null) && (z != null)){
-                if(!this.initValue.equals(z)) this.changed = true;
-            } else if (this.initValue == null && z != null) {
+            Division selectedDivision = this.comboBox.getValue();
+            if(initValue == null & selectedDivision != null) {
                 this.changed = true;
-            } else if (this.initValue != null && z == null) {
+            } else if(!initValue.equals(selectedDivision)) {
                 this.changed = true;
             }
         });

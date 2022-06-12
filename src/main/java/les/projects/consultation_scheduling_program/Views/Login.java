@@ -8,8 +8,8 @@ import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.User;
 import les.projects.consultation_scheduling_program.Enums.Message;
-import les.projects.consultation_scheduling_program.ExternalData.DTC;
-import les.projects.consultation_scheduling_program.ExternalData.LoginActivity;
+import les.projects.consultation_scheduling_program.Helpers.DTC;
+import les.projects.consultation_scheduling_program.Helpers.LoginActivity;
 import les.projects.consultation_scheduling_program.Main;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;

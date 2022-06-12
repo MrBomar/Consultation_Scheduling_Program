@@ -12,7 +12,7 @@ import les.projects.consultation_scheduling_program.Main;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class ReportsTab3 extends VBox {
-    private ComboBox_Contact selectContact = new ComboBox_Contact(Contact.getAllContacts(), false);
+    private ComboBox_Contact selectContact = new ComboBox_Contact(Contact.allContacts, false);
     private TableView appointments = new TableView();
 
     public ReportsTab3() {

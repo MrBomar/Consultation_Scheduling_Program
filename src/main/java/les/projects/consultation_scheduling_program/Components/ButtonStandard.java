@@ -1,8 +1,6 @@
 package les.projects.consultation_scheduling_program.Components;
 
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
@@ -18,18 +16,10 @@ public class ButtonStandard extends Button {
     }
 
     private void addMouseEffects() {
-        this.setOnMousePressed((EventHandler<? super MouseEvent>) (event)->{
-            this.setEffect(Styles.ButtonInnerShadow);
-        });
-        this.setOnMouseReleased((EventHandler<? super MouseEvent>) (event)->{
-            this.setEffect(null);
-        });
-        this.setOnMouseEntered((EventHandler<? super MouseEvent>) (event)->{
-            this.setBackground(Styles.BackgroundButtonHover);
-        });
-        this.setOnMouseExited((EventHandler<? super MouseEvent>) (event)->{
-            this.setBackground(Styles.BackgroundWhite);
-        });
+        this.setOnMousePressed((event) -> this.setEffect(Styles.ButtonInnerShadow));
+        this.setOnMouseReleased((event)-> this.setEffect(null));
+        this.setOnMouseEntered((event) -> this.setBackground(Styles.BackgroundButtonHover));
+        this.setOnMouseExited((event) -> this.setBackground(Styles.BackgroundWhite));
     }
 
     private void styleIt(String s) {

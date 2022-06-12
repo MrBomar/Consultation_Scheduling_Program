@@ -3,7 +3,10 @@ package les.projects.consultation_scheduling_program.DataClasses;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Main;
-import java.time.ZonedDateTime;
+
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,7 +22,7 @@ public class Appointment extends Object {
     private String location;
     private String type;
     private ZonedDateTime start, end;
-    private static ObservableList<Appointment> allAppointments;
+    public static ObservableList<Appointment> allAppointments;
 
     public Appointment(int id, String title, String description, String location,
                        String type, ZonedDateTime start, ZonedDateTime end, int customerId,
@@ -85,16 +88,16 @@ public class Appointment extends Object {
     public static void loadData() {
         //FIXME - Need to load from Database
         Appointment[] appointments = new Appointment[] {
-            new Appointment(0,"Appointment1","Description1", "Location1","Type1", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(1,"Appointment2","Description2", "Location2","Type2", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(2,"Appointment3","Description3", "Location3","Type3", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(3,"Appointment4","Description4", "Location4","Type4", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(4,"Appointment5","Description5", "Location5","Type5", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(5,"Appointment6","Description6", "Location6","Type6", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(6,"Appointment7","Description7", "Location7","Type7", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(7,"Appointment8","Description8", "Location8","Type8", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(8,"Appointment9","Description9", "Location9","Type9", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1),
-            new Appointment(9,"Appointment10","Description10", "Location10","Type10", ZonedDateTime.now(), ZonedDateTime.now(), 1,1,1)
+            new Appointment(0,"Appointment1","Description1", "Location1","Type1", ZonedDateTime.of(LocalDate.of(2022,01,01), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(1,"Appointment2","Description2", "Location2","Type2", ZonedDateTime.of(LocalDate.of(2022,02,01), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(2,"Appointment3","Description3", "Location3","Type3", ZonedDateTime.of(LocalDate.of(2022,03,01), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(3,"Appointment4","Description4", "Location4","Type4", ZonedDateTime.of(LocalDate.of(2022,04,01), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(4,"Appointment5","Description5", "Location5","Type5", ZonedDateTime.of(LocalDate.of(2022,05,01), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(5,"Appointment6","Description6", "Location6","Type6", ZonedDateTime.of(LocalDate.of(2022,06,01), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(6,"Appointment7","Description7", "Location7","Type7", ZonedDateTime.of(LocalDate.of(2022,06,8), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(7,"Appointment8","Description8", "Location8","Type8", ZonedDateTime.of(LocalDate.of(2022,06,15), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(8,"Appointment9","Description9", "Location9","Type9", ZonedDateTime.of(LocalDate.of(2022,06,22), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1),
+            new Appointment(9,"Appointment10","Description10", "Location10","Type10", ZonedDateTime.of(LocalDate.of(2022,07,01), LocalTime.of(01,30), ZoneId.systemDefault()), ZonedDateTime.now(), 1,1,1)
         };
         allAppointments = FXCollections.observableList(new ArrayList<Appointment>(List.of(appointments)));
     }
@@ -111,5 +114,13 @@ public class Appointment extends Object {
     public final int getCustomerID() { return customerID; }
     public final int getUserID() { return userID; }
     public final int getContactID() { return contactID; }
-
+    public final String getContactName() { return Contact.getObjById(contactID).getName(); }
+    public final String getCustomerName() { return Customer.getObjById(customerID).getCustomerName(); }
+    public final String getUserName() { return User.getUserName(this.userID); }
+    public final String getStartFormatted() {
+        return this.start.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Main.locale));
+    }
+    public final String getEndFormatted() {
+        return this.end.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Main.locale));
+    }
 }

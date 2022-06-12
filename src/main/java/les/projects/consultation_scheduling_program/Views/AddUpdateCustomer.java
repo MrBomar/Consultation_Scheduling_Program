@@ -11,7 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
-import javafx.stage.WindowEvent;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
@@ -63,11 +62,13 @@ public class AddUpdateCustomer extends DialogBase {
 
         HBox bottom = new HBox();
         ButtonStandard save = new ButtonStandard(lrb.getString("save"));
+        save.setOnMouseClicked(e -> this.saveClick(e));
         Pane gap = new Pane();
         gap.setMinWidth(30);
         gap.setMaxWidth(30);
         gap.setPrefWidth(30);
         ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
+        cancel.setOnMouseClicked(e -> this.confirmCancel(e));
         bottom.getChildren().addAll(save, gap, cancel);
         bottom.setAlignment(Pos.CENTER_RIGHT);
         borderPane.setBottom(bottom);
@@ -82,22 +83,98 @@ public class AddUpdateCustomer extends DialogBase {
         this.setResizable(false);
         this.initOwner(Main.appStage);
         this.initModality(Modality.APPLICATION_MODAL);
-        this.setOnCloseRequest(confirmCancel);
+        this.setOnCloseRequest(e -> this.confirmCancel(e));
     }
 
-    private EventHandler<WindowEvent> confirmCancel = event -> {
-        this.confirmCancel(event);
-    };
+    private void saveClick(Event e) {
+        if(this.changesHaveBeenMade()) {
+            if(this.requiredFieldsFilled()) {
+                if(currentCustomer == null) {
+                    //Add new Customer
+                    Customer.add(
+                            this.name.getInput(),
+                            this.address.getInput(),
+                            this.zip.getInput(),
+                            this.phone.getInput(),
+                            this.division.getSelectedItem()
+                    );
+                } else {
+                    this.currentCustomer.update(
+                            this.name.getInput(),
+                            this.address.getInput(),
+                            this.zip.getInput(),
+                            this.phone.getInput(),
+                            this.division.getSelectedItem()
+                    );
+                }
+                DialogMessage dialog = new DialogMessage(Message.RecordSaved);
+                dialog.showAndWait();
+                this.close();
+            } else {
+                //We have fields that require filling out.
+                DialogMessage dialog = new DialogMessage(Message.InvalidInput);
+                dialog.showAndWait();
+            }
+        } else {
+            //No changes were detects
+            DialogMessage dialog = new DialogMessage(Message.NothingChanged);
+            dialog.showAndWait();
+        }
+    }
 
     private void confirmCancel(Event event) {
-        DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmDropChanges);
-        dialog.showAndWait();
+        if(this.changesHaveBeenMade()) {
+            DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmDropChanges);
+            dialog.showAndWait();
 
-        if(dialog.getResult() == true) {
-            this.close();
+            if (dialog.getResult() == true) {
+                this.close();
+            } else {
+                event.consume();
+                //FIXME - Insert logic to save changes to the database
+            }
         } else {
-            event.consume();
-            //FIXME - Insert logic to save changes to the database
+            this.close();
+        }
+    }
+
+    private boolean changesHaveBeenMade() {
+        if(this.name.isChanged() || this.address.isChanged() || this.zip.isChanged() || this.phone.isChanged() ||
+        this.division.isChanged()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean requiredFieldsFilled() {
+        if(!this.name.isNotBlank()) {
+            //Name is blank
+            DialogMessage dialog = new DialogMessage("Invalid Input", "Customer name cannot be blank.");
+            dialog.showAndWait();
+            return false;
+        } else if (!this.address.isNotBlank()) {
+            //Address is blank
+            DialogMessage dialog = new DialogMessage("Invalid Input", "Address cannot be blank.");
+            dialog.showAndWait();
+            return false;
+        } else if (!this.zip.isNotBlank()) {
+            //Zip is blank
+            DialogMessage dialog = new DialogMessage("Invalid Input", "Zip Code cannot be blank.");
+            dialog.showAndWait();
+            return false;
+        } else if (!this.phone.isNotBlank()) {
+            //Phone is blank
+            DialogMessage dialog = new DialogMessage("Invalid Input", "Phone number cannot be blank.");
+            dialog.showAndWait();
+            return false;
+        } else if (!this.division.itemIsSelected()) {
+            //Division is not selected
+            DialogMessage dialog = new DialogMessage("Invalid Input", "No division is selected. Please select a division.");
+            dialog.showAndWait();
+            return false;
+        } else {
+            return true;
         }
     }
 }

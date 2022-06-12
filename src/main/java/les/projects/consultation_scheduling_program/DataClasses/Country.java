@@ -9,7 +9,7 @@ import java.util.List;
 public class Country {
     private int countryId;
     private String countryName;
-    private static ObservableList<Country> allCountries;
+    public static ObservableList<Country> allCountries;
 
     public Country(int countryId, String countryName) {
         this.countryId = countryId;
@@ -38,16 +38,10 @@ public class Country {
         return true;
     }
 
-    public Division[] getDivisions() {
+    public ObservableList<Division> getDivisions() {
         //FIXME - Need to return the values present in the database.
-        Division[] divisionData = new Division[2];
-        divisionData[0] = new Division(1,"Lestertown", 1);
-        divisionData[1] = new Division(2, "Lestervinia", 2);
-        return divisionData;
-    }
-
-    public static ObservableList<Country> getAllCountries() {
-        return allCountries;
+        Division[] filteredDivisions = Division.allDivisions.stream().filter(i -> i.getCountryId() == this.countryId).toArray(Division[]::new);
+        return FXCollections.observableArrayList(filteredDivisions);
     }
 
     public static void loadData() {

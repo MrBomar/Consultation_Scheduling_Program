@@ -1,11 +1,8 @@
 package les.projects.consultation_scheduling_program.Views;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.WindowEvent;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
 import les.projects.consultation_scheduling_program.DataClasses.Contact;
@@ -24,8 +21,8 @@ public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment;
 
     //Fields
-    private final ComboBox_Contact contact = new ComboBox_Contact(lrb.getString("contact"), Contact.getAllContacts(), true);
-    private final ComboBox_Customer customer = new ComboBox_Customer(lrb.getString("customer"), Customer.getAllCustomers(), true);
+    private final ComboBox_Contact contact = new ComboBox_Contact(lrb.getString("contact"), Contact.allContacts, true);
+    private final ComboBox_Customer customer = new ComboBox_Customer(lrb.getString("customer"), " ", true);
     private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("description"));
     private final DateTimePicker end = new DateTimePicker("End");
     private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), false, true);
@@ -75,26 +72,21 @@ public class AddUpdateAppointment extends DialogBase {
 
         //Add Buttons
         ButtonStandard save = new ButtonStandard(lrb.getString("save"));
-        //Used Lambda Here
-        save.setOnMouseClicked(saveClick);
+        save.setOnMouseClicked(e -> this.saveClick(e));
         ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
-        //Used Lambda Here
-        cancel.setOnMouseClicked(cancelClick);
+        cancel.setOnMouseClicked(e -> this.confirmCancel(e));
         this.bottom.getChildren().addAll(save, new ButtonGap(), cancel);
+
         this.customer.setComboBoxWidth(200);
         this.contact.setComboBoxWidth(200);
-        this.setOnCloseRequest(confirmCancel);
+        this.setOnCloseRequest(e -> this.confirmCancel(e));
     }
-
-    private final EventHandler<WindowEvent> confirmCancel = event -> this.confirmCancel(event);
-
-    private final EventHandler<MouseEvent> cancelClick = event -> this.confirmCancel(event);
 
     /**
      * This event handler saves the data from the form into the Appointment object.
      * The Appointment object will handle the database updates.
      */
-    private final EventHandler<MouseEvent> saveClick = event -> {
+    private void saveClick(Event e) {
         //Before attempting to save data we must make sure that changes have been made to the data.
         if(this.changesHaveBeenMade()) {
             //We also need to verify that no required fields are blank.
@@ -163,15 +155,12 @@ public class AddUpdateAppointment extends DialogBase {
      * @return Returns true if any of the data have been changed from initial state.
      */
     private boolean changesHaveBeenMade() {
-        if(contact.isChanged()) return true;
-        if(customer.isChanged()) return true;
-        if(description.isChanged()) return true;
-        if(end.validEntry()) return true;
-        if(location.isChanged()) return true;
-        if(start.validEntry()) return true;
-        if(title.isChanged()) return true;
-        if(type.isChanged()) return true;
-        return false;
+        if(contact.isChanged() || customer.isChanged() || description.isChanged() || end.isChanged() ||
+                location.isChanged() || start.isChanged() || title.isChanged() || type.isChanged()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

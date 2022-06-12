@@ -1,6 +1,5 @@
 package les.projects.consultation_scheduling_program.Components;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -10,29 +9,19 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 
 public class ComboBox_Customer extends BorderPane {
     private Label label;
-    private ComboBox<Customer> comboBox = new ComboBox<Customer>();
-    private Object initValue;
+    private final ComboBox<Customer> comboBox = new ComboBox<Customer>(Customer.allCustomers);
+    private Customer initValue;
     private boolean changed = false;
 
-    public ComboBox_Customer(ObservableList<Customer> list, boolean padding) {
-        this.format(list, padding);
-    }
+    public ComboBox_Customer(String labelText, String promptText, boolean padding) {
+        if(labelText != ""){
+            this.label = new Label(labelText);
+            this.label.setFont(Styles.DefaultFont18);
+            this.setLeft(this.label);
+        }
+        if(promptText != "") { this.comboBox.setPromptText(promptText); }
 
-    public ComboBox_Customer(String label, ObservableList<Customer> list, boolean padding) {
-        this.label = new Label(label);
-        this.label.setFont(Styles.DefaultFont18);
-        this.setLeft(this.label);
-        this.format(list, padding);
-    }
-
-    public ComboBox_Customer(ObservableList<Customer> list, String placeholder, boolean padding) {
-        this.comboBox.setPromptText(placeholder);
-        this.format(list, padding);
-    }
-
-    private void format(ObservableList<Customer> list, boolean padding) {
-        this.comboBox.setItems(list);
-        this.comboBox.setEditable(true);
+        this.comboBox.setEditable(false);
         this.comboBox.setBorder(Styles.ButtonBorder);
         this.comboBox.setMaxWidth(200);
         this.comboBox.setStyle(Styles.StyleComboBoxRequired);
@@ -41,11 +30,10 @@ public class ComboBox_Customer extends BorderPane {
 
         //Listeners
         this.comboBox.focusedProperty().addListener((x,y,z) -> {
-            if((this.initValue != null) && (z != null)){
-                if(!this.initValue.equals(z)) this.changed = true;
-            } else if (this.initValue == null && z != null) {
+            Customer selectedCustomer = this.comboBox.getValue();
+            if(initValue == null & selectedCustomer != null) {
                 this.changed = true;
-            } else if (this.initValue != null && z == null) {
+            } else if(!initValue.equals(selectedCustomer)) {
                 this.changed = true;
             }
         });
@@ -63,18 +51,17 @@ public class ComboBox_Customer extends BorderPane {
         this.comboBox.setPrefWidth(i);
     }
 
-    public boolean itemIsSelected() {
-        return !this.comboBox.getSelectionModel().isEmpty();
-    }
+    public boolean itemIsSelected() { return this.comboBox.getValue() != null; }
 
     public Customer getSelectedItem() {
-        return this.comboBox.getSelectionModel().getSelectedItem();
+        int id = this.comboBox.getSelectionModel().getSelectedItem().getId();
+        return Customer.getObjById(id);
     }
 
     /**
      * This method takes in an object and sets it as the initial value and sets the current value of the
      * combo box to the object.
-     * @param obj
+     * @param obj Pass in a Customer object to pre-select/
      */
     public void setInitialValue(Customer obj) {
         this.initValue = obj;

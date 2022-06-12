@@ -1,13 +1,11 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
-import les.projects.consultation_scheduling_program.Main;
-
 import java.util.*;
 
 public class User {
     private int userID;
     private String userName, userPassword;
-    private static List<User> allUsers = new ArrayList<User>();
+    private static List<User> allUsers = new ArrayList<>();
 
     public User(int id, String name, String password) {
         this.userID = id;
@@ -16,7 +14,7 @@ public class User {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return this.userName;
     }
 
@@ -28,32 +26,22 @@ public class User {
         ));
     }
 
-    public int getUserID() {
+    public final int getUserID() {
         return this.userID;
     }
 
-    public String getUserName() {
+    public final String getUserName() {
         return this.userName;
     }
 
-    public String getUserPassword() {
-        return this.userPassword;
-    }
+    public final static String getUserName(int id) { return allUsers.stream().filter(i -> i.userID == id).findFirst().get().userName; }
 
-    public static User[] getAllUsers() {
-        return allUsers.toArray(new User[allUsers.size()]);
-    }
-
-    public static Boolean verifyUser(String userName, String password) {
+    public static Boolean verifyUser(String userName, String inputPassword) {
         //Determine if the userName exists
         Boolean anyMatch = allUsers.stream().anyMatch(i -> i.getUserName().equals(userName));
         if(anyMatch) {
-            for(User user: allUsers) {
-                if(user.getUserName().equals(userName) && user.getUserPassword().equals(password)) {
-                    Main.currentUser = user;
-                    return true;
-                }
-            }
+            String objPassword = allUsers.stream().filter(i -> i.userName.equals(userName)).findFirst().get().userPassword;
+            if(inputPassword.equals(objPassword)) return true;
         }
         return false;
     }

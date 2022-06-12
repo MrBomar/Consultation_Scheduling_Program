@@ -1,5 +1,9 @@
 package les.projects.consultation_scheduling_program.Views;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -7,8 +11,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
-import les.projects.consultation_scheduling_program.Components.ComboBox_Country;
-import les.projects.consultation_scheduling_program.Components.ComboBox_Division;
 import les.projects.consultation_scheduling_program.DataClasses.Country;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
@@ -17,8 +19,8 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class CustomersView extends BorderPane {
-    private final ComboBox_Country countryDropdown = new ComboBox_Country(Country.getAllCountries(), false);
-    private final ComboBox_Division divisionDropdown = new ComboBox_Division(Division.getAllDivisions(), false);
+    private final ComboBox<Country> countryComboBox = new ComboBox<>(Country.allCountries);
+    private final ComboBox<Division> divisionComboBox = new ComboBox<>(Division.allDivisions);
     private final RadioButton countryRadio = new RadioButton(lrb.getString("country"));
     private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("all_customers"));
     private final ToggleGroup radioGroup = new ToggleGroup();
@@ -53,7 +55,7 @@ public class CustomersView extends BorderPane {
                     divisionLabel.setPadding(padding);
 
                     //Add items to dropdown group
-                    dropDownGroup.getChildren().addAll(this.countryRadio, this.countryDropdown,divisionLabel,this.divisionDropdown);
+                    dropDownGroup.getChildren().addAll(this.countryRadio, this.countryComboBox,divisionLabel,this.divisionComboBox);
 
                 //Selector group items
                 this.allCustomersRadio.setPadding(padding);
@@ -62,9 +64,47 @@ public class CustomersView extends BorderPane {
             //Add radio buttons to group
             this.countryRadio.setToggleGroup(this.radioGroup);
             this.allCustomersRadio.setToggleGroup(this.radioGroup);
+            this.allCustomersRadio.setSelected(true);
+
+            //Add listener to the ToggleGroup
+            this.radioGroup.selectedToggleProperty().addListener((a,b,newValue) -> {
+                if(newValue.equals(allCustomersRadio)) {
+                    this.selectAll();
+                } else {
+                    this.selectByCountryAndDivision();
+                }
+            });
+
+            //Add listener to ComboBox(s)
+            this.countryComboBox.valueProperty().addListener(new ChangeListener<Country>() {
+                @Override
+                public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
+                    countryRadio.setSelected(true);
+                    divisionComboBox.setItems(countryComboBox.getValue().getDivisions());
+                    selectByCountryAndDivision();
+                }
+            });
+
+            this.divisionComboBox.valueProperty().addListener(new ChangeListener<Division>() {
+                @Override
+                public void changed(ObservableValue<? extends Division> observableValue, Division division, Division t1) {
+                    countryRadio.setSelected(true);
+                    selectByCountryAndDivision();
+                }
+            });
+
+            //Let's format the ComboBox(s)
+            this.countryComboBox.setEditable(false);
+            this.countryComboBox.setBorder(Styles.ButtonBorder);
+            this.countryComboBox.setMaxWidth(200);
+            this.countryComboBox.setStyle(Styles.StyleComboBoxRequired);
+            this.divisionComboBox.setEditable(false);
+            this.divisionComboBox.setBorder(Styles.ButtonBorder);
+            this.divisionComboBox.setMaxWidth(200);
+            this.divisionComboBox.setStyle(Styles.StyleComboBoxRequired);
 
             //Add children to selector group
-            selectorGroup.getChildren().addAll(dropDownGroup,this.allCustomersRadio);
+            selectorGroup.getChildren().addAll(this.allCustomersRadio, dropDownGroup);
 
             //Add children to header
             header.getChildren().addAll(label1, selectorGroup);
@@ -122,11 +162,10 @@ public class CustomersView extends BorderPane {
             DialogMessage dialog = new DialogMessage(Message.NoSelectedCustomer);
             dialog.showAndWait();
         }
-
     }
 
     private TableView<Customer> buildCustomerTable() {
-        TableView<Customer> table = new TableView<>(Customer.getAllCustomers());
+        TableView<Customer> table = new TableView<>(Customer.allCustomers);
         TableColumn<Customer, Integer> idCol = new TableColumn<>(lrb.getString("id"));
         TableColumn<Customer, Integer> nameCol = new TableColumn<>(lrb.getString("customer_name"));
         TableColumn<Customer, Integer> addressCol = new TableColumn<>(lrb.getString("customer_address"));
@@ -139,9 +178,49 @@ public class CustomersView extends BorderPane {
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
+        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionName"));
 
         table.getColumns().addAll(idCol,nameCol,addressCol,postalCol,phoneCol,divisionCol);
         return table;
+    }
+
+    private void selectAll() {
+        this.customerTable.setItems(Customer.allCustomers);
+    }
+
+    private void selectByCountryAndDivision() {
+        if(!this.divisionComboBox.getSelectionModel().isEmpty()) {
+            //We must filter by Division.
+            //Capture the division
+            Division division = this.divisionComboBox.getValue();
+
+            //Filter Customers by the DivisionID
+            ObservableList<Customer> filteredCustomers = division.getCustomers();
+
+            //Assign filteredCustomers to customerTable
+            this.customerTable.setItems(filteredCustomers);
+        } else if(!this.countryComboBox.getSelectionModel().isEmpty()) {
+            //We must filter by Country only.
+            //First we need to identify the country.
+            Country country = countryComboBox.getValue();
+
+            //Next we filter for all Divisions related to the Country
+            ObservableList<Division> filteredDivisions = country.getDivisions();
+
+            //We create an empty list to store the matched Customers.
+            ObservableList<Customer> filteredCustomers = FXCollections.observableArrayList();
+
+            //Loop through all customers and add customers with matching divisionId to filteredCustomers.
+            for(Customer customer: Customer.allCustomers) {
+                for(Division division: filteredDivisions) {
+                    if(customer.getDivisionID() == division.getID()) filteredCustomers.add(customer);
+                }
+            }
+
+            //Set the customerTable to the filteredList
+            this.customerTable.setItems(filteredCustomers);
+        } else {
+            this.selectAll();
+        }
     }
 }

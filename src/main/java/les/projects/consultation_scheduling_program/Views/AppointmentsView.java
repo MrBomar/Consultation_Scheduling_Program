@@ -1,5 +1,9 @@
 package les.projects.consultation_scheduling_program.Views;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -8,13 +12,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
+import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
+import les.projects.consultation_scheduling_program.Helpers.WeekComparator;
+
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
+
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class AppointmentsView extends BorderPane {
-    private final TableView<Appointment> appointmentTable = new TableView<>(Appointment.getAllAppointments());
+    private final TableView<Appointment> appointmentTable = new TableView<>(Appointment.allAppointments);
 
     public AppointmentsView() {
         //Appointment header
@@ -36,6 +45,22 @@ public class AppointmentsView extends BorderPane {
             currentMonth.setToggleGroup(appointmentsSelector);
             currentWeek.setToggleGroup(appointmentsSelector);
             allAppointments.setToggleGroup(appointmentsSelector);
+            allAppointments.setSelected(true);
+
+            //Set listeners on radio buttons
+            appointmentsSelector.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+                @Override
+                public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle newVal) {
+                    RadioButton rb = (RadioButton) newVal;
+                    if(rb.equals(currentMonth)){
+                        selectCurrentMonth();
+                    } else if (rb.equals(currentWeek)) {
+                        selectCurrentWeek();
+                    } else {
+                        selectAll();
+                    }
+                }
+            });
 
             //Adjust margins
             Insets padding = new Insets(0, 20, 30,20);
@@ -49,7 +74,7 @@ public class AppointmentsView extends BorderPane {
             HBox.setHgrow(headerRegion, Priority.ALWAYS);
 
         //Add children to Appointment header
-        header.getChildren().addAll(label1,currentMonth,currentWeek,allAppointments);
+        header.getChildren().addAll(label1,allAppointments,currentMonth,currentWeek);
 
         //TableView
         this.buildTable();
@@ -106,7 +131,7 @@ public class AppointmentsView extends BorderPane {
     };
 
     private void buildTable() {
-        TableColumn<Appointment, Integer> idCol = new TableColumn<Appointment, Integer>(lrb.getString("appointment_id"));
+        TableColumn<Appointment, Integer> idCol = new TableColumn<Appointment, Integer>(lrb.getString("id"));
         TableColumn<Appointment, String> titleCol = new TableColumn<Appointment, String>(lrb.getString("title"));
         TableColumn<Appointment, String> descCol = new TableColumn<Appointment, String>(lrb.getString("description"));
         TableColumn<Appointment, String> locCol = new TableColumn<Appointment, String>(lrb.getString("location"));
@@ -117,18 +142,44 @@ public class AppointmentsView extends BorderPane {
         TableColumn<Appointment, Integer> userCol = new TableColumn<Appointment, Integer>(lrb.getString("user"));
         TableColumn<Appointment, Integer> contactCol = new TableColumn<Appointment, Integer>(lrb.getString("contact"));
 
+        class ComboCell extends ListCell<Customer> {
+
+            @Override
+            public void updateItem(Customer customer, boolean empty) {
+                super.updateItem(customer, empty);
+                setText(customer.getCustomerName());
+            }
+        }
+
         //Bind values to columns
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
-        endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
-        customerCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        userCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
-        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("startFormatted"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("endFormatted"));
+        customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        userCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
 
         this.appointmentTable.getColumns().addAll(idCol,titleCol,descCol,locCol,typeCol,startCol,endCol,customerCol,userCol,contactCol);
+    }
+
+    private void selectCurrentMonth() {
+        Appointment[] filteredAppointments = Appointment.allAppointments.stream().filter(i -> i.getStart().getMonth().equals(LocalDate.now().getMonth())).toArray(Appointment[]::new);
+        ObservableList<Appointment> observableAppointments = FXCollections.observableArrayList(filteredAppointments);
+        this.appointmentTable.setItems(observableAppointments);
+    }
+
+    private void selectCurrentWeek() {
+        Appointment[] filteredAppointments = Appointment.allAppointments.stream().filter(i ->
+            WeekComparator.isSameWeek(i.getStart(), ZonedDateTime.now())).toArray(Appointment[]::new);
+        ObservableList<Appointment> observableAppointments = FXCollections.observableArrayList(filteredAppointments);
+        this.appointmentTable.setItems(observableAppointments);
+    }
+
+    private void selectAll() {
+        this.appointmentTable.setItems(Appointment.allAppointments);
     }
 }

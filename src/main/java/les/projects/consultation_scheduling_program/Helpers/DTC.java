@@ -1,4 +1,4 @@
-package les.projects.consultation_scheduling_program.ExternalData;
+package les.projects.consultation_scheduling_program.Helpers;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

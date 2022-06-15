@@ -5,14 +5,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import les.projects.consultation_scheduling_program.Components.ComboBox_Customer;
+import les.projects.consultation_scheduling_program.Components.ComboBoxStyled;
+import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Main;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
+/**
+ * Customer Appointments by Type and Month.
+ */
 public class ReportsTab1 extends VBox {
-    private ComboBox_Customer selectContact = new ComboBox_Customer("","", false);
+    private ComboBoxStyled<Customer> selectContact = new ComboBoxStyled<Customer>(Customer.allCustomers);
     private TableView appointments = new TableView();
 
     public ReportsTab1() {
@@ -25,6 +29,7 @@ public class ReportsTab1 extends VBox {
             comboBoxLabel.setFont(Styles.DefaultFont24);
             comboBoxLabel.setPadding(new Insets(0,30,30,0));
             dropDownGroup.getChildren().addAll(comboBoxLabel, selectContact);
+            this.selectContact.setWidth(200);
 
         this.setPadding(Styles.Padding30px);
         this.getChildren().addAll(dropDownGroup, appointments);

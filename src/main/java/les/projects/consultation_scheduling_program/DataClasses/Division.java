@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Division {
-    private int divisionId;
-    private String divisionName;
-    private int countryId;
+    private final int divisionId;
+    private final String divisionName;
+    private final int countryId;
     public static ObservableList<Division> allDivisions;
 
     public Division(int divisionId, String divisionName, int countryId) {
@@ -28,18 +28,6 @@ public class Division {
     public static Division add(String divisionName, int countryId) {
         //FIXME - Should take supplied inputs, create a new division, and return the new object from the database.
         return new Division(0, "London", 2);
-    }
-
-    public boolean update(String divisionName, int countryId) {
-        //FIXME - Should send update to database and return status.
-        this.divisionName = divisionName;
-        this.countryId = countryId;
-        return true;
-    }
-
-    public boolean delete() {
-        //FIXME - Send delete request to database and return status.
-        return true;
     }
 
     public ObservableList<Customer> getCustomers() {
@@ -77,7 +65,7 @@ public class Division {
         allDivisions = FXCollections.observableList(new ArrayList<Division>(List.of(divisions)));
     }
 
-    public static Division getObjById(int id) {
+    public static Division getDivisionById(int id) {
         try {
             return allDivisions.stream().filter(d -> d.getID() == id).findFirst().get();
         } catch (NoSuchElementException e) {

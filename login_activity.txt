@@ -357,3 +357,12 @@
 | Lestervinian                          | 2022-06-12T21:42:14.099334200Z[UTC]   | true                                  |
 | Lestervinian                          | 2022-06-12T22:28:58.392076100Z[UTC]   | true                                  |
 | Lestervinian                          | 2022-06-12T22:30:28.103329500Z[UTC]   | true                                  |
+| Lestervinian                          | 2022-06-14T20:15:12.096206400Z[UTC]   | true                                  |
+| Lestervinian                          | 2022-06-14T21:58:14.643595100Z[UTC]   | true                                  |
+|                                       | 2022-06-15T21:37:55.560054800Z[UTC]   | false                                 |
+| Lestervinian                          | 2022-06-15T21:38:03.342956100Z[UTC]   | true                                  |
+| Lestervinian                          | 2022-06-15T21:39:33.800270200Z[UTC]   | true                                  |
+| Lestervinian                          | 2022-06-15T21:46:41.898634200Z[UTC]   | true                                  |
+| Lestervinian                          | 2022-06-15T21:50:28.961161100Z[UTC]   | true                                  |
+| Lestervinian                          | 2022-06-15T21:55:51.609007200Z[UTC]   | true                                  |
+| Lestervinian                          | 2022-06-15T22:16:48.818472500Z[UTC]   | true                                  |

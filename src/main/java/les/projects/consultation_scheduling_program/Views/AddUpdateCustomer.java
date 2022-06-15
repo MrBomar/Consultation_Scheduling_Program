@@ -1,17 +1,16 @@
 package les.projects.consultation_scheduling_program.Views;
 
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import les.projects.consultation_scheduling_program.Components.*;
+import les.projects.consultation_scheduling_program.DataClasses.Country;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
 import les.projects.consultation_scheduling_program.Enums.Message;
@@ -25,8 +24,9 @@ public class AddUpdateCustomer extends DialogBase {
     private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"), true, false);
     private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"), true, false);
     private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"), true, false);
-    private final ComboBox_Division division = new ComboBox_Division(lrb.getString("division"), Division.getAllDivisions(), true);
+    private final ComboBoxStyled<Division> division = new ComboBoxStyled<>(Division.allDivisions, "");
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"), true, false);
+    private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, "");
 
     public AddUpdateCustomer() {
         super(lrb.getString("add_new_customer"));
@@ -45,7 +45,9 @@ public class AddUpdateCustomer extends DialogBase {
         this.address.setInitialValue(this.currentCustomer.getAddress());
         this.zip.setInitialValue(this.currentCustomer.getPostalCode());
         this.phone.setInitialValue(this.currentCustomer.getPhone());
-        this.division.setInitialValue(Division.getObjById(this.currentCustomer.getDivisionID()));
+        Division div = Division.getDivisionById(this.currentCustomer.getDivisionID());
+        this.division.setValue(div);
+        this.country.setValue(Country.getCountryByID(div.getCountryId()));
     }
 
     private void build() {
@@ -53,37 +55,37 @@ public class AddUpdateCustomer extends DialogBase {
         Scene scene = new Scene(borderPane);
         this.setScene(scene);
 
-        this.division.setComboBoxWidth(200);
+        BorderPaneStyled countryPane = new BorderPaneStyled("Country", true);
+        countryPane.setRight(this.country);
+        BorderPaneStyled divisionPane = new BorderPaneStyled("Division", true);
+        divisionPane.setRight(this.division);
+        this.country.setWidth(200);
+        this.division.setWidth(200);
 
         VBox center = new VBox();
         center.setPadding(new Insets(30,20,30,20));
-        center.getChildren().addAll(id,name,address,zip,division,phone);
+        center.getChildren().addAll(id,name,address,zip,countryPane,divisionPane,phone);
         borderPane.setCenter(center);
 
         HBox bottom = new HBox();
         ButtonStandard save = new ButtonStandard(lrb.getString("save"));
-        save.setOnMouseClicked(e -> this.saveClick(e));
+        save.setOnMouseClicked(this::saveClick);
         Pane gap = new Pane();
         gap.setMinWidth(30);
         gap.setMaxWidth(30);
         gap.setPrefWidth(30);
         ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
-        cancel.setOnMouseClicked(e -> this.confirmCancel(e));
+        cancel.setOnMouseClicked(this::confirmCancel);
         bottom.getChildren().addAll(save, gap, cancel);
         bottom.setAlignment(Pos.CENTER_RIGHT);
         borderPane.setBottom(bottom);
         borderPane.setPadding(new Insets(20,30,30,30));
-        cancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                confirmCancel(event);
-            }
-        });
+        cancel.setOnMouseClicked(this::confirmCancel);
 
         this.setResizable(false);
         this.initOwner(Main.appStage);
         this.initModality(Modality.APPLICATION_MODAL);
-        this.setOnCloseRequest(e -> this.confirmCancel(e));
+        this.setOnCloseRequest(this::confirmCancel);
     }
 
     private void saveClick(Event e) {
@@ -96,7 +98,7 @@ public class AddUpdateCustomer extends DialogBase {
                             this.address.getInput(),
                             this.zip.getInput(),
                             this.phone.getInput(),
-                            this.division.getSelectedItem()
+                            this.division.getValue()
                     );
                 } else {
                     this.currentCustomer.update(
@@ -104,7 +106,7 @@ public class AddUpdateCustomer extends DialogBase {
                             this.address.getInput(),
                             this.zip.getInput(),
                             this.phone.getInput(),
-                            this.division.getSelectedItem()
+                            this.division.getValue()
                     );
                 }
                 DialogMessage dialog = new DialogMessage(Message.RecordSaved);
@@ -127,7 +129,7 @@ public class AddUpdateCustomer extends DialogBase {
             DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmDropChanges);
             dialog.showAndWait();
 
-            if (dialog.getResult() == true) {
+            if (dialog.getResult()) {
                 this.close();
             } else {
                 event.consume();
@@ -168,7 +170,7 @@ public class AddUpdateCustomer extends DialogBase {
             DialogMessage dialog = new DialogMessage("Invalid Input", "Phone number cannot be blank.");
             dialog.showAndWait();
             return false;
-        } else if (!this.division.itemIsSelected()) {
+        } else if (this.division.getSelectionModel().isEmpty()) {
             //Division is not selected
             DialogMessage dialog = new DialogMessage("Invalid Input", "No division is selected. Please select a division.");
             dialog.showAndWait();

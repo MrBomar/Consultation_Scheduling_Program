@@ -16,7 +16,7 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class Login extends DialogBase {
     private final TextFieldLabeledLarge userId = new TextFieldLabeledLarge(lrb.getString("user_id"), "", false);
-    private final TextFieldLabeledLarge password = new TextFieldLabeledLarge(lrb.getString("password"), "", false);
+    private final PasswordFieldLabeledLarge password = new PasswordFieldLabeledLarge(lrb.getString("password"), "", false);
     private final TextFieldLabeledLarge timeZone = new TextFieldLabeledLarge(lrb.getString("timezone"), DTC.getLocalTimeZone(), true);
 
     public Login() {

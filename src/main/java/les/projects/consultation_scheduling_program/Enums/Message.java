@@ -48,6 +48,10 @@ public enum Message {
             "No Contact Record",
             "The record for the specified customer could not be found."
     ),
+    MissingCountryRecord(
+            "No Country Record",
+            "The record for the specified country could not be found."
+    ),
     MissingCustomerRecord(
             "No Customer Record",
             "The record for the specified customer could not be found."

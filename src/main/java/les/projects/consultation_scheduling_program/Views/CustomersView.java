@@ -44,7 +44,7 @@ public class CustomersView extends BorderPane {
                 HBox dropDownGroup = new HBox();
 
                     //Dropdown group items
-                    Label divisionLabel = new Label(lrb.getString("and_first_level_division"));
+                    Label divisionLabel = new Label(lrb.getString("division"));
 
                     //Set fonts
                     this.countryRadio.setFont(Styles.DefaultFont16);

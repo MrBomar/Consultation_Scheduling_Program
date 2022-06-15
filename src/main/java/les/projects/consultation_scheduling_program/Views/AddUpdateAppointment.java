@@ -21,8 +21,8 @@ public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment;
 
     //Fields
-    private final ComboBox_Contact contact = new ComboBox_Contact(lrb.getString("contact"), Contact.allContacts, true);
-    private final ComboBox_Customer customer = new ComboBox_Customer(lrb.getString("customer"), " ", true);
+    private final ComboBoxStyled<Contact> contact = new ComboBoxStyled<>(Contact.allContacts, lrb.getString("contact"));
+    private final ComboBoxStyled<Customer> customer = new ComboBoxStyled<>(Customer.allCustomers, lrb.getString("customer"));
     private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("description"));
     private final DateTimePicker end = new DateTimePicker("End");
     private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), false, true);
@@ -65,21 +65,26 @@ public class AddUpdateAppointment extends DialogBase {
      * This method is used to format components and add them to the view.
      */
     private void build() {
+        BorderPaneStyled customerPane = new BorderPaneStyled(lrb.getString("customer"),true);
+        customerPane.setRight(this.customer);
+        BorderPaneStyled contactPane = new BorderPaneStyled(lrb.getString("contact"), true);
+        contactPane.setRight(this.contact);
+
         VBox center = new VBox();
             center.setPadding(new Insets(0,20,30,20));
-            center.getChildren().addAll(id,location,customer,contact,type,start,end,title,description);
+            center.getChildren().addAll(id,location,customerPane,contactPane,type,start,end,title,description);
             this.center.getChildren().add(center);
 
         //Add Buttons
         ButtonStandard save = new ButtonStandard(lrb.getString("save"));
-        save.setOnMouseClicked(e -> this.saveClick(e));
+        save.setOnMouseClicked(this::saveClick);
         ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
-        cancel.setOnMouseClicked(e -> this.confirmCancel(e));
+        cancel.setOnMouseClicked(this::confirmCancel);
         this.bottom.getChildren().addAll(save, new ButtonGap(), cancel);
 
-        this.customer.setComboBoxWidth(200);
-        this.contact.setComboBoxWidth(200);
-        this.setOnCloseRequest(e -> this.confirmCancel(e));
+        this.customer.setWidth(200);
+        this.contact.setWidth(200);
+        this.setOnCloseRequest(this::confirmCancel);
     }
 
     /**
@@ -100,8 +105,8 @@ public class AddUpdateAppointment extends DialogBase {
                             this.type.getInput(),
                             this.start.getEntry(),
                             this.end.getEntry(),
-                            this.customer.getSelectedItem(),
-                            this.contact.getSelectedItem()
+                            this.customer.getValue(),
+                            this.contact.getValue()
                     );
                 } else {
                     //We have an appointment to update.
@@ -112,9 +117,9 @@ public class AddUpdateAppointment extends DialogBase {
                             this.type.getInput(),
                             this.start.getEntry(),
                             this.end.getEntry(),
-                            this.customer.getSelectedItem(),
+                            this.customer.getValue(),
                             Main.currentUser,
-                            this.contact.getSelectedItem()
+                            this.contact.getValue()
                     );
                 }
                 DialogMessage dialog = new DialogMessage(Message.RecordSaved);
@@ -130,7 +135,7 @@ public class AddUpdateAppointment extends DialogBase {
             DialogMessage dialog = new DialogMessage(Message.NothingChanged);
             dialog.showAndWait();
         }
-    };
+    }
 
     /**
      * This method launches a new dialog confirming the user wants to drop changes and close the appointment dialog.
@@ -168,32 +173,32 @@ public class AddUpdateAppointment extends DialogBase {
      * @return Returns true if all input elements contain valid data.
      */
     private boolean requiredFieldsFilled() {
-        if(!contact.itemIsSelected()) {
+        if(this.contact.getSelectionModel().isEmpty()) {
             //Contact is not selected
             DialogMessage dialog = new DialogMessage("Invalid Input", "No contact is selected. Please select a contact before saving.");
             dialog.showAndWait();
             return false;
-        } else if (!customer.itemIsSelected()) {
+        } else if (this.customer.getSelectionModel().isEmpty()) {
             //Customer is not selected
             DialogMessage dialog = new DialogMessage("Invalid Input", "No customer is selected. Please select a customer before saving.");
             dialog.showAndWait();
             return false;
-        } else if (!end.validEntry()) {
+        } else if (!this.end.validEntry()) {
             //End time is not valid
             DialogMessage dialog = new DialogMessage("Invalid Input", "The 'End' time and date specified is invalid. Please review your entry.");
             dialog.showAndWait();
             return false;
-        } else if (!location.isNotBlank()) {
+        } else if (!this.location.isNotBlank()) {
             //Location is blank
             DialogMessage dialog = new DialogMessage("Invalid Input", "You must type a location, any location will do.");
             dialog.showAndWait();
             return false;
-        } else if (!start.validEntry()) {
+        } else if (!this.start.validEntry()) {
             //Start time is not valid
             DialogMessage dialog = new DialogMessage("Invalid Input", "The 'Start' time and date specified is invalid. Please review your entry.");
             dialog.showAndWait();
             return false;
-        } else if (!title.isNotBlank()) {
+        } else if (!this.title.isNotBlank()) {
             //Title is blank
             DialogMessage dialog = new DialogMessage("Invalid Input", "You must type a title, any title will do.");
             dialog.showAndWait();

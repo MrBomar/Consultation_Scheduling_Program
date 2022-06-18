@@ -73,7 +73,7 @@ public class Country {
         return this.countryName.get();
     }
 
-    public static Country getCountryByID(int id) {
+    public static Country getByID(int id) {
         try {
             return allCountries.stream().filter(d -> d.getID() == id).findFirst().get();
         } catch (NoSuchElementException e) {

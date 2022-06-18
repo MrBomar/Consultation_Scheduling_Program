@@ -1,5 +1,6 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,16 +16,18 @@ import java.util.NoSuchElementException;
 public class Customer {
     public final SimpleIntegerProperty id;
     public SimpleStringProperty customerName, address, postalCode, phone;
+    public SimpleObjectProperty<Country> country;
     public SimpleObjectProperty<Division> division;
     public static ObservableList<Customer> allCustomers;
 
-    public Customer(int id, String customerName, String address, String postalCode, String phone, Division division) {
+    public Customer(int id, String customerName, String address, String postalCode, String phone, Country country, Division division) {
         this.id = new SimpleIntegerProperty(id);
         this.customerName = new SimpleStringProperty(customerName);
         this.address = new SimpleStringProperty(address);
         this.postalCode = new SimpleStringProperty(postalCode);
         this.phone = new SimpleStringProperty(phone);
-        this.division = new SimpleObjectProperty<Division>();
+        this.country = new SimpleObjectProperty<>(country);
+        this.division = new SimpleObjectProperty<>(division);
     }
 
     @Override
@@ -32,10 +35,10 @@ public class Customer {
         return this.customerName.get();
     }
 
-    public static Customer add(String customerName, String address, String postalCode, String phone, Division division) {
+    public static Customer add(String customerName, String address, String postalCode, String phone, Country country, Division division) {
         //FIXME - Need to add to database and return the data object
         //FIXME - Make sure to capture the user when sending to the database.
-        return new Customer(1, customerName, address, postalCode, phone, division);
+        return new Customer(1, customerName, address, postalCode, phone, country, division);
     }
 
     public boolean update(String customerName, String address, String postalCode, String phone, Division division){
@@ -68,16 +71,16 @@ public class Customer {
     public static void loadData() {
         //FIXME - Need to load from Database
         Customer[] customers = new Customer[] {
-            new Customer(0,"Customer1","123 Main Street", "12345","123456789", Division.getDivisionById(1) ),
-            new Customer(1,"Customer2","123 Main Street", "12345","123456789", Division.getDivisionById(2) ),
-            new Customer(2,"Customer3","123 Main Street", "12345","123456789", Division.getDivisionById(3) ),
-            new Customer(3,"Customer4","123 Main Street", "12345","123456789", Division.getDivisionById(4) ),
-            new Customer(4,"Customer5","123 Main Street", "12345","123456789", Division.getDivisionById(5) ),
-            new Customer(5,"Customer6","123 Main Street", "12345","123456789", Division.getDivisionById(6) ),
-            new Customer(6,"Customer7","123 Main Street", "12345","123456789", Division.getDivisionById(7) ),
-            new Customer(7,"Customer8","123 Main Street", "12345","123456789", Division.getDivisionById(8) ),
-            new Customer(8,"Customer9","123 Main Street", "12345","123456789", Division.getDivisionById(9) ),
-            new Customer(9,"Customer10","123 Main Street", "12345","123456789", Division.getDivisionById(0) )
+            new Customer(0,"Customer1","123 Main Street", "12345","123456789", Country.getByID(1), Division.getDivisionById(1) ),
+            new Customer(1,"Customer2","123 Main Street", "12345","123456789", Country.getByID(1), Division.getDivisionById(2) ),
+            new Customer(2,"Customer3","123 Main Street", "12345","123456789", Country.getByID(1), Division.getDivisionById(3) ),
+            new Customer(3,"Customer4","123 Main Street", "12345","123456789", Country.getByID1), Division.getDivisionById(4) ),
+            new Customer(4,"Customer5","123 Main Street", "12345","123456789", Country.getByID1), Division.getDivisionById(5) ),
+            new Customer(5,"Customer6","123 Main Street", "12345","123456789", Country.getByID1), Division.getDivisionById(6) ),
+            new Customer(6,"Customer7","123 Main Street", "12345","123456789", Country.getByID1), Division.getDivisionById(7) ),
+            new Customer(7,"Customer8","123 Main Street", "12345","123456789", Country.getByID1), Division.getDivisionById(8) ),
+            new Customer(8,"Customer9","123 Main Street", "12345","123456789", Country.getByID1), Division.getDivisionById(9) ),
+            new Customer(9,"Customer10","123 Main Street", "12345","123456789", Country.getByI(1), Division.getDivisionById(0) )
         };
         allCustomers = FXCollections.observableList(new ArrayList<Customer>(List.of(customers)));
     }
@@ -102,4 +105,7 @@ public class Customer {
             return allCustomers.stream().findFirst().get();
         }
     }
+    public ObjectProperty<Country> countryProperty() { return this.country; }
+
+    public ObjectProperty<Division> divisionProperty() { return this.division; }
 }

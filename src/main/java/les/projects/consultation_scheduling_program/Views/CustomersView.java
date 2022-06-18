@@ -207,11 +207,11 @@ public class CustomersView extends BorderPane {
 
         //FIXME - We need to get his figured out.
         countryCol.setCellValueFactory(i -> {
-            final ObjectProperty<Country> value = ;
+            final ObjectProperty<Country> value = i.getValue().countryProperty();
             return Bindings.createObjectBinding(() -> value);
         });
         divisionCol.setCellValueFactory(i -> {
-            final Division value = Division.getDivisionById(i.getValue().getDivisionID());
+            final ObjectProperty<Division> value = i.getValue().divisionProperty();
             return Bindings.createObjectBinding(() -> value);
         });
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));

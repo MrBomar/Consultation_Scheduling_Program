@@ -1,5 +1,8 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
@@ -10,26 +13,23 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Customer {
-    private int id;
-    private int divisionId;
-    private String customerName;
-    private String address;
-    private String postalCode;
-    private String phone;
+    public final SimpleIntegerProperty id;
+    public SimpleStringProperty customerName, address, postalCode, phone;
+    public SimpleObjectProperty<Division> division;
     public static ObservableList<Customer> allCustomers;
 
     public Customer(int id, String customerName, String address, String postalCode, String phone, Division division) {
-        this.id = id;
-        this.customerName = customerName;
-        this.address = address;
-        this.postalCode = postalCode;
-        this.phone = phone;
-        this.divisionId = division.getID();
+        this.id = new SimpleIntegerProperty(id);
+        this.customerName = new SimpleStringProperty(customerName);
+        this.address = new SimpleStringProperty(address);
+        this.postalCode = new SimpleStringProperty(postalCode);
+        this.phone = new SimpleStringProperty(phone);
+        this.division = new SimpleObjectProperty<Division>();
     }
 
     @Override
     public String toString() {
-        return this.customerName;
+        return this.customerName.get();
     }
 
     public static Customer add(String customerName, String address, String postalCode, String phone, Division division) {
@@ -41,18 +41,22 @@ public class Customer {
     public boolean update(String customerName, String address, String postalCode, String phone, Division division){
         //FIXME - Need to send update to database and return the data object.
         //FIXME - Make sure to capture the user when sending to the database.
-        this.customerName = customerName;
-        this.address = address;
-        this.postalCode = postalCode;
-        this.phone = phone;
-        this.divisionId = division.getID();
+        this.customerName.set(customerName);
+        this.address.set(address);
+        this.postalCode.set(postalCode);
+        this.phone.set(phone);
+        this.division.set(division);
         return true;
     }
 
-    public boolean delete() {
+    public final void delete() {
         //FIXME - Send delete request to server and return confirmation
-        //This method needs to delete all customer appointments before deleting the customer record.
-        return true;
+        try {
+            allCustomers.remove(this);
+        } catch (NullPointerException e) {
+            DialogMessage dialog = new DialogMessage("Can't Delete", "Something went wrong and this customer cannot be deleted.");
+            dialog.showAndWait();
+        }
     }
 
     public ObservableList<Appointment> getAppointments() {
@@ -78,18 +82,18 @@ public class Customer {
         allCustomers = FXCollections.observableList(new ArrayList<Customer>(List.of(customers)));
     }
 
-    public int getId() { return this.id; }
-    public String getIDString() { return "" + this.id; }
+    public int getId() { return this.id.get(); }
+    public String getIDString() { return "" + this.id.get(); }
     public String getCustomerName() {
-        return this.customerName;
+        return this.customerName.get();
     }
-    public String getAddress() { return this.address; }
-    public String getPostalCode() { return this.postalCode; }
-    public String getPhone() { return this.phone; }
-    public int getDivisionID() { return this.divisionId; }
-    public String getDivisionName() { return Division.getDivisionById(this.divisionId).getName(); }
+    public String getAddress() { return this.address.get(); }
+    public String getPostalCode() { return this.postalCode.get(); }
+    public String getPhone() { return this.phone.get(); }
+    public int getDivisionID() { return this.division.get().getID(); }
+    public String getDivisionName() { return Division.getDivisionById(this.getDivisionID()).getName(); }
 
-    public static Customer getObjById(int id) {
+    public static Customer getById(int id) {
         try {
             return allCustomers.stream().filter(i -> i.getId() == id).findFirst().get();
         } catch (NoSuchElementException e) {

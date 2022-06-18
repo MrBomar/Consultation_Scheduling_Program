@@ -1,18 +1,14 @@
 package les.projects.consultation_scheduling_program.Views;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
-import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.WeekComparator;
@@ -48,17 +44,14 @@ public class AppointmentsView extends BorderPane {
             allAppointments.setSelected(true);
 
             //Set listeners on radio buttons
-            appointmentsSelector.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-                @Override
-                public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle newVal) {
-                    RadioButton rb = (RadioButton) newVal;
-                    if(rb.equals(currentMonth)){
-                        selectCurrentMonth();
-                    } else if (rb.equals(currentWeek)) {
-                        selectCurrentWeek();
-                    } else {
-                        selectAll();
-                    }
+            appointmentsSelector.selectedToggleProperty().addListener((observableValue, toggle, newVal) -> {
+                RadioButton rb = (RadioButton) newVal;
+                if(rb.equals(currentMonth)){
+                    selectCurrentMonth();
+                } else if (rb.equals(currentWeek)) {
+                    selectCurrentWeek();
+                } else {
+                    selectAll();
                 }
             });
 
@@ -91,13 +84,13 @@ public class AppointmentsView extends BorderPane {
         footerSpacer3.setMinWidth(30);
         ButtonWide addAppointment = new ButtonWide(lrb.getString("add_appointment"));
         //Used Lambda Here
-        addAppointment.setOnMouseClicked(addAppointmentClick);
+        addAppointment.setOnMouseClicked(this::addAppointmentClick);
         ButtonWide updateAppointment = new ButtonWide(lrb.getString("update_appointment"));
         //Used Lambda Here
-        updateAppointment.setOnMouseClicked(updateAppointmentClick);
+        updateAppointment.setOnMouseClicked(this::updateAppointmentClick);
         ButtonWide deleteAppointment = new ButtonWide(lrb.getString("delete_appointment"));
         //Used Lambda Here
-        deleteAppointment.setOnMouseClicked(deleteAppointmentClick);
+        deleteAppointment.setOnMouseClicked(this::deleteAppointmentClick);
         footer.getChildren().addAll(footerSpacer1, addAppointment, footerSpacer3, updateAppointment, footerSpacer2, deleteAppointment);
 
         //Adjust view properties and add children to parent
@@ -109,47 +102,41 @@ public class AppointmentsView extends BorderPane {
         this.setBottom(footer);
     }
 
-    private EventHandler<MouseEvent> addAppointmentClick = event -> {
-        AddUpdateAppointment modal = new AddUpdateAppointment();
+    private void addAppointmentClick(Event event) {
+        AddUpdateAppointment modal = new AddUpdateAppointment(appointmentTable);
         modal.showAndWait();
-    };
+    }
 
-    private EventHandler<MouseEvent> updateAppointmentClick = event -> {
-        if(this.appointmentTable.getSelectionModel().getSelectedItems().stream().count() > 0) {
-            Appointment appointment = (Appointment) this.appointmentTable.getSelectionModel().getSelectedItem();
-            AddUpdateAppointment modal = new AddUpdateAppointment(appointment);
+    private void updateAppointmentClick (Event event) {
+        if((long) this.appointmentTable.getSelectionModel().getSelectedItems().size() > 0) {
+            AddUpdateAppointment modal = new AddUpdateAppointment(appointmentTable, this.appointmentTable.getSelectionModel().getSelectedItem());
             modal.showAndWait();
         } else {
             DialogMessage dialog = new DialogMessage(Message.NoAppointmentSelected);
             dialog.showAndWait();
         }
-    };
+    }
 
-    private EventHandler<MouseEvent> deleteAppointmentClick = event -> {
+    private void deleteAppointmentClick (Event event) {
         DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmAppointmentCancellation);
         dialog.showAndWait();
-    };
+        if(dialog.getResult().equals(true)) {
+            this.appointmentTable.getSelectionModel().getSelectedItem().delete();
+            this.appointmentTable.refresh();
+        }
+    }
 
     private void buildTable() {
-        TableColumn<Appointment, Integer> idCol = new TableColumn<Appointment, Integer>(lrb.getString("id"));
-        TableColumn<Appointment, String> titleCol = new TableColumn<Appointment, String>(lrb.getString("title"));
-        TableColumn<Appointment, String> descCol = new TableColumn<Appointment, String>(lrb.getString("description"));
-        TableColumn<Appointment, String> locCol = new TableColumn<Appointment, String>(lrb.getString("location"));
-        TableColumn<Appointment, String> typeCol = new TableColumn<Appointment, String>(lrb.getString("type"));
-        TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<Appointment, ZonedDateTime>(lrb.getString("start"));
-        TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<Appointment, ZonedDateTime>(lrb.getString("end"));
-        TableColumn<Appointment, Integer> customerCol = new TableColumn<Appointment, Integer>(lrb.getString("customer"));
-        TableColumn<Appointment, Integer> userCol = new TableColumn<Appointment, Integer>(lrb.getString("user"));
-        TableColumn<Appointment, Integer> contactCol = new TableColumn<Appointment, Integer>(lrb.getString("contact"));
-
-        class ComboCell extends ListCell<Customer> {
-
-            @Override
-            public void updateItem(Customer customer, boolean empty) {
-                super.updateItem(customer, empty);
-                setText(customer.getCustomerName());
-            }
-        }
+        TableColumn<Appointment, Integer> idCol = new TableColumn<>(lrb.getString("id"));
+        TableColumn<Appointment, String> titleCol = new TableColumn<>(lrb.getString("title"));
+        TableColumn<Appointment, String> descCol = new TableColumn<>(lrb.getString("description"));
+        TableColumn<Appointment, String> locCol = new TableColumn<>(lrb.getString("location"));
+        TableColumn<Appointment, String> typeCol = new TableColumn<>(lrb.getString("type"));
+        TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("start"));
+        TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("end"));
+        TableColumn<Appointment, Integer> customerCol = new TableColumn<>(lrb.getString("customer"));
+        TableColumn<Appointment, Integer> userCol = new TableColumn<>(lrb.getString("user"));
+        TableColumn<Appointment, Integer> contactCol = new TableColumn<>(lrb.getString("contact"));
 
         //Bind values to columns
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -163,7 +150,16 @@ public class AppointmentsView extends BorderPane {
         userCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
 
-        this.appointmentTable.getColumns().addAll(idCol,titleCol,descCol,locCol,typeCol,startCol,endCol,customerCol,userCol,contactCol);
+        this.appointmentTable.getColumns().add(idCol);
+        this.appointmentTable.getColumns().add(titleCol);
+        this.appointmentTable.getColumns().add(descCol);
+        this.appointmentTable.getColumns().add(locCol);
+        this.appointmentTable.getColumns().add(typeCol);
+        this.appointmentTable.getColumns().add(startCol);
+        this.appointmentTable.getColumns().add(endCol);
+        this.appointmentTable.getColumns().add(customerCol);
+        this.appointmentTable.getColumns().add(userCol);
+        this.appointmentTable.getColumns().add(contactCol);
     }
 
     private void selectCurrentMonth() {

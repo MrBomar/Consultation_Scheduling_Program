@@ -2,6 +2,7 @@ package les.projects.consultation_scheduling_program.Views;
 
 import javafx.event.Event;
 import javafx.geometry.Insets;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
@@ -31,12 +32,16 @@ public class AddUpdateAppointment extends DialogBase {
     private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("title"), true, false);
     private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"), false, false);
 
+    //Reference Only
+    private final TableView<Appointment> appointmentsTable;
+
     /**
      * <p>Method instantiates a dialog without any appointment record. Used for new appointment records.</p>
      */
-    public AddUpdateAppointment() {
+    public AddUpdateAppointment(TableView<Appointment> appointmentsTable) {
         super(lrb.getString("create_new_appointment"));
         this.id.setPromptText("(Auto generated)");
+        this.appointmentsTable = appointmentsTable;
         this.build();
     }
 
@@ -44,16 +49,17 @@ public class AddUpdateAppointment extends DialogBase {
      * <p>Method is used to open the dialog with an existing record for editing.</p>
      * @param appointment The appointment object to be edited.
      */
-    public AddUpdateAppointment(Appointment appointment) {
+    public AddUpdateAppointment(TableView<Appointment> appointmentsTable, Appointment appointment) {
         super(lrb.getString("edit_appointment"));
+        this.appointmentsTable = appointmentsTable;
         this.build();
 
         //FIXME - Insert logic to pull appointment record and populate the fields.
         this.currentAppointment = appointment;
         this.id.setInitialValue("" + this.currentAppointment.getId()+ "");
         this.location.setInitialValue(this.currentAppointment.getLocation());
-        this.customer.setInitialValue(Customer.getObjById(this.currentAppointment.getCustomerID()));
-        this.contact.setInitialValue(Contact.getObjById(this.currentAppointment.getContactID()));
+        this.customer.setInitialValue(Customer.getById(this.currentAppointment.getCustomerID()));
+        this.contact.setInitialValue(Contact.getById(this.currentAppointment.getContactID()));
         this.type.setInitialValue(this.currentAppointment.getType());
         this.start.setInitialValue(this.currentAppointment.getStart());
         this.end.setInitialValue(this.currentAppointment.getEnd());
@@ -106,6 +112,7 @@ public class AddUpdateAppointment extends DialogBase {
                             this.start.getEntry(),
                             this.end.getEntry(),
                             this.customer.getValue(),
+                            Main.currentUser,
                             this.contact.getValue()
                     );
                 } else {
@@ -124,6 +131,7 @@ public class AddUpdateAppointment extends DialogBase {
                 }
                 DialogMessage dialog = new DialogMessage(Message.RecordSaved);
                 dialog.showAndWait();
+                this.appointmentsTable.refresh();
                 this.close();
             } else {
                 //We have fields that require filling out.
@@ -160,12 +168,8 @@ public class AddUpdateAppointment extends DialogBase {
      * @return Returns true if any of the data have been changed from initial state.
      */
     private boolean changesHaveBeenMade() {
-        if(contact.isChanged() || customer.isChanged() || description.isChanged() || end.isChanged() ||
-                location.isChanged() || start.isChanged() || title.isChanged() || type.isChanged()) {
-            return true;
-        } else {
-            return false;
-        }
+        return contact.isChanged() || customer.isChanged() || description.isChanged() || end.isChanged() ||
+                location.isChanged() || start.isChanged() || title.isChanged() || type.isChanged();
     }
 
     /**

@@ -3,12 +3,12 @@ package les.projects.consultation_scheduling_program.DataClasses;
 import java.util.*;
 
 public class User {
-    private int userID;
-    private String userName, userPassword;
-    private static List<User> allUsers = new ArrayList<>();
+    private final int id;
+    private final String userName, userPassword;
+    private static final List<User> allUsers = new ArrayList<>();
 
     public User(int id, String name, String password) {
-        this.userID = id;
+        this.id = id;
         this.userName = name;
         this.userPassword = password;
     }
@@ -19,22 +19,22 @@ public class User {
     }
 
     public static void addUser(String name, String password) {
-        int nextID = (allUsers.size() > 0)?Collections.max(allUsers, Comparator.comparing(i -> i.getUserID())).getUserID() + 1:1;
+        int nextID = (allUsers.size() > 0)?Collections.max(allUsers, Comparator.comparing(User::getId)).getId() + 1:1;
         allUsers.add(new User(
                 nextID,
                 name, password
         ));
     }
 
-    public final int getUserID() {
-        return this.userID;
+    public final int getId() {
+        return this.id;
     }
 
     public final String getUserName() {
         return this.userName;
     }
 
-    public final static String getUserName(int id) { return allUsers.stream().filter(i -> i.userID == id).findFirst().get().userName; }
+    public static String getUserName(int id) { return allUsers.stream().filter(i -> i.id == id).findFirst().get().userName; }
 
     public static Boolean verifyUser(String userName, String inputPassword) {
         //Determine if the userName exists
@@ -44,5 +44,13 @@ public class User {
             if(inputPassword.equals(objPassword)) return true;
         }
         return false;
+    }
+
+    public static User getUserByUserName(String userName) {
+            return allUsers.stream().filter(i -> i.userName.equals(userName)).findFirst().get();
+    }
+
+    public static User getById(int id) {
+        return allUsers.stream().filter(i -> i.id == id).findFirst().get();
     }
 }

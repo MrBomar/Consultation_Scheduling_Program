@@ -1,27 +1,28 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Country {
-    private int countryId;
-    private String countryName;
+    private SimpleIntegerProperty countryId;
+    private SimpleStringProperty countryName;
     public static ObservableList<Country> allCountries;
 
     public Country(int countryId, String countryName) {
-        this.countryId = countryId;
-        this.countryName = countryName;
+        this.countryId.set(countryId);
+        this.countryName.set(countryName);
     }
 
     @Override
     public String toString() {
-        return this.countryName;
+        return this.countryName.get();
     }
 
     public static Country add(String countryName) {
@@ -31,8 +32,8 @@ public class Country {
 
     public boolean update(int countryId, String countryName){
         //FIXME - This method needs to update the database and verify the update before making the change locally.
-        this.countryId = countryId;
-        this.countryName = countryName;
+        this.countryId.set(countryId);
+        this.countryName.set(countryName);
         return true;
     }
 
@@ -43,7 +44,7 @@ public class Country {
 
     public ObservableList<Division> getDivisions() {
         //FIXME - Need to return the values present in the database.
-        Division[] filteredDivisions = Division.allDivisions.stream().filter(i -> i.getCountryId() == this.countryId).toArray(Division[]::new);
+        Division[] filteredDivisions = Division.allDivisions.stream().filter(i -> i.getCountryId() == this.getID()).toArray(Division[]::new);
         return FXCollections.observableArrayList(filteredDivisions);
     }
 
@@ -65,11 +66,11 @@ public class Country {
     }
 
     public int getID() {
-        return this.countryId;
+        return this.countryId.get();
     }
 
     public String getName() {
-        return this.countryName;
+        return this.countryName.get();
     }
 
     public static Country getCountryByID(int id) {

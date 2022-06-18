@@ -1,5 +1,7 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
@@ -10,19 +12,19 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Contact {
-    private int contactId;
-    private String contactName, email;
+    public SimpleIntegerProperty id;
+    public SimpleStringProperty contactName, email;
     public static ObservableList<Contact> allContacts;
 
     public Contact(int contactId, String contactName, String email) {
-        this.contactId = contactId;
-        this.contactName = contactName;
-        this.email = email;
+        this.id.set(contactId);
+        this.contactName.set(contactName);
+        this.email.set(email);
     }
 
     @Override
     public String toString() {
-        return this.contactName;
+        return this.contactName.get();
     }
 
     public static Contact add(String contactName, String email) {
@@ -55,11 +57,11 @@ public class Contact {
     }
 
     public String getName() {
-        return this.contactName;
+        return this.contactName.get();
     }
-    public int getID() { return this.contactId; }
+    public int getID() { return this.id.get(); }
 
-    public static Contact getObjById(int id) {
+    public static Contact getById(int id) {
         try {
             return allContacts.stream().filter(i -> i.getID() == id).findFirst().get();
         } catch (NoSuchElementException e) {

@@ -26,16 +26,17 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
         this.setStyle(Styles.StyleComboBoxRequired);
 
         //Process parameters
-        if(promptText != "") { this.setPromptText(promptText); }
+        if(!promptText.equals("")) { this.setPromptText(promptText); }
 
         //This listener detects of the value of the ComboBox has been changed
         //Listeners
         this.focusedProperty().addListener((x,y,z) -> {
-            Object selectedObject = this.getValue();
-            if(this.initialValue == null & selectedObject != null) {
-                this.changed = true;
-            } else if(!this.initialValue.equals(selectedObject)) {
-                this.changed = true;
+            if(this.initialValue == null) {
+                this.changed = !this.getSelectionModel().isEmpty();
+            } else {
+                if(this.getSelectionModel().isEmpty()) {
+                    this.changed = true;
+                } else this.changed = !this.initialValue.equals(this.getValue());
             }
         });
     }

@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -27,15 +28,18 @@ public class AddUpdateCustomer extends DialogBase {
     private final ComboBoxStyled<Division> division = new ComboBoxStyled<>(Division.allDivisions, "");
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"), true, false);
     private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, "");
+    private final TableView<Customer> customerTableView;
 
-    public AddUpdateCustomer() {
+    public AddUpdateCustomer(TableView<Customer> customerTableView) {
         super(lrb.getString("add_new_customer"));
         this.id.setPromptText("(Auto generated)");
+        this.customerTableView = customerTableView;
         this.build();
     }
 
-    public AddUpdateCustomer(Customer customer) {
+    public AddUpdateCustomer(TableView<Customer> customerTableView, Customer customer) {
         super(lrb.getString("update_customer"));
+        this.customerTableView = customerTableView;
         this.build();
 
         //FIXME - Insert logic to pull customer record and populate fields.
@@ -55,6 +59,7 @@ public class AddUpdateCustomer extends DialogBase {
         Scene scene = new Scene(borderPane);
         this.setScene(scene);
 
+        //Adding ComboBoxes and their containers.
         BorderPaneStyled countryPane = new BorderPaneStyled("Country", true);
         countryPane.setRight(this.country);
         BorderPaneStyled divisionPane = new BorderPaneStyled("Division", true);
@@ -62,9 +67,12 @@ public class AddUpdateCustomer extends DialogBase {
         this.country.setWidth(200);
         this.division.setWidth(200);
 
+        //Add listener to country ComboBox
+        country.valueProperty().addListener(((observableValue, country1, t1) -> division.setItems(country.getValue().getDivisions())));
+
         VBox center = new VBox();
         center.setPadding(new Insets(30,20,30,20));
-        center.getChildren().addAll(id,name,address,zip,countryPane,divisionPane,phone);
+        center.getChildren().addAll(id,name,address,countryPane,divisionPane,zip,phone);
         borderPane.setCenter(center);
 
         HBox bottom = new HBox();
@@ -112,6 +120,7 @@ public class AddUpdateCustomer extends DialogBase {
                 DialogMessage dialog = new DialogMessage(Message.RecordSaved);
                 dialog.showAndWait();
                 this.close();
+                this.customerTableView.refresh();
             } else {
                 //We have fields that require filling out.
                 DialogMessage dialog = new DialogMessage(Message.InvalidInput);
@@ -141,12 +150,8 @@ public class AddUpdateCustomer extends DialogBase {
     }
 
     private boolean changesHaveBeenMade() {
-        if(this.name.isChanged() || this.address.isChanged() || this.zip.isChanged() || this.phone.isChanged() ||
-        this.division.isChanged()) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.name.isChanged() || this.address.isChanged() || this.zip.isChanged() || this.phone.isChanged() ||
+                this.division.isChanged();
     }
 
     private boolean requiredFieldsFilled() {

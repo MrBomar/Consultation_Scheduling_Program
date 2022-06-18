@@ -1,16 +1,18 @@
 package les.projects.consultation_scheduling_program.Views;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
+import javafx.event.Event;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
+import les.projects.consultation_scheduling_program.DataClasses.Appointment;
 import les.projects.consultation_scheduling_program.DataClasses.Country;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
@@ -23,7 +25,6 @@ public class CustomersView extends BorderPane {
     private final ComboBox<Division> divisionComboBox = new ComboBox<>(Division.allDivisions);
     private final RadioButton countryRadio = new RadioButton(lrb.getString("country"));
     private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("all_customers"));
-    private final ToggleGroup radioGroup = new ToggleGroup();
     private final TableView<Customer> customerTable;
 
     public CustomersView() {
@@ -62,12 +63,13 @@ public class CustomersView extends BorderPane {
                 this.allCustomersRadio.setFont(Styles.DefaultFont16);
 
             //Add radio buttons to group
-            this.countryRadio.setToggleGroup(this.radioGroup);
-            this.allCustomersRadio.setToggleGroup(this.radioGroup);
+            final ToggleGroup radioGroup = new ToggleGroup();
+            this.countryRadio.setToggleGroup(radioGroup);
+            this.allCustomersRadio.setToggleGroup(radioGroup);
             this.allCustomersRadio.setSelected(true);
 
             //Add listener to the ToggleGroup
-            this.radioGroup.selectedToggleProperty().addListener((a,b,newValue) -> {
+            radioGroup.selectedToggleProperty().addListener((a,b,newValue) -> {
                 if(newValue.equals(allCustomersRadio)) {
                     this.selectAll();
                 } else {
@@ -76,22 +78,19 @@ public class CustomersView extends BorderPane {
             });
 
             //Add listener to ComboBox(s)
-            this.countryComboBox.valueProperty().addListener(new ChangeListener<Country>() {
-                @Override
-                public void changed(ObservableValue<? extends Country> observableValue, Country country, Country t1) {
-                    countryRadio.setSelected(true);
-                    divisionComboBox.setItems(countryComboBox.getValue().getDivisions());
-                    selectByCountryAndDivision();
-                }
+            //Used lambda expressions here to prevent myself from having to use and import a ChangeListener,
+            // reduced the amount of code needed.
+            this.countryComboBox.valueProperty().addListener((observableValue, country, t1) -> {
+                countryRadio.setSelected(true);
+                divisionComboBox.setItems(countryComboBox.getValue().getDivisions());
+                selectByCountryAndDivision();
             });
-
-            this.divisionComboBox.valueProperty().addListener(new ChangeListener<Division>() {
-                @Override
-                public void changed(ObservableValue<? extends Division> observableValue, Division division, Division t1) {
-                    countryRadio.setSelected(true);
-                    selectByCountryAndDivision();
-                }
-            });
+            //Used lambda expressions here to prevent myself from having to use and import a ChangeListener,
+            // reduced the amount of code needed.
+            this.divisionComboBox.valueProperty().addListener(((observableValue, division, t1) -> {
+                countryRadio.setSelected(true);
+                selectByCountryAndDivision();
+            }));
 
             //Let's format the ComboBox(s)
             this.countryComboBox.setEditable(false);
@@ -123,20 +122,11 @@ public class CustomersView extends BorderPane {
         footerSpacer2.setMinWidth(30);
         footerSpacer3.setMinWidth(30);
         ButtonWide addCustomer = new ButtonWide(lrb.getString("add_customer"));
-        addCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                addCustomer();
-            }
-        });
+        addCustomer.setOnMouseClicked(this::addCustomer);
         ButtonWide updateCustomer = new ButtonWide(lrb.getString("update_customer"));
-        updateCustomer.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                updateCustomer();
-            }
-        });
+        updateCustomer.setOnMouseClicked(this::updateCustomer);
         ButtonWide deleteCustomer = new ButtonWide(lrb.getString("delete_customer"));
+        deleteCustomer.setOnMouseClicked(this::deleteCustomer);
         footer.getChildren().addAll(footerSpacer1, addCustomer, footerSpacer3, updateCustomer, footerSpacer2, deleteCustomer);
 
         //Adjust view properties and add children to parent
@@ -148,15 +138,14 @@ public class CustomersView extends BorderPane {
         this.setBottom(footer);
     }
 
-    private void addCustomer() {
-        AddUpdateCustomer modal = new AddUpdateCustomer();
+    private void addCustomer(Event e) {
+        AddUpdateCustomer modal = new AddUpdateCustomer(this.customerTable);
         modal.showAndWait();
     }
 
-    private void updateCustomer() {
-        if(this.customerTable.getSelectionModel().getSelectedItems().stream().count() > 0) {
-            Customer customer = (Customer) this.customerTable.getSelectionModel().getSelectedItem();
-            AddUpdateCustomer modal = new AddUpdateCustomer(customer);
+    private void updateCustomer(Event e) {
+        if(this.customerTable.getSelectionModel().getSelectedItems().size() > 0) {
+            AddUpdateCustomer modal = new AddUpdateCustomer(this.customerTable,this.customerTable.getSelectionModel().getSelectedItem());
             modal.showAndWait();
         } else {
             DialogMessage dialog = new DialogMessage(Message.NoSelectedCustomer);
@@ -164,23 +153,92 @@ public class CustomersView extends BorderPane {
         }
     }
 
+    private void deleteCustomer(Event e) {
+        if(this.customerTable.getSelectionModel().isEmpty()){
+            //There is no customer selected.
+            DialogMessage dialog = new DialogMessage("No Customer Selected", "There is no customer selected above. You must select a customer before deleting them.");
+            dialog.showAndWait();
+            return;
+        }
+        if(this.customerTable.getSelectionModel().getSelectedItem().getAppointments().size() > 0) {
+            //The selected customer has appointments in the database.
+            DialogConfirmation dialog = new DialogConfirmation("Appointments Detected", "This customer has appointments associated with it. Do you want to delete all appointments associated to this customer?");
+            dialog.showAndWait();
+            if(dialog.getResult()) {
+                //The user wishes to delete the customer and all appointments.
+                Appointment[] customerAppointments = this.customerTable.getSelectionModel().getSelectedItem().getAppointments().stream().toArray(Appointment[]::new);
+                for(Appointment appointment: customerAppointments) {
+                    appointment.delete();
+                }
+                this.customerTable.getSelectionModel().getSelectedItem().delete();
+            }
+        } else {
+            //There are no appointments, but we need to verify that the user wants to delete the customer.
+            DialogConfirmation dialog = new DialogConfirmation("Delete Customer?", "Are you sure you want to delete the selected customer?");
+            dialog.showAndWait();
+            if(dialog.getResult()) {
+                this.customerTable.getSelectionModel().getSelectedItem().delete();
+            }
+        }
+        this.customerTable.refresh();
+    }
+
     private TableView<Customer> buildCustomerTable() {
         TableView<Customer> table = new TableView<>(Customer.allCustomers);
         TableColumn<Customer, Integer> idCol = new TableColumn<>(lrb.getString("id"));
         TableColumn<Customer, Integer> nameCol = new TableColumn<>(lrb.getString("customer_name"));
         TableColumn<Customer, Integer> addressCol = new TableColumn<>(lrb.getString("customer_address"));
+        TableColumn<Customer, ObjectProperty<Country>> countryCol = new TableColumn<>(lrb.getString("country"));
+        TableColumn<Customer, ObjectProperty<Division>> divisionCol = new TableColumn<>(lrb.getString("division"));
         TableColumn<Customer, Integer> postalCol = new TableColumn<>(lrb.getString("zip_code"));
         TableColumn<Customer, Integer> phoneCol = new TableColumn<>(lrb.getString("phone_number"));
-        TableColumn<Customer, Integer> divisionCol = new TableColumn<>(lrb.getString("division"));
+
+        //Editable Properties
+        nameCol.setEditable(true);
+        addressCol.setEditable(true);
+        countryCol.setEditable(true);
+        divisionCol.setEditable(true);
+        postalCol.setEditable(true);
+        phoneCol.setEditable(true);
 
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
+
+        //FIXME - We need to get his figured out.
+        countryCol.setCellValueFactory(i -> {
+            final ObjectProperty<Country> value = ;
+            return Bindings.createObjectBinding(() -> value);
+        });
+        divisionCol.setCellValueFactory(i -> {
+            final Division value = Division.getDivisionById(i.getValue().getDivisionID());
+            return Bindings.createObjectBinding(() -> value);
+        });
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
-        divisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionName"));
 
-        table.getColumns().addAll(idCol,nameCol,addressCol,postalCol,phoneCol,divisionCol);
+        countryCol.setCellFactory(col -> {
+            TableCell<Customer, ObjectProperty<Country>> cell = new TableCell<>();
+            final ComboBox<Country> comboBox = new ComboBox<>(Country.allCountries);
+            comboBox.valueProperty().addListener((observational, oldValue, newValue) -> {
+                if (oldValue != null) {
+                    comboBox.valueProperty().unbindBidirectional((Property<Country>) oldValue);
+                }
+                if (newValue != null) {
+                    comboBox.valueProperty().bindBidirectional((Property<Country>) newValue);
+                }
+            });
+            cell.setGraphic(comboBox);
+            return cell;
+        });
+
+        table.getColumns().add(idCol);
+        table.getColumns().add(nameCol);
+        table.getColumns().add(addressCol);
+        table.getColumns().add(countryCol);
+        table.getColumns().add(divisionCol);
+        table.getColumns().add(postalCol);
+        table.getColumns().add(phoneCol);
         return table;
     }
 

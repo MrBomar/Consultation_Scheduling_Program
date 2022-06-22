@@ -58,8 +58,8 @@ public class AddUpdateAppointment extends DialogBase {
         this.currentAppointment = appointment;
         this.id.setInitialValue("" + this.currentAppointment.getId()+ "");
         this.location.setInitialValue(this.currentAppointment.getLocation());
-        this.customer.setInitialValue(Customer.getById(this.currentAppointment.getCustomerID()));
-        this.contact.setInitialValue(Contact.getById(this.currentAppointment.getContactID()));
+        this.customer.setInitialValue(this.currentAppointment.getCustomer());
+        this.contact.setInitialValue(this.currentAppointment.getContact());
         this.type.setInitialValue(this.currentAppointment.getType());
         this.start.setInitialValue(this.currentAppointment.getStart());
         this.end.setInitialValue(this.currentAppointment.getEnd());
@@ -179,32 +179,38 @@ public class AddUpdateAppointment extends DialogBase {
     private boolean requiredFieldsFilled() {
         if(this.contact.getSelectionModel().isEmpty()) {
             //Contact is not selected
-            DialogMessage dialog = new DialogMessage("Invalid Input", "No contact is selected. Please select a contact before saving.");
+            DialogMessage dialog = new DialogMessage("Invalid Input",
+                    "No contact is selected. Please select a contact before saving.");
             dialog.showAndWait();
             return false;
         } else if (this.customer.getSelectionModel().isEmpty()) {
             //Customer is not selected
-            DialogMessage dialog = new DialogMessage("Invalid Input", "No customer is selected. Please select a customer before saving.");
+            DialogMessage dialog = new DialogMessage("Invalid Input",
+                    "No customer is selected. Please select a customer before saving.");
             dialog.showAndWait();
             return false;
         } else if (!this.end.validEntry()) {
             //End time is not valid
-            DialogMessage dialog = new DialogMessage("Invalid Input", "The 'End' time and date specified is invalid. Please review your entry.");
+            DialogMessage dialog = new DialogMessage("Invalid Input",
+                    "The 'End' time and date specified is invalid. Please review your entry.");
             dialog.showAndWait();
             return false;
         } else if (!this.location.isNotBlank()) {
             //Location is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input", "You must type a location, any location will do.");
+            DialogMessage dialog = new DialogMessage("Invalid Input",
+                    "You must type a location, any location will do.");
             dialog.showAndWait();
             return false;
         } else if (!this.start.validEntry()) {
             //Start time is not valid
-            DialogMessage dialog = new DialogMessage("Invalid Input", "The 'Start' time and date specified is invalid. Please review your entry.");
+            DialogMessage dialog = new DialogMessage("Invalid Input",
+                    "The 'Start' time and date specified is invalid. Please review your entry.");
             dialog.showAndWait();
             return false;
         } else if (!this.title.isNotBlank()) {
             //Title is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input", "You must type a title, any title will do.");
+            DialogMessage dialog = new DialogMessage("Invalid Input",
+                    "You must type a title, any title will do.");
             dialog.showAndWait();
             return false;
         } else {

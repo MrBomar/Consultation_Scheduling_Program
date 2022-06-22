@@ -44,14 +44,13 @@ public class AddUpdateCustomer extends DialogBase {
 
         //FIXME - Insert logic to pull customer record and populate fields.
         this.currentCustomer = customer;
-        this.id.setInitialValue(this.currentCustomer.getIDString());
-        this.name.setInitialValue(this.currentCustomer.getCustomerName());
+        this.id.setInitialValue(this.currentCustomer.getId().toString());
+        this.name.setInitialValue(this.currentCustomer.getName());
         this.address.setInitialValue(this.currentCustomer.getAddress());
         this.zip.setInitialValue(this.currentCustomer.getPostalCode());
         this.phone.setInitialValue(this.currentCustomer.getPhone());
-        Division div = Division.getDivisionById(this.currentCustomer.getDivisionID());
-        this.division.setValue(div);
-        this.country.setValue(Country.getCountryByID(div.getCountryId()));
+        this.division.setValue(this.currentCustomer.getDivision());
+        this.country.setValue(this.currentCustomer.getCountry());
     }
 
     private void build() {
@@ -106,6 +105,7 @@ public class AddUpdateCustomer extends DialogBase {
                             this.address.getInput(),
                             this.zip.getInput(),
                             this.phone.getInput(),
+                            this.country.getValue(),
                             this.division.getValue()
                     );
                 } else {
@@ -114,6 +114,7 @@ public class AddUpdateCustomer extends DialogBase {
                             this.address.getInput(),
                             this.zip.getInput(),
                             this.phone.getInput(),
+                            this.country.getValue(),
                             this.division.getValue()
                     );
                 }

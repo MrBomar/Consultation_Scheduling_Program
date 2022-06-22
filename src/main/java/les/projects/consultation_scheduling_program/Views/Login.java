@@ -46,6 +46,7 @@ public class Login extends DialogBase {
                 Main.appStage.show();
                 close();
             } catch (NullPointerException e) {
+                e.printStackTrace();
                 DialogMessage dialog = new DialogMessage("Login Failed","We could not match the Username provided. Login denied.");
                 dialog.showAndWait();
                 userId.resetInput();

@@ -1,5 +1,6 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,24 +13,24 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Contact {
-    public SimpleIntegerProperty id;
-    public SimpleStringProperty contactName, email;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty name, email;
     public static ObservableList<Contact> allContacts;
 
     public Contact(int contactId, String contactName, String email) {
-        this.id.set(contactId);
-        this.contactName.set(contactName);
-        this.email.set(email);
+        this.id = new SimpleIntegerProperty(contactId);
+        this.name = new SimpleStringProperty(contactName);
+        this.email = new SimpleStringProperty(email);
     }
 
     @Override
     public String toString() {
-        return this.contactName.get();
+        return this.name.get();
     }
 
     public static Contact add(String contactName, String email) {
         //FIXME - Need to connect to database, add contact and return object from database
-        return new Contact(1,"Customer1", "customer@company.com");
+        return new Contact(1,contactName, email );
     }
 
     public boolean delete() {
@@ -51,16 +52,21 @@ public class Contact {
             new Contact(8,"Contact9", "contact9@company.com"),
             new Contact(9,"Contact10", "contact10@company.com")
         };
-        allContacts = FXCollections.observableList(new ArrayList<Contact>(List.of(contacts)));
-
+        allContacts = FXCollections.observableList(new ArrayList<>(List.of(contacts)));
 
     }
 
-    public String getName() {
-        return this.contactName.get();
+    public void update(String contactName, String email) {
+        this.setName(contactName);
+        this.setEmail(email);
     }
+
+    //Getters
+    public final String getEmail() { return this.email.get(); }
     public int getID() { return this.id.get(); }
-
+    public String getName() {
+        return this.name.get();
+    }
     public static Contact getById(int id) {
         try {
             return allContacts.stream().filter(i -> i.getID() == id).findFirst().get();
@@ -70,4 +76,14 @@ public class Contact {
             return allContacts.stream().findFirst().get();
         }
     }
+
+    //Property Getters
+    public final Property<String> getEmailProperty() { return this.email; }
+    public final Property<Number> getIdProperty() {  return this.id; }
+    public final Property<String> getNameProperty() { return this.name; }
+
+    //Setters
+    public final void setEmail(String email) { this.email.set(email); }
+    public final void setId(int id) { this.id.set(id); }
+    public final void setName(String name) { this.name.set(name); }
 }

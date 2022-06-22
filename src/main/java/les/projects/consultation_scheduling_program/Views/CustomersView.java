@@ -1,15 +1,14 @@
 package les.projects.consultation_scheduling_program.Views;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
@@ -18,6 +17,7 @@ import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
+
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class CustomersView extends BorderPane {
@@ -162,11 +162,12 @@ public class CustomersView extends BorderPane {
         }
         if(this.customerTable.getSelectionModel().getSelectedItem().getAppointments().size() > 0) {
             //The selected customer has appointments in the database.
-            DialogConfirmation dialog = new DialogConfirmation("Appointments Detected", "This customer has appointments associated with it. Do you want to delete all appointments associated to this customer?");
+            String[] args = new String[]{this.customerTable.getSelectionModel().getSelectedItem().getName()};
+            DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmCustomerDelete, args);
             dialog.showAndWait();
             if(dialog.getResult()) {
                 //The user wishes to delete the customer and all appointments.
-                Appointment[] customerAppointments = this.customerTable.getSelectionModel().getSelectedItem().getAppointments().stream().toArray(Appointment[]::new);
+                Appointment[] customerAppointments = this.customerTable.getSelectionModel().getSelectedItem().getAppointments().toArray(Appointment[]::new);
                 for(Appointment appointment: customerAppointments) {
                     appointment.delete();
                 }
@@ -174,7 +175,8 @@ public class CustomersView extends BorderPane {
             }
         } else {
             //There are no appointments, but we need to verify that the user wants to delete the customer.
-            DialogConfirmation dialog = new DialogConfirmation("Delete Customer?", "Are you sure you want to delete the selected customer?");
+            String[] args = new String[]{this.customerTable.getSelectionModel().getSelectedItem().getName()};
+            DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmCustomerDelete, args);
             dialog.showAndWait();
             if(dialog.getResult()) {
                 this.customerTable.getSelectionModel().getSelectedItem().delete();
@@ -186,14 +188,15 @@ public class CustomersView extends BorderPane {
     private TableView<Customer> buildCustomerTable() {
         TableView<Customer> table = new TableView<>(Customer.allCustomers);
         TableColumn<Customer, Integer> idCol = new TableColumn<>(lrb.getString("id"));
-        TableColumn<Customer, Integer> nameCol = new TableColumn<>(lrb.getString("customer_name"));
-        TableColumn<Customer, Integer> addressCol = new TableColumn<>(lrb.getString("customer_address"));
-        TableColumn<Customer, ObjectProperty<Country>> countryCol = new TableColumn<>(lrb.getString("country"));
-        TableColumn<Customer, ObjectProperty<Division>> divisionCol = new TableColumn<>(lrb.getString("division"));
-        TableColumn<Customer, Integer> postalCol = new TableColumn<>(lrb.getString("zip_code"));
-        TableColumn<Customer, Integer> phoneCol = new TableColumn<>(lrb.getString("phone_number"));
+        TableColumn<Customer, String> nameCol = new TableColumn<>(lrb.getString("customer_name"));
+        TableColumn<Customer, String> addressCol = new TableColumn<>(lrb.getString("customer_address"));
+        TableColumn<Customer, Country> countryCol = new TableColumn<>(lrb.getString("country"));
+        TableColumn<Customer, Division> divisionCol = new TableColumn<>(lrb.getString("division"));
+        TableColumn<Customer, String> postalCol = new TableColumn<>(lrb.getString("zip_code"));
+        TableColumn<Customer, String> phoneCol = new TableColumn<>(lrb.getString("phone_number"));
 
         //Editable Properties
+        table.setEditable(true);
         nameCol.setEditable(true);
         addressCol.setEditable(true);
         countryCol.setEditable(true);
@@ -202,33 +205,46 @@ public class CustomersView extends BorderPane {
         phoneCol.setEditable(true);
 
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-
-        //FIXME - We need to get his figured out.
-        countryCol.setCellValueFactory(i -> {
-            final ObjectProperty<Country> value = i.getValue().countryProperty();
-            return Bindings.createObjectBinding(() -> value);
-        });
-        divisionCol.setCellValueFactory(i -> {
-            final ObjectProperty<Division> value = i.getValue().divisionProperty();
-            return Bindings.createObjectBinding(() -> value);
-        });
+        countryCol.setCellValueFactory(cellData -> cellData.getValue().getCountryProperty());
+        divisionCol.setCellValueFactory(cellData -> cellData.getValue().getDivisionProperty());
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
-        countryCol.setCellFactory(col -> {
-            TableCell<Customer, ObjectProperty<Country>> cell = new TableCell<>();
-            final ComboBox<Country> comboBox = new ComboBox<>(Country.allCountries);
-            comboBox.valueProperty().addListener((observational, oldValue, newValue) -> {
-                if (oldValue != null) {
-                    comboBox.valueProperty().unbindBidirectional((Property<Country>) oldValue);
-                }
-                if (newValue != null) {
-                    comboBox.valueProperty().bindBidirectional((Property<Country>) newValue);
-                }
+        nameCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        addressCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        postalCol.setCellFactory(TextFieldTableCell.forTableColumn());
+        phoneCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+        nameCol.setOnEditCommit(e-> e.getRowValue().setName(e.getNewValue()));
+        addressCol.setOnEditCommit(e->e.getRowValue().setAddress(e.getNewValue()));
+        postalCol.setOnEditCommit(e->e.getRowValue().setPostalCode(e.getNewValue()));
+        phoneCol.setOnEditCommit(e->e.getRowValue().setPhone(e.getNewValue()));
+
+        countryCol.setCellFactory(cellData -> {
+            TableCell<Customer, Country> cell = new TableCell<>();
+            ComboBox<Country> combo = new ComboBox<>(Country.allCountries);
+            combo.valueProperty().bind(cell.itemProperty());
+            combo.valueProperty().addListener(((observableValue, country, t1) -> {
+                cellData.getTableView().getFocusModel().getFocusedItem().setCountry(t1);
+            }));
+            cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(combo));
+            return cell;
+        });
+
+        divisionCol.setCellFactory(cellData -> {
+            TableCell<Customer, Division> cell = new TableCell();
+            ComboBox<Division> combo = new ComboBox<>(Division.allDivisions);
+            combo.valueProperty().bind(cell.itemProperty());
+            combo.focusedProperty().addListener(e->{
+                Country country = cellData.getTableView().getFocusModel().getFocusedItem().getCountry();
+                combo.setItems(Division.allDivisions.filtered(i->i.getCountry().equals(country)));
             });
-            cell.setGraphic(comboBox);
+            combo.valueProperty().addListener((observable, oldValue, newValue)->{
+                cellData.getTableView().getFocusModel().getFocusedItem().setDivision(newValue);
+            });
+            cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(combo));
             return cell;
         });
 
@@ -239,6 +255,10 @@ public class CustomersView extends BorderPane {
         table.getColumns().add(divisionCol);
         table.getColumns().add(postalCol);
         table.getColumns().add(phoneCol);
+
+        table.setEditable(true);
+        nameCol.setEditable(true);
+
         return table;
     }
 
@@ -271,7 +291,7 @@ public class CustomersView extends BorderPane {
             //Loop through all customers and add customers with matching divisionId to filteredCustomers.
             for(Customer customer: Customer.allCustomers) {
                 for(Division division: filteredDivisions) {
-                    if(customer.getDivisionID() == division.getID()) filteredCustomers.add(customer);
+                    if(customer.getDivision().equals(division)) filteredCustomers.add(customer);
                 }
             }
 

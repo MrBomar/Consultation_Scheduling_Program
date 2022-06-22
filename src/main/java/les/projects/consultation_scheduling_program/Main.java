@@ -52,10 +52,10 @@ public class Main extends Application {
     }
 
     public static void loadData() {
-        Appointment.loadData();
         Contact.loadData();
         Country.loadData();
         Division.loadData();
         Customer.loadData();
+        Appointment.loadData();
     }
 }

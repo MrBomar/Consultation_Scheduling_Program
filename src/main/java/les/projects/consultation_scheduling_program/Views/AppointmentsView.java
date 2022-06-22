@@ -1,5 +1,6 @@
 package les.projects.consultation_scheduling_program.Views;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -9,6 +10,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
+import les.projects.consultation_scheduling_program.DataClasses.Contact;
+import les.projects.consultation_scheduling_program.DataClasses.Customer;
+import les.projects.consultation_scheduling_program.DataClasses.User;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.WeekComparator;
@@ -118,11 +122,22 @@ public class AppointmentsView extends BorderPane {
     }
 
     private void deleteAppointmentClick (Event event) {
-        DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmAppointmentCancellation);
-        dialog.showAndWait();
-        if(dialog.getResult().equals(true)) {
-            this.appointmentTable.getSelectionModel().getSelectedItem().delete();
-            this.appointmentTable.refresh();
+        if(!this.appointmentTable.getSelectionModel().isEmpty()) {
+            String[] args = new String[] {
+                    "" + this.appointmentTable.getSelectionModel().getSelectedItem().getId(),
+                    this.appointmentTable.getSelectionModel().getSelectedItem().getType()
+            };
+            DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmAppointmentCancellation, args);
+            dialog.showAndWait();
+            if(dialog.getResult().equals(true)) {
+                this.appointmentTable.getSelectionModel().getSelectedItem().delete();
+                this.appointmentTable.refresh();
+                DialogMessage dm = new DialogMessage(Message.AppointmentCanceled, args);
+                dm.showAndWait();
+            }
+        } else {
+            DialogMessage dialog = new DialogMessage(Message.NoAppointmentSelected);
+            dialog.showAndWait();
         }
     }
 
@@ -134,9 +149,9 @@ public class AppointmentsView extends BorderPane {
         TableColumn<Appointment, String> typeCol = new TableColumn<>(lrb.getString("type"));
         TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("start"));
         TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("end"));
-        TableColumn<Appointment, Integer> customerCol = new TableColumn<>(lrb.getString("customer"));
-        TableColumn<Appointment, Integer> userCol = new TableColumn<>(lrb.getString("user"));
-        TableColumn<Appointment, Integer> contactCol = new TableColumn<>(lrb.getString("contact"));
+        TableColumn<Appointment, Customer> customerCol = new TableColumn<>(lrb.getString("customer"));
+        TableColumn<Appointment, User> userCol = new TableColumn<>(lrb.getString("user"));
+        TableColumn<Appointment, Contact> contactCol = new TableColumn<>(lrb.getString("contact"));
 
         //Bind values to columns
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -144,11 +159,11 @@ public class AppointmentsView extends BorderPane {
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        startCol.setCellValueFactory(new PropertyValueFactory<>("startFormatted"));
-        endCol.setCellValueFactory(new PropertyValueFactory<>("endFormatted"));
-        customerCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        userCol.setCellValueFactory(new PropertyValueFactory<>("userName"));
-        contactCol.setCellValueFactory(new PropertyValueFactory<>("contactName"));
+        startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
+        endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        customerCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
+        userCol.setCellValueFactory(new PropertyValueFactory<>("user"));
+        contactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
 
         this.appointmentTable.getColumns().add(idCol);
         this.appointmentTable.getColumns().add(titleCol);

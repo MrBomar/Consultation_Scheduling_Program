@@ -1,8 +1,6 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Main;
@@ -17,26 +15,26 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Appointment {
-    public SimpleObjectProperty<Customer> customer;
-    public SimpleObjectProperty<Contact> contact;
-    public SimpleObjectProperty<User> user;
-    public SimpleIntegerProperty id;
-    public SimpleStringProperty title, description, location, type;
-    public SimpleObjectProperty<ZonedDateTime> start, end;
+    private final SimpleObjectProperty<Customer> customer;
+    private final SimpleObjectProperty<Contact> contact;
+    private final SimpleObjectProperty<User> user;
+    private final SimpleIntegerProperty id;
+    private final SimpleStringProperty title, description, location, type;
+    private final SimpleObjectProperty<ZonedDateTime> start, end;
     public static ObservableList<Appointment> allAppointments;
 
     public Appointment(int id, String title, String description, String location,
                        String type, ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
-        this.id.set(id);
-        this.title.set(title);
-        this.description.set(description);
-        this.location.set(location);
-        this.type.set(type);
-        this.start.set(start);
-        this.end.set(end);
-        this.customer.set(customer);
-        this.user.set(user);
-        this.contact.set(contact);
+        this.id = new SimpleIntegerProperty(id);
+        this.title = new SimpleStringProperty(title);
+        this.description = new SimpleStringProperty(description);
+        this.location = new SimpleStringProperty(location);
+        this.type = new SimpleStringProperty(type);
+        this.start = new SimpleObjectProperty<>(start);
+        this.end = new SimpleObjectProperty<>(end);
+        this.customer = new SimpleObjectProperty<>(customer);
+        this.user = new SimpleObjectProperty<>(user);
+        this.contact = new SimpleObjectProperty<>(contact);
     }
 
     @Override
@@ -60,15 +58,15 @@ public class Appointment {
 
     public void update(String title, String description, String location, String type,
                           ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
-        this.title.set(title);
-        this.description.set(description);
-        this.location.set(location);
-        this.type.set(type);
-        this.start.set(start);
-        this.end.set(end);
-        this.customer.set(customer);
-        this.user.set(user);
-        this.contact.set(contact);
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setLocation(location);
+        this.setType(type);
+        this.setStart(start);
+        this.setEnd(end);
+        this.setCustomer(customer);
+        this.setUser(user);
+        this.setContact(contact);
     }
 
     public final void delete() {
@@ -120,16 +118,47 @@ public class Appointment {
         allAppointments = FXCollections.observableList(new ArrayList<>(List.of(appointments)));
     }
 
-    //Getters
-    public final int getId() { return this.id.get(); }
-    //FIXME - These need to be converted to local time zone.
-    public final Contact getContact() { return this.contact.get(); }
-    public final Customer getCustomer() { return this.customer.get(); }
-    public final User getUser() { return this.user.get(); }
+    //Formatters
     public final String getStartFormatted() {
         return this.start.get().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Main.locale));
     }
     public final String getEndFormatted() {
         return this.end.get().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Main.locale));
     }
+
+    //Getters
+    public final Contact getContact() { return this.contact.get(); }
+    public final Customer getCustomer() { return this.customer.get(); }
+    public final String getDescription() { return this.description.get(); }
+    public final ZonedDateTime getEnd() { return this.end.get(); }
+    public final int getId() { return this.id.get(); }
+    public final String getLocation() { return this.location.get(); }
+    public final ZonedDateTime getStart() { return this.start.get(); }
+    public final String getTitle() { return this.title.get(); }
+    public final String getType() { return this.type.get(); }
+    public final User getUser() { return this.user.get(); }
+
+    //Property Getters
+    public final ObjectProperty<Contact> getContactProperty() { return this.contact; }
+    public final ObjectProperty<Customer> getCustomerProperty() { return this.customer; }
+    public final Property<String> getDescriptionProperty() { return this.description; }
+    public final ObjectProperty<ZonedDateTime> getEndProperty() { return this.end; }
+    public final Property<Number> getIdProperty() {  return this.id; }
+    public final Property<String> getLocationProperty() { return this.location; }
+    public final ObjectProperty<ZonedDateTime> getStartProperty() { return this.start; }
+    public final Property<String> getTitleProperty() { return this.title; }
+    public final Property<String> getTypeProperty() { return this.type; }
+    public final ObjectProperty<User> getUserProperty() { return this.user; }
+
+    //Property Setters
+    public final void setContact(Contact contact) { this.contact.set(contact); }
+    public final void setCustomer(Customer customer) { this.customer.set(customer); }
+    public final void setDescription(String description) { this.description.set(description); }
+    public final void setEnd(ZonedDateTime end) { this.end.set(end); }
+    public final void setId(int id) { this.id.set(id); }
+    public final void setLocation(String location) { this.location.set(location); }
+    public final void setStart(ZonedDateTime start) { this.start.set(start); }
+    public final void setTitle(String title) { this.title.set(title); }
+    public final void setType(String type) { this.type.set(type); }
+    public final void setUser(User user) { this.user.set(user); }
 }

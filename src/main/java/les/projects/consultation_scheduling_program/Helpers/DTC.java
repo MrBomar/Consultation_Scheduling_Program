@@ -25,7 +25,12 @@ public class DTC {
     public static int[] getTime(ZonedDateTime udt) {
         //Converts universal date time to local date time and returns the time as int[Hour,Minute]
         ZonedDateTime toLocal = toLocal(udt);
-        return new int[] {toLocal.getHour(), toLocal.getMinute()};
+        return new int[] { toLocal.getHour(), toLocal.getMinute() };
+    }
+
+    public static String getTimeString(ZonedDateTime udt) {
+        ZonedDateTime toLocal = toLocal(udt);
+        return toLocal.getHour() + ":" + toLocal.getMinute();
     }
 
     public static LocalDate getDate(ZonedDateTime udt) {

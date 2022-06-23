@@ -3,6 +3,8 @@ package les.projects.consultation_scheduling_program.DataClasses;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
@@ -81,39 +83,78 @@ public class Appointment {
 
     public static ObservableList<Appointment> getAllAppointments() { return allAppointments;}
 
+    public static void upcomingAppointments() {
+        Appointment[] userAppointments = allAppointments.stream()
+                .filter(a -> a.getUser().equals(Main.currentUser)).toArray(Appointment[]::new);
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime fifteenMinutesFromNow = now.plusMinutes(15);
+        boolean noAppointments = true;
+        for(Appointment a: userAppointments) {
+            if(a.getStart().isAfter(now) && a.getStart().isBefore(fifteenMinutesFromNow)) {
+                //We have an upcoming appointment.
+                String[] args = new String[]{ "" + a.getId(), DTC.getDate(a.getStart()).toString(), DTC.getTimeString(a.getStart()) };
+                DialogMessage dialog = new DialogMessage(Message.UpcomingAppointment, args);
+                dialog.showAndWait();
+                noAppointments = false;
+            }
+        }
+
+        if(noAppointments) {
+            DialogMessage dialog = new DialogMessage(Message.NoUpcomingAppointment);
+            dialog.showAndWait();
+        }
+    }
+
     public static void loadData() {
         //FIXME - Need to load from Database
         Appointment[] appointments = new Appointment[] {
-            new Appointment(0,"Appointment1","Description1", "Location1","Type1",
-                    ZonedDateTime.of(LocalDate.of(2022, 1,1), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(),Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(1,"Appointment2","Description2", "Location2","Type2",
-                    ZonedDateTime.of(LocalDate.of(2022,2,1), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(2,"Appointment3","Description3", "Location3","Type3",
-                    ZonedDateTime.of(LocalDate.of(2022,3,1), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(3,"Appointment4","Description4", "Location4","Type4",
-                    ZonedDateTime.of(LocalDate.of(2022,4,1), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(4,"Appointment5","Description5", "Location5","Type5",
-                    ZonedDateTime.of(LocalDate.of(2022,5,1), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(5,"Appointment6","Description6", "Location6","Type6",
-                    ZonedDateTime.of(LocalDate.of(2022,6,1), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(6,"Appointment7","Description7", "Location7","Type7",
-                    ZonedDateTime.of(LocalDate.of(2022,6,8), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(7,"Appointment8","Description8", "Location8","Type8",
-                    ZonedDateTime.of(LocalDate.of(2022,6,15), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(8,"Appointment9","Description9", "Location9","Type9",
-                    ZonedDateTime.of(LocalDate.of(2022,6,22), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-            new Appointment(9,"Appointment10","Description10", "Location10","Type10",
-                    ZonedDateTime.of(LocalDate.of(2022,7,1), LocalTime.of(1,30),
-                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1))
+            new Appointment(0,
+                    "Appointment1",
+                    "Description1",
+                    "Location1",
+                    "Type1",
+                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(9,30), ZoneId.systemDefault()),
+                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(10,30), ZoneId.systemDefault()),
+                    Customer.getById(1),
+                    User.getById(1),
+                    Contact.getById(1)),
+            new Appointment(1,
+                    "Upcoming Appointment",
+                    "Test to see if we can trigger an upcoming appointment event.",
+                    "In your desk chair.",
+                    "Any type.",
+                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(18,15), ZoneId.systemDefault()),
+                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(18,30), ZoneId.systemDefault()),
+                    Customer.getById(1),
+                    User.getById(1),
+                    Contact.getById(1))
+//            new Appointment(1,"Appointment2","Description2", "Location2","Type2",
+//                    ZonedDateTime.of(LocalDate.of(2022,2,1), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(2,"Appointment3","Description3", "Location3","Type3",
+//                    ZonedDateTime.of(LocalDate.of(2022,3,1), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(3,"Appointment4","Description4", "Location4","Type4",
+//                    ZonedDateTime.of(LocalDate.of(2022,4,1), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(4,"Appointment5","Description5", "Location5","Type5",
+//                    ZonedDateTime.of(LocalDate.of(2022,5,1), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(5,"Appointment6","Description6", "Location6","Type6",
+//                    ZonedDateTime.of(LocalDate.of(2022,6,1), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(6,"Appointment7","Description7", "Location7","Type7",
+//                    ZonedDateTime.of(LocalDate.of(2022,6,8), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(7,"Appointment8","Description8", "Location8","Type8",
+//                    ZonedDateTime.of(LocalDate.of(2022,6,15), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(8,"Appointment9","Description9", "Location9","Type9",
+//                    ZonedDateTime.of(LocalDate.of(2022,6,22), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
+//            new Appointment(9,"Appointment10","Description10", "Location10","Type10",
+//                    ZonedDateTime.of(LocalDate.of(2022,7,1), LocalTime.of(1,30),
+//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1))
         };
         allAppointments = FXCollections.observableList(new ArrayList<>(List.of(appointments)));
     }

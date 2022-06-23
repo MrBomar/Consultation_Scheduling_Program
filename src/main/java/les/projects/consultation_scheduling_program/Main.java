@@ -58,4 +58,8 @@ public class Main extends Application {
         Customer.loadData();
         Appointment.loadData();
     }
+
+    public static void appointmentCheck() {
+
+    }
 }

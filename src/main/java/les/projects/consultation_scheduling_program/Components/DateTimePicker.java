@@ -18,10 +18,10 @@ import java.time.*;
  * @author Leslie C. Bomar 3rd
  */
 public class DateTimePicker extends BorderPane {
-    private DatePicker datePicker = new DatePicker();
-    private ComboBox<Hour> hourPicker = new ComboBox<>(Hour.getHours());
-    private ComboBox<Minute> minutePicker = new ComboBox<>(Minute.getMinutes());
-    private ComboBox<Meridiem> meridiemPicker = new ComboBox<>(Meridiem.getMeridiems());
+    private final DatePicker datePicker = new DatePicker();
+    private final ComboBox<Hour> hourPicker = new ComboBox<>(Hour.getHours());
+    private final ComboBox<Minute> minutePicker = new ComboBox<>(Minute.getMinutes());
+    private final ComboBox<Meridiem> meridiemPicker = new ComboBox<>(Meridiem.getMeridiems());
     private LocalDate ld;
     private LocalTime lt;
     private ZonedDateTime initialValue;
@@ -111,4 +111,5 @@ public class DateTimePicker extends BorderPane {
         }
         return true;
     }
+
 }

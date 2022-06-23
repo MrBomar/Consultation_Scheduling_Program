@@ -40,6 +40,14 @@ public enum Message {
             "This for contains invalid information or there are required fields that have not been filled." +
                     "Please verify the data entered."
     ),
+    InvalidTimeRange(
+            "Invalid Time Range",
+            "All appointments must be scheduled between 08:00 am and 10:00 pm Eastern Standard Time."
+    ),
+    InvalidTimeOrder(
+            "Invalid Time Order",
+            "The appointment end time and date must be set after the appointment start time and date."
+    ),
     LoginFail (
             mrb.getString("login_failed_title"),
             mrb.getString("login_failed_message")
@@ -95,6 +103,11 @@ public enum Message {
     RecordSaved(
             "Record Saved",
             "Your changes have been saved."
+    ),
+    UpcomingAppointment(
+            "Upcoming Appointment",
+            "The following appointment is starting within 15 minutes. \n \nAppointment ID: {}" +
+                    "\nDate: {}\nTime: {}"
     )
     ;
 

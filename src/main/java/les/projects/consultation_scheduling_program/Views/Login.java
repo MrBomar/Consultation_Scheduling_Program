@@ -5,6 +5,7 @@ import javafx.event.Event;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import les.projects.consultation_scheduling_program.Components.*;
+import les.projects.consultation_scheduling_program.DataClasses.Appointment;
 import les.projects.consultation_scheduling_program.DataClasses.User;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
@@ -42,6 +43,7 @@ public class Login extends DialogBase {
             try {
                 Main.currentUser = User.getUserByUserName(userId.getInput());
                 Main.loadData();
+                Appointment.upcomingAppointments();
                 Main.appStage.setScene(new Scene(new Console(new AppointmentsView())));
                 Main.appStage.show();
                 close();

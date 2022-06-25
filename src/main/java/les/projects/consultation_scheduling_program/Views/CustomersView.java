@@ -226,9 +226,17 @@ public class CustomersView extends BorderPane {
             TableCell<Customer, Country> cell = new TableCell<>();
             ComboBox<Country> combo = new ComboBox<>(Country.allCountries);
             combo.valueProperty().bindBidirectional(cell.itemProperty());
-            combo.valueProperty().addListener(((observableValue, country, t1) -> {
-                cellData.getTableView().getFocusModel().getFocusedItem().setCountry(t1);
+            combo.valueProperty().addListener(((observableValue, oldValue, newValue) -> {
+                try {
+                    cell.getTableRow().getItem().setCountry(newValue);
+                } catch (Exception e) {
+                    //We are ignoring the error, doesn't seem to affect the program's functionality.
+                }
+
             }));
+            combo.focusedProperty().addListener(e -> {
+                cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem());
+            });
             cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(combo));
             return cell;
         });
@@ -238,11 +246,16 @@ public class CustomersView extends BorderPane {
             ComboBox<Division> combo = new ComboBox<>(Division.allDivisions);
             combo.valueProperty().bindBidirectional(cell.itemProperty());
             combo.focusedProperty().addListener(e->{
-                Country country = cellData.getTableView().getFocusModel().getFocusedItem().getCountry();
+                cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem());
+                Country country = cell.getTableRow().getItem().getCountry();
                 combo.setItems(Division.allDivisions.filtered(i->i.getCountry().equals(country)));
             });
             combo.valueProperty().addListener((observable, oldValue, newValue)->{
-                cellData.getTableView().getFocusModel().getFocusedItem().setDivision(newValue);
+                try {
+                    cell.getTableRow().getItem().setDivision(newValue);
+                } catch (Exception e) {
+                    //We are ignoring the error, doesn't seem to affect the program's functionality.
+                }
             });
             cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(combo));
             return cell;
@@ -268,15 +281,8 @@ public class CustomersView extends BorderPane {
 
     private void selectByCountryAndDivision() {
         if(!this.divisionComboBox.getSelectionModel().isEmpty()) {
-            //We must filter by Division.
-            //Capture the division
-            Division division = this.divisionComboBox.getValue();
-
-            //Filter Customers by the DivisionID
-            ObservableList<Customer> filteredCustomers = division.getCustomers();
-
             //Assign filteredCustomers to customerTable
-            this.customerTable.setItems(filteredCustomers);
+            this.customerTable.setItems(this.divisionComboBox.getValue().getCustomers());
         } else if(!this.countryComboBox.getSelectionModel().isEmpty()) {
             //We must filter by Country only.
             //First we need to identify the country.

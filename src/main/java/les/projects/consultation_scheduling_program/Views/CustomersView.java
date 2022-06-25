@@ -225,7 +225,7 @@ public class CustomersView extends BorderPane {
         countryCol.setCellFactory(cellData -> {
             TableCell<Customer, Country> cell = new TableCell<>();
             ComboBox<Country> combo = new ComboBox<>(Country.allCountries);
-            combo.valueProperty().bind(cell.itemProperty());
+            combo.valueProperty().bindBidirectional(cell.itemProperty());
             combo.valueProperty().addListener(((observableValue, country, t1) -> {
                 cellData.getTableView().getFocusModel().getFocusedItem().setCountry(t1);
             }));
@@ -236,7 +236,7 @@ public class CustomersView extends BorderPane {
         divisionCol.setCellFactory(cellData -> {
             TableCell<Customer, Division> cell = new TableCell();
             ComboBox<Division> combo = new ComboBox<>(Division.allDivisions);
-            combo.valueProperty().bind(cell.itemProperty());
+            combo.valueProperty().bindBidirectional(cell.itemProperty());
             combo.focusedProperty().addListener(e->{
                 Country country = cellData.getTableView().getFocusModel().getFocusedItem().getCountry();
                 combo.setItems(Division.allDivisions.filtered(i->i.getCountry().equals(country)));

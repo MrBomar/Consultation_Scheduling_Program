@@ -20,7 +20,7 @@ public class Login extends DialogBase {
 
     public Login() {
         super(lrb.getString("program_title"));
-        this.addUsers();
+        User.loadData();
 
         TextFieldLabeledLarge timeZone = new TextFieldLabeledLarge(lrb.getString("timezone"), DTC.getLocalTimeZone(), true);
         VBox center = new VBox();
@@ -38,8 +38,8 @@ public class Login extends DialogBase {
 
     private void attemptLogin(Event event) {
         if(User.verifyUser(userId.getInput(), password.getInput())) {
+            System.out.println("User ID and password verified.");
             LoginActivity.loginAttempt(userId.getInput(), true);
-
             try {
                 Main.currentUser = User.getUserByUserName(userId.getInput());
                 Main.loadData();
@@ -54,7 +54,6 @@ public class Login extends DialogBase {
                 userId.resetInput();
                 password.resetInput();
             }
-
         } else {
             LoginActivity.loginAttempt(userId.getInput(), false);
             DialogMessage dialog = new DialogMessage(Message.LoginFail);
@@ -62,9 +61,5 @@ public class Login extends DialogBase {
             userId.resetInput();
             password.resetInput();
         }
-    }
-
-    private void addUsers() {
-        User.addUser("Lestervinian", "Password");
     }
 }

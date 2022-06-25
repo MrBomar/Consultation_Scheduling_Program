@@ -6,7 +6,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -51,20 +55,29 @@ public class Country {
     }
 
     public static void loadData() {
-        //FIXME - Need to load from Database
-        Country[] countries = new Country[] {
-            new Country(0, "Country1"),
-            new Country(1, "Country2"),
-            new Country(2, "Country3"),
-            new Country(3, "Country4"),
-            new Country(4, "Country5"),
-            new Country(5, "Country6"),
-            new Country(6, "Country7"),
-            new Country(7, "Country8"),
-            new Country(8, "Country9"),
-            new Country(9, "Country10")
-        };
-        allCountries = FXCollections.observableList(new ArrayList<>(List.of(countries)));
+        //Query the database
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM countries";
+            ResultSet rs = stmt.executeQuery(qry);
+
+            if(!rs.next()) {
+                DialogMessage dialog = new DialogMessage("Data Not Found", "No countries were found in the database.");
+            } else {
+                allCountries = FXCollections.observableList(new ArrayList<Country>());
+
+                //Loop through the results
+                do {
+                    Country country = new Country(
+                            rs.getInt("Country_ID"),
+                            rs.getString("Country")
+                    );
+                    allCountries.add(country);
+                } while (rs.next());
+            }
+        } catch (Exception e) {
+            System.out.println("Could not load countries.");
+        }
     }
 
     //Getters
@@ -74,10 +87,12 @@ public class Country {
     public final String getName() {
         return this.name.get();
     }
-    public static Country getByID(int id) {
+    public static Country getById(int id) {
         try {
             return allCountries.stream().filter(d -> d.getId() == id).findFirst().get();
         } catch (NoSuchElementException e) {
+            System.out.println("Country count: " + allCountries.stream().count());
+            System.out.println("Looking for: " + id);
             DialogMessage dialog = new DialogMessage(Message.MissingCountryRecord);
             dialog.showAndWait();
             return allCountries.stream().findFirst().get();

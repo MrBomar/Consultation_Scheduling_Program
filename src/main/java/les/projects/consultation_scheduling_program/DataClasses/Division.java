@@ -7,7 +7,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -52,20 +56,30 @@ public class Division {
     }
 
     public static void loadData() {
-        //FIXME - Need to load from Database
-        Division[] divisions = new Division[] {
-                new Division(0, "Division 1", Country.getByID(0)),
-                new Division(1, "Division 2", Country.getByID(1)),
-                new Division(2, "Division 3", Country.getByID(2)),
-                new Division(3, "Division 4", Country.getByID(3)),
-                new Division(4, "Division 5", Country.getByID(4)),
-                new Division(5, "Division 6", Country.getByID(5)),
-                new Division(6, "Division 7", Country.getByID(6)),
-                new Division(7, "Division 8", Country.getByID(7)),
-                new Division(8, "Division 9", Country.getByID(8)),
-                new Division(9, "Division 10", Country.getByID(9))
-        };
-        allDivisions = FXCollections.observableList(new ArrayList<Division>(List.of(divisions)));
+        try {
+            //Load the data from the database
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM first_level_divisions";
+            ResultSet rs = stmt.executeQuery(qry);
+
+            if(!rs.next()) {
+                DialogMessage dialog = new DialogMessage("Data Not Found", "No divisions were found in the database.");
+            } else {
+                allDivisions = FXCollections.observableList(new ArrayList<Division>());
+
+                //Loop through results and add division to list.
+                do {
+                    Division division = new Division(
+                            rs.getInt("Division_ID"),
+                            rs.getString("Division"),
+                            Country.getById(rs.getInt("Country_ID"))
+                    );
+                    allDivisions.add(division);
+                } while (rs.next());
+            }
+        } catch (Exception e) {
+            System.out.println("Could not load divisions.");
+        }
     }
 
     //Getters

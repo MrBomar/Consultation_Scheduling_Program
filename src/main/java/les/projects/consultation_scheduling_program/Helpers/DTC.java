@@ -1,5 +1,6 @@
 package les.projects.consultation_scheduling_program.Helpers;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -39,5 +40,13 @@ public abstract class DTC {
 
     public static String getLocalTimeZone() {
         return ZoneId.systemDefault().toString();
+    }
+
+    public static ZonedDateTime timeStampToZonedDateTime(Timestamp timestamp) {
+        //Create UTC ZonedDateTime
+        ZonedDateTime utcZDT = ZonedDateTime.of(timestamp.toLocalDateTime(), ZoneId.of("UTC"));
+
+        //Convert to the system zone and return
+        return ZonedDateTime.ofInstant(utcZDT.toInstant(), ZoneId.systemDefault());
     }
 }

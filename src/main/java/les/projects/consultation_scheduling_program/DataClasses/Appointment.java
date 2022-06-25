@@ -5,16 +5,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
+import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class Appointment {
     private final SimpleObjectProperty<Customer> customer;
@@ -106,57 +109,38 @@ public class Appointment {
     }
 
     public static void loadData() {
-        //FIXME - Need to load from Database
-        Appointment[] appointments = new Appointment[] {
-            new Appointment(0,
-                    "Appointment1",
-                    "Description1",
-                    "Location1",
-                    "Type1",
-                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(9,30), ZoneId.systemDefault()),
-                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(10,30), ZoneId.systemDefault()),
-                    Customer.getById(1),
-                    User.getById(1),
-                    Contact.getById(1)),
-            new Appointment(1,
-                    "Upcoming Appointment",
-                    "Test to see if we can trigger an upcoming appointment event.",
-                    "In your desk chair.",
-                    "Any type.",
-                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(18,15), ZoneId.systemDefault()),
-                    ZonedDateTime.of(LocalDate.of(2022, 6,23), LocalTime.of(18,30), ZoneId.systemDefault()),
-                    Customer.getById(1),
-                    User.getById(1),
-                    Contact.getById(1))
-//            new Appointment(1,"Appointment2","Description2", "Location2","Type2",
-//                    ZonedDateTime.of(LocalDate.of(2022,2,1), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(2,"Appointment3","Description3", "Location3","Type3",
-//                    ZonedDateTime.of(LocalDate.of(2022,3,1), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(3,"Appointment4","Description4", "Location4","Type4",
-//                    ZonedDateTime.of(LocalDate.of(2022,4,1), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(4,"Appointment5","Description5", "Location5","Type5",
-//                    ZonedDateTime.of(LocalDate.of(2022,5,1), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(5,"Appointment6","Description6", "Location6","Type6",
-//                    ZonedDateTime.of(LocalDate.of(2022,6,1), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(6,"Appointment7","Description7", "Location7","Type7",
-//                    ZonedDateTime.of(LocalDate.of(2022,6,8), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(7,"Appointment8","Description8", "Location8","Type8",
-//                    ZonedDateTime.of(LocalDate.of(2022,6,15), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(8,"Appointment9","Description9", "Location9","Type9",
-//                    ZonedDateTime.of(LocalDate.of(2022,6,22), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1)),
-//            new Appointment(9,"Appointment10","Description10", "Location10","Type10",
-//                    ZonedDateTime.of(LocalDate.of(2022,7,1), LocalTime.of(1,30),
-//                            ZoneId.systemDefault()), ZonedDateTime.now(), Customer.getById(1),User.getById(1),Contact.getById(1))
-        };
-        allAppointments = FXCollections.observableList(new ArrayList<>(List.of(appointments)));
+        //Here we pull all the Appointment data from the database
+        try {
+            //Create statement and get results.
+            Statement stmt = JDBC.connection.createStatement();
+            String query = "SELECT * FROM appointments";
+            ResultSet rs = stmt.executeQuery(query);
+
+            if(!rs.next()) {
+                DialogMessage dialog = new DialogMessage("Data Not Found", "No appointments were found in the database.");
+            } else {
+                allAppointments = FXCollections.observableList(new ArrayList<Appointment>());
+
+                //Loop through results and create new appointments.
+                do {
+                    Appointment appt = new Appointment(
+                            rs.getInt("Appointment_ID"),
+                            rs.getString("Title"),
+                            rs.getString("Description"),
+                            rs.getString("Location"),
+                            rs.getString("Type"),
+                            DTC.timeStampToZonedDateTime(rs.getObject("Start", Timestamp.class)),
+                            DTC.timeStampToZonedDateTime(rs.getObject("End", Timestamp.class)),
+                            Customer.getById(rs.getInt("Customer_ID")),
+                            User.getById(rs.getInt("User_ID")),
+                            Contact.getById(rs.getInt(("Contact_ID")))
+                    );
+                    allAppointments.add(appt);
+                } while (rs.next());
+            }
+        } catch (Exception e) {
+            System.out.println("Could not load appointments.");
+        }
     }
 
     //Formatters

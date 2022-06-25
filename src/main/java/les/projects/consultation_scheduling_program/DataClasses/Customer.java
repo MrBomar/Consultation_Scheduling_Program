@@ -4,9 +4,12 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Customer {
@@ -66,20 +69,34 @@ public class Customer {
     }
 
     public static void loadData() {
-        //FIXME - Need to load from Database
-        Customer[] customers = new Customer[] {
-            new Customer(0,"Customer1","123 Main Street", "12345","123456789", Country.getByID(1), Division.getById(1) ),
-            new Customer(1,"Customer2","123 Main Street", "12345","123456789", Country.getByID(2), Division.getById(2) ),
-            new Customer(2,"Customer3","123 Main Street", "12345","123456789", Country.getByID(3), Division.getById(3) ),
-            new Customer(3,"Customer4","123 Main Street", "12345","123456789", Country.getByID(4), Division.getById(4) ),
-            new Customer(4,"Customer5","123 Main Street", "12345","123456789", Country.getByID(5), Division.getById(5) ),
-            new Customer(5,"Customer6","123 Main Street", "12345","123456789", Country.getByID(6), Division.getById(6) ),
-            new Customer(6,"Customer7","123 Main Street", "12345","123456789", Country.getByID(7), Division.getById(7) ),
-            new Customer(7,"Customer8","123 Main Street", "12345","123456789", Country.getByID(8), Division.getById(8) ),
-            new Customer(8,"Customer9","123 Main Street", "12345","123456789", Country.getByID(9), Division.getById(9) ),
-            new Customer(9,"Customer10","123 Main Street", "12345","123456789", Country.getByID(0), Division.getById(0) )
-        };
-        allCustomers = FXCollections.observableList(new ArrayList<Customer>(List.of(customers)));
+        try {
+            //Load data from database
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM customers";
+            ResultSet rs = stmt.executeQuery(qry);
+
+            if(!rs.next()) {
+                DialogMessage dialog = new DialogMessage("Data Not Found", "No customers were found in the database.");
+            } else {
+                allCustomers = FXCollections.observableList(new ArrayList<Customer>());
+
+                //Loop through result and add customers
+                do {
+                    Customer customer = new Customer(
+                            rs.getInt("Customer_ID"),
+                            rs.getString("Customer_Name"),
+                            rs.getString("Address"),
+                            rs.getString("Postal_Code"),
+                            rs.getString("Phone"),
+                            Division.getById(rs.getInt("Division_ID")).getCountry(),
+                            Division.getById(rs.getInt("Division_ID"))
+                    );
+                    allCustomers.add(customer);
+                } while (rs.next());
+            }
+        } catch (Exception e) {
+            System.out.println("Could not load customers.");
+        }
     }
 
     //Getters

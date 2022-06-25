@@ -1,11 +1,17 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
+import javafx.collections.FXCollections;
+import les.projects.consultation_scheduling_program.Helpers.JDBC;
+import les.projects.consultation_scheduling_program.Views.DialogMessage;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 
 public class User {
     private final int id;
     private final String userName, userPassword;
-    private static final List<User> allUsers = new ArrayList<>();
+    private static List<User> allUsers = new ArrayList<>();
 
     public User(int id, String name, String password) {
         this.id = id;
@@ -52,5 +58,32 @@ public class User {
 
     public static User getById(int id) {
         return allUsers.stream().filter(i -> i.id == id).findFirst().get();
+    }
+
+    public static void loadData() {
+        try {
+            //Get results from database
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * from users";
+            ResultSet rs = stmt.executeQuery(qry);
+
+            if (!rs.next()) {
+                DialogMessage dialog = new DialogMessage("Data Not Found", "No users were found in the database.");
+            } else {
+                allUsers = FXCollections.observableList(new ArrayList<User>());
+
+                //Loop through results and add users to the list.
+                do {
+                    User user = new User(
+                            rs.getInt("User_ID"),
+                            rs.getString("User_Name"),
+                            rs.getString("Password")
+                    );
+                    allUsers.add(user);
+                } while (rs.next());
+            }
+        } catch (Exception e) {
+            System.out.println("Could not load users.");
+        }
     }
 }

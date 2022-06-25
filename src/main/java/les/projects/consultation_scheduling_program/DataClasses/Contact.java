@@ -4,12 +4,15 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.FXCollections.*;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 public class Contact {
@@ -39,21 +42,33 @@ public class Contact {
     }
 
     public static void loadData() {
-        //FIXME - Need to load from Database
-        Contact[] contacts = new Contact[] {
-            new Contact(1,"Contact1", "contact2@company.com"),
-            new Contact(0,"Contact2", "contact1@company.com"),
-            new Contact(2,"Contact3", "contact3@company.com"),
-            new Contact(3,"Contact4", "contact4@company.com"),
-            new Contact(4,"Contact5", "contact5@company.com"),
-            new Contact(5,"Contact6", "contact6@company.com"),
-            new Contact(6,"Contact7", "contact7@company.com"),
-            new Contact(7,"Contact8", "contact8@company.com"),
-            new Contact(8,"Contact9", "contact9@company.com"),
-            new Contact(9,"Contact10", "contact10@company.com")
-        };
-        allContacts = FXCollections.observableList(new ArrayList<>(List.of(contacts)));
+        //Load the data from the database.
+        try {
+            //Query the database for contacts.
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM contacts";
+            ResultSet rs = stmt.executeQuery(qry);
 
+            if(!rs.next()) {
+                 DialogMessage dialog = new DialogMessage("Data Not Found", "No contacts found in database.");
+            } else {
+                allContacts = FXCollections.observableList(new ArrayList<Contact>());
+
+                //Loop through results and add them to list.
+
+                do {
+                    Contact contact = new Contact(
+                            rs.getInt("Contact_ID"),
+                            rs.getString("Contact_Name"),
+                            rs.getString("Email")
+                    );
+                    allContacts.add(contact);
+                } while (rs.next());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Could not load contacts.");
+        }
     }
 
     public void update(String contactName, String email) {

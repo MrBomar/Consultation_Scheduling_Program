@@ -1,7 +1,9 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
 import javafx.collections.FXCollections;
+import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
+import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 import java.sql.ResultSet;
@@ -25,11 +27,27 @@ public class User {
     }
 
     public static void addUser(String name, String password) {
-        int nextID = (allUsers.size() > 0)?Collections.max(allUsers, Comparator.comparing(User::getId)).getId() + 1:1;
-        allUsers.add(new User(
-                nextID,
-                name, password
-        ));
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String sql = "SELECT * FROM users";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            rs.moveToInsertRow();
+            rs.updateString("User_Name", name);
+            rs.updateString("Password", password);
+            rs.updateTimestamp("Create_Date", DTC.currentTimestamp());
+            rs.updateString("Created_By", Main.currentUser.getUserName());
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Added","The user could not be added to the database.");
+            dialog.showAndWait();
+        }
     }
 
     public final int getId() {
@@ -69,6 +87,7 @@ public class User {
 
             if (!rs.next()) {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No users were found in the database.");
+                dialog.showAndWait();
             } else {
                 allUsers = FXCollections.observableList(new ArrayList<User>());
 
@@ -83,7 +102,10 @@ public class User {
                 } while (rs.next());
             }
         } catch (Exception e) {
-            System.out.println("Could not load users.");
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Data Could Not Be Loaded","Users could not be loaded from the database.");
+            dialog.showAndWait();
         }
     }
 }

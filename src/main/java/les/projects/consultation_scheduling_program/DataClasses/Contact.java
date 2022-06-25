@@ -4,7 +4,6 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.FXCollections.*;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
@@ -31,14 +30,47 @@ public class Contact {
         return this.name.get();
     }
 
-    public static Contact add(String contactName, String email) {
-        //FIXME - Need to connect to database, add contact and return object from database
-        return new Contact(1,contactName, email );
+    public static boolean add(String contactName, String email) {
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM contacts";
+            ResultSet rs = stmt.executeQuery(qry);
+
+            //Move to the insertRow and add record
+            rs.moveToInsertRow();
+            rs.updateString("Contact_Name", contactName);
+            rs.updateString("Contact_Email", email);
+            rs.updateRow();
+
+            //Refresh the ObservableList
+            loadData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Could Not Add Record", "The contact could not be added to the database.");
+            dialog.showAndWait();
+            return false;
+        }
     }
 
-    public boolean delete() {
-        //FIXME - Send delete request and return status
-        return true;
+    public void delete() {
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM contact WHERE Contact_ID = " + this.getID();
+            ResultSet rs = stmt.executeQuery(qry);
+
+            //Try to delete
+            rs.deleteRow();
+
+            //Refresh the ObservableList
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Could Not Delete Record", "The contact could not be deleted from the database.");
+            dialog.showAndWait();
+        }
     }
 
     public static void loadData() {
@@ -51,6 +83,7 @@ public class Contact {
 
             if(!rs.next()) {
                  DialogMessage dialog = new DialogMessage("Data Not Found", "No contacts found in database.");
+                 dialog.showAndWait();
             } else {
                 allContacts = FXCollections.observableList(new ArrayList<Contact>());
 
@@ -67,13 +100,31 @@ public class Contact {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Could not load contacts.");
+            DialogMessage dialog = new DialogMessage(
+                    "Data Could Not Be Loaded", " The contacts could not be loaded from the database.");
+            dialog.showAndWait();
         }
     }
 
     public void update(String contactName, String email) {
-        this.setName(contactName);
-        this.setEmail(email);
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String sql = "SELLECT * FROM contacts WHERE Contact_ID = " + this.getID();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            //Update the record
+            rs.updateString("Contact_Name", contactName);
+            rs.updateString("Email", email);
+            rs.updateRow();
+
+            //Refresh the ObservableList
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage("" +
+                    "Record Could Not Be Updated", "Contact could not be updated in the database.");
+            dialog.showAndWait();
+        }
     }
 
     //Getters

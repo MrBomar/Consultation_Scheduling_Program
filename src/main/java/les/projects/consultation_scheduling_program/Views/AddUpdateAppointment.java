@@ -59,7 +59,6 @@ public class AddUpdateAppointment extends DialogBase {
         this.appointmentsTable = appointmentsTable;
         this.build();
 
-        //FIXME - Insert logic to pull appointment record and populate the fields.
         this.currentAppointment = appointment;
         this.id.setInitialValue("" + this.currentAppointment.getId() + "");
         this.location.setInitialValue(this.currentAppointment.getLocation());
@@ -149,7 +148,7 @@ public class AddUpdateAppointment extends DialogBase {
         }
         DialogMessage dialog = new DialogMessage(Message.RecordSaved);
         dialog.showAndWait();
-        this.appointmentsTable.refresh();
+        Appointment.loadData();
         this.close();
         return true;
     }

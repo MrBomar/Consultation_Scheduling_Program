@@ -7,7 +7,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
+import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 import java.sql.ResultSet;
@@ -34,22 +36,66 @@ public class Division {
     }
 
     public static void add(String divisionName, Country country) {
-        //FIXME - Should take supplied inputs, create a new division, and add it to the database.
-        allDivisions.add(new Division(0,divisionName,country));
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String sql = "SELECT * FROM first_level_divisions";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            rs.moveToInsertRow();
+            rs.updateString("Division", divisionName);
+            rs.updateTimestamp("Create_Date", DTC.currentTimestamp());
+            rs.updateString("Created_By", Main.currentUser.getUserName());
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateInt("Country_ID", country.getId());
+            rs.updateRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Added","The division could not be added to the database.");
+            dialog.showAndWait();
+        }
     }
 
     public final void update(String divisionName, Country country) {
-        this.setName(divisionName);
-        this.setCountry(country);
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String sql = "SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            rs.updateString("Division", divisionName);
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Updated","The division could not be updated in the database.");
+            dialog.showAndWait();
+        }
     }
 
     public final void delete() {
-        //FIXME - Should delete this object from the database.
-        allDivisions.remove(this);
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String sql = "SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            rs.deleteRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Deleted","The division could not be deleted from the database.");
+            dialog.showAndWait();
+        }
     }
 
     public final ObservableList<Customer> getCustomers() {
-        //FIXME - Should filter all customers for instances related to this object.
         Customer[] filteredCustomers =
                 Customer.allCustomers.stream().filter(c -> c.getDivision().equals(this)).toArray(Customer[]::new);
         return FXCollections.observableArrayList(filteredCustomers);
@@ -64,6 +110,7 @@ public class Division {
 
             if(!rs.next()) {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No divisions were found in the database.");
+                dialog.showAndWait();
             } else {
                 allDivisions = FXCollections.observableList(new ArrayList<Division>());
 
@@ -78,7 +125,10 @@ public class Division {
                 } while (rs.next());
             }
         } catch (Exception e) {
-            System.out.println("Could not load divisions.");
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Data Could Not Be Loaded","Division data could not be loaded from the database.");
+            dialog.showAndWait();
         }
     }
 

@@ -4,7 +4,9 @@ import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
+import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 import java.sql.ResultSet;
@@ -35,35 +37,75 @@ public class Customer {
     }
 
     public static void add(String customerName, String address, String postalCode, String phone, Country country, Division division) {
-        //FIXME - Need to add to database and return the data object
-        //FIXME - Make sure to capture the user when sending to the database.
-        allCustomers.add(new Customer(1, customerName, address, postalCode, phone, country, division));
-    }
-
-    public final void delete() {
-        //FIXME - Send delete request to server and return confirmation
         try {
-            allCustomers.remove(this);
-        } catch (NullPointerException e) {
-            DialogMessage dialog = new DialogMessage("Can't Delete", "Something went wrong and this customer cannot be deleted.");
+            Statement stmt = JDBC.connection.createStatement();
+            String sql = "SELECT * FROM customers";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            rs.moveToInsertRow();
+            rs.updateString("Customer_Name", customerName);
+            rs.updateString("Address", address);
+            rs.updateString("Postal_Code", postalCode);
+            rs.updateString("Phone", phone);
+            rs.updateTimestamp("Create_Date", DTC.currentTimestamp());
+            rs.updateString("Created_By", Main.currentUser.getUserName());
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateInt("Division_Id", division.getId());
+            rs.updateRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Added", "The customer could not be added to the database.");
             dialog.showAndWait();
         }
     }
 
-    public final void update(String customerName, String address, String postalCode, String phone, Country country, Division division){
-        //FIXME - Need to send update to database and return the data object.
-        //FIXME - Make sure to capture the user when sending to the database.
-        this.setName(customerName);
-        this.setAddress(address);
-        this.setPostalCode(postalCode);
-        this.setPhone(phone);
-        this.setCountry(country);
-        this.setDivision(division);
+    public final void delete() {
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM Customer WHERE Customer_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(qry);
+
+            rs.deleteRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Deleted","The customer could not be deleted from the database.");
+            dialog.showAndWait();
+        }
     }
 
-    public ObservableList<Appointment> getAppointments() {
-        //FIXME - Need to return all appointments related to this instance of Customer.
-        //Need to filter and return all appointments for this customer object.
+    public final void update(
+            String customerName, String address, String postalCode, String phone, Country country, Division division) {
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String sql = "SELECT * FROM customers WHERE Customer_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            rs.updateString("Customer_Name", customerName);
+            rs.updateString("Address", address);
+            rs.updateString("Postal_Code", postalCode);
+            rs.updateString("Phone", phone);
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateInt("Division_ID", division.getId());
+            rs.updateRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Updated","The customer could not be updated in the database.");
+            dialog.showAndWait();
+        }
+    }
+
+    public final ObservableList<Appointment> getAppointments() {
         Appointment[] appointments = Appointment.getAllAppointments().stream().filter(i -> i.getCustomer().equals(this)).toArray(Appointment[]::new);
         return FXCollections.observableArrayList(appointments);
     }
@@ -77,6 +119,7 @@ public class Customer {
 
             if(!rs.next()) {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No customers were found in the database.");
+                dialog.showAndWait();
             } else {
                 allCustomers = FXCollections.observableList(new ArrayList<Customer>());
 
@@ -95,7 +138,10 @@ public class Customer {
                 } while (rs.next());
             }
         } catch (Exception e) {
-            System.out.println("Could not load customers.");
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Data Could Not Be Loaded", "The customers could not be loaded from the database.");
+            dialog.showAndWait();
         }
     }
 

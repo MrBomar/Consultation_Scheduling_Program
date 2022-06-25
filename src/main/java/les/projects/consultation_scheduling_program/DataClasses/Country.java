@@ -6,7 +6,9 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import les.projects.consultation_scheduling_program.Enums.Message;
+import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
+import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 
 import java.sql.ResultSet;
@@ -31,24 +33,66 @@ public class Country {
     }
 
     public static void add(String countryName) {
-        //FIXME -- Needs to add this entry to the database and return the new data object.
-        allCountries.add(new Country(1, countryName));
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM countries";
+            ResultSet rs = stmt.executeQuery(qry);
+
+            rs.moveToInsertRow();
+            rs.updateString("Country", countryName);
+            rs.updateTimestamp("Create_Date", DTC.currentTimestamp());
+            rs.updateString("Created_By", Main.currentUser.getUserName());
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.insertRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Added", "The country could not be added to the database.");
+            dialog.showAndWait();
+        }
     }
 
-    public boolean delete() {
-        //FIXME - This method needs to verify deletion with the database before returning boolean value.
-        return true;
+    public void delete() {
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM countries WHERE Country_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(qry);
+
+            rs.deleteRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Deleted", "The country could not be deleted from the database.");
+            dialog.showAndWait();
+        }
     }
 
-    public boolean update(int countryId, String countryName){
-        //FIXME - This method needs to update the database and verify the update before making the change locally.
-        this.id.set(countryId);
-        this.name.set(countryName);
-        return true;
+    public void update(String countryName){
+        try {
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM countries WHERE Country_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(qry);
+
+            rs.updateString("Country", countryName);
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateRow();
+
+            loadData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Record Could Not Be Updated", "The country could not be updated in the database.");
+            dialog.showAndWait();
+        }
     }
 
     public ObservableList<Division> getDivisions() {
-        //FIXME - Need to return the values present in the database.
         Division[] filteredDivisions =
                 Division.allDivisions.stream().filter(i -> i.getCountry().equals(this)).toArray(Division[]::new);
         return FXCollections.observableArrayList(filteredDivisions);
@@ -63,6 +107,7 @@ public class Country {
 
             if(!rs.next()) {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No countries were found in the database.");
+                dialog.showAndWait();
             } else {
                 allCountries = FXCollections.observableList(new ArrayList<Country>());
 
@@ -76,7 +121,10 @@ public class Country {
                 } while (rs.next());
             }
         } catch (Exception e) {
-            System.out.println("Could not load countries.");
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Data Could Not Be Loaded", "The countries could not be loaded from the database.");
+            dialog.showAndWait();
         }
     }
 
@@ -91,8 +139,6 @@ public class Country {
         try {
             return allCountries.stream().filter(d -> d.getId() == id).findFirst().get();
         } catch (NoSuchElementException e) {
-            System.out.println("Country count: " + allCountries.stream().count());
-            System.out.println("Looking for: " + id);
             DialogMessage dialog = new DialogMessage(Message.MissingCountryRecord);
             dialog.showAndWait();
             return allCountries.stream().findFirst().get();

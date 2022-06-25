@@ -47,40 +47,97 @@ public class Appointment {
         return this.title.get();
     }
 
-    public static void add(String title, String description, String location,
-                           String type, ZonedDateTime start, ZonedDateTime end, Customer customer, User user,Contact contact) {
-        //FIXME - Update this method to save the Appointment to the database then refresh allAppointments
-        //FIXME - ZonedDateTime needs to be converted to UTC before saving changes.
-
-        int nextID = (allAppointments.size() > 0)?
-                Collections.max(allAppointments, Comparator.comparing(Appointment::getId)).getId() + 1 :
-                1;
-        allAppointments.add(
-                new Appointment(nextID,title,description,location,type,start,end,customer,user,contact)
-        );
-
-    }
-
-    public void update(String title, String description, String location, String type,
-                          ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
-        this.setTitle(title);
-        this.setDescription(description);
-        this.setLocation(location);
-        this.setType(type);
-        this.setStart(start);
-        this.setEnd(end);
-        this.setCustomer(customer);
-        this.setUser(user);
-        this.setContact(contact);
-    }
-
-    public final void delete() {
-        //FIXME - Must delete from database and return confirmation.
+    public static boolean add(String title, String description, String location,
+                           String type, ZonedDateTime start, ZonedDateTime end,
+                           Customer customer, User user,Contact contact) {
         try {
-            allAppointments.remove(this);
+            //Get records
+            Statement stmt = JDBC.connection.createStatement();
+            String query = "SELECT * FROM appointments";
+            ResultSet rs = stmt.executeQuery(query);
+
+            //Insert new record
+            rs.moveToInsertRow();
+            rs.updateString("Title", title);
+            rs.updateString("Description", description);
+            rs.updateString("Location", location);
+            rs.updateString("Type", type);
+            rs.updateTimestamp("Start", DTC.zonedDateTimeToTimestamp(start));
+            rs.updateTimestamp("End", DTC.zonedDateTimeToTimestamp(end));
+            rs.updateTimestamp("Create_Date", DTC.currentTimestamp());
+            rs.updateString("Created_By", Main.currentUser.getUserName());
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateInt("CustomerID", customer.getId());
+            rs.updateInt("User", user.getId());
+            rs.updateInt("Contact", contact.getID());
+
+            //Save new record
+            rs.insertRow();
+
+            //Refresh observable list.
+            loadData();
+            return true;
         } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Cannot Add Record", "The appointment could not be added to the database.");
+            dialog.showAndWait();
+            return false;
+        }
+    }
+
+    public final boolean update(String title, String description, String location, String type,
+                          ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
+        try {
+            //Pull current record.
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM appointments WHERE Appointment_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(qry);
+
+            //Update the record fields
+            rs.updateString("Title", title);
+            rs.updateString("Description", description);
+            rs.updateString("Location", location);
+            rs.updateString("Type", type);
+            rs.updateTimestamp("Start", DTC.zonedDateTimeToTimestamp(start));
+            rs.updateTimestamp("End", DTC.zonedDateTimeToTimestamp(end));
+            rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
+            rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateInt("Customer_ID", customer.getId());
+            rs.updateInt("User_ID", user.getId());
+            rs.updateInt("Contact_ID", contact.getID());
+            rs.updateRow();
+
+            //Refresh the observable list.
+            loadData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage("Record Could Not Be Updated", "We are unable to update the appointment record.");
+            dialog.showAndWait();
+            return false;
+        }
+    }
+
+    public final boolean delete() {
+        try {
+            //Get the selected record.
+            Statement stmt = JDBC.connection.createStatement();
+            String qry = "SELECT * FROM appointments WHERE Appointment_ID = " + this.getId();
+            ResultSet rs = stmt.executeQuery(qry);
+
+            //Delete the selected record.
+            rs.deleteRow();
+
+            //Refresh the ObservableList
+            loadData();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
             DialogMessage dialog = new DialogMessage("Can't Delete", "Something went wrong and we couldn't delete this appointment.");
             dialog.showAndWait();
+            return false;
         }
     }
 
@@ -118,6 +175,7 @@ public class Appointment {
 
             if(!rs.next()) {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No appointments were found in the database.");
+                dialog.showAndWait();
             } else {
                 allAppointments = FXCollections.observableList(new ArrayList<Appointment>());
 
@@ -129,8 +187,8 @@ public class Appointment {
                             rs.getString("Description"),
                             rs.getString("Location"),
                             rs.getString("Type"),
-                            DTC.timeStampToZonedDateTime(rs.getObject("Start", Timestamp.class)),
-                            DTC.timeStampToZonedDateTime(rs.getObject("End", Timestamp.class)),
+                            DTC.timestampToZonedDateTime(rs.getObject("Start", Timestamp.class)),
+                            DTC.timestampToZonedDateTime(rs.getObject("End", Timestamp.class)),
                             Customer.getById(rs.getInt("Customer_ID")),
                             User.getById(rs.getInt("User_ID")),
                             Contact.getById(rs.getInt(("Contact_ID")))
@@ -139,7 +197,10 @@ public class Appointment {
                 } while (rs.next());
             }
         } catch (Exception e) {
-            System.out.println("Could not load appointments.");
+            e.printStackTrace();
+            DialogMessage dialog = new DialogMessage(
+                    "Data Could Not Be Loaded","Appointment could not be loaded from the database.");
+            dialog.showAndWait();
         }
     }
 

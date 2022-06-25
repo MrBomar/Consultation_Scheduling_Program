@@ -1,11 +1,14 @@
 package les.projects.consultation_scheduling_program;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import les.projects.consultation_scheduling_program.DataClasses.*;
+import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.Login;
 
 import java.io.IOException;
@@ -35,7 +38,13 @@ public class Main extends Application {
         logoutView();
     }
 
+    @Override
+    public void stop() {
+        JDBC.closeConnection();
+    }
+
     public static void main(String[] args) {
+        JDBC.openConnection();
         launch();
     }
 
@@ -47,6 +56,8 @@ public class Main extends Application {
 
         appStage.setScene(scene);
         appStage.show();
+
+        //Display the login screen
         Login login = new Login();
         login.show();
     }

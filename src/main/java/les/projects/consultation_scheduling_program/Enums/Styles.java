@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class Styles {
+public abstract class Styles {
     public static final Background BackgroundWhite = new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY));
     public static final Background BackgroundGrey = new Background(new BackgroundFill(Color.rgb(220,220,220), CornerRadii.EMPTY, Insets.EMPTY));
     public static final Background BackgroundButtonHover = new Background(new BackgroundFill(Color.rgb(240,240,240), CornerRadii.EMPTY, Insets.EMPTY));

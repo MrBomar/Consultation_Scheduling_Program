@@ -5,7 +5,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class DTC {
+public abstract class DTC {
     public static ZonedDateTime toUniversal(ZonedDateTime ldt) {
         return ldt.withZoneSameInstant(ZoneId.of("UTC"));
     }

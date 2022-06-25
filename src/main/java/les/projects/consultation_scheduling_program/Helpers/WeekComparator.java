@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
  * This class is used to help compare dates
  * @author Leslie C. Bomar 3rd
  */
-public class WeekComparator {
+public abstract class WeekComparator {
 
     /**
      * This method takes in two ZonedDateTime values and assesses if they belong to the same week. Unlike the JavaFX

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class LoginActivity {
+public abstract class LoginActivity {
 
     class LoginItem {
         private String userName;

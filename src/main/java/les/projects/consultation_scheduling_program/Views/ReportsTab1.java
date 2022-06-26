@@ -48,7 +48,7 @@ public class ReportsTab1 extends VBox {
             appointments.setItems(items);
         } catch (Exception e) {
             DialogMessage dialog = new DialogMessage(
-                    "Report Cannot Be Loaded","Cannot load appointments_by_type_and_month");
+                    "Report Cannot Be Loaded","Cannot load appointments_by_type_and_month.");
             dialog.showAndWait();
         }
 

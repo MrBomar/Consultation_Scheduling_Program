@@ -15,7 +15,9 @@ import java.time.*;
 /**
  * This class renders a BorderPane containing a DatePicker and ComboBoxes for selecting hour, minute, and meridiem.
  * This class is designed to work with ZonedDateTime values set to the user's systemDefault().
+ *
  * @author Leslie C. Bomar 3rd
+ * @version 1.0
  */
 public class DateTimePicker extends BorderPane {
     private final DatePicker datePicker = new DatePicker();
@@ -26,6 +28,10 @@ public class DateTimePicker extends BorderPane {
     private LocalTime lt;
     private ZonedDateTime initialValue;
 
+    /**
+     * Produces a BorderPane containing a DatePicker and ComboBoxes for building a ZonedDateTime object.
+     * @param labelText String to apply to DateTimePicker label.
+     */
     public DateTimePicker(String labelText) {
         HBox hBox = new HBox();
         Label label = new Label(labelText);
@@ -100,6 +106,10 @@ public class DateTimePicker extends BorderPane {
         this.meridiemPicker.setValue(meridiem);
     }
 
+    /**
+     * Method is used to detect if the value of the DateTimePicker has been changed.
+     * @return Returns true of the value has been changed.
+     */
     public boolean isChanged() {
         if(this.validEntry()) {
             return getEntry().getMonth() != this.initialValue.getMonth() ||

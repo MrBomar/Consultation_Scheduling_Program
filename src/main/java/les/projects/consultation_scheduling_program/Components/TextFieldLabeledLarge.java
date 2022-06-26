@@ -6,11 +6,23 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
+/**
+ * This class extends the JavaFX BorderPane class. The BorderPabe contains a formatted TextField and Label.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class TextFieldLabeledLarge extends BorderPane {
     private final TextField textField = new TextField();
     private final String initValue = "";
     boolean changed = false;
 
+    /**
+     * Initializes a JavaFX BorderPane containing a TextField and Label.
+     * @param labelText String to display on the Label.
+     * @param placeholder String to set as prompt text on the TextField.
+     * @param disabled Set to true to disallow user input.
+     */
     public TextFieldLabeledLarge(String labelText, String placeholder, Boolean disabled) {
         this.setPadding(new Insets(0,0,20,0));
 
@@ -40,10 +52,17 @@ public class TextFieldLabeledLarge extends BorderPane {
         );
     }
 
+    /**
+     * This method returns the user input in the TextField.
+     * @return String value of the user input.
+     */
     public String getInput() {
         return textField.getText();
     }
 
+    /**
+     * This method clears the value in the TextField.
+     */
     public void resetInput() {
         this.textField.setText("");
     }

@@ -9,8 +9,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
+/**
+ * Class extends the JavaFX VBox to create a clickable element for logging out of the program.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class ButtonUserLogout extends VBox {
 
+    /**
+     * Produces a JavaFX VBox containing an image and is clickable.
+     */
     public ButtonUserLogout() {
         //Exit button
         HBox logoutButtonItems = new HBox();

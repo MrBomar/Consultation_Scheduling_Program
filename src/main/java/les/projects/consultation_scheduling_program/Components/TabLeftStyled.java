@@ -5,9 +5,19 @@ import javafx.scene.control.Tab;
 import javafx.scene.paint.Color;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
+/**
+ * This class extends the JavaFX Tab class. It formats the tab for left handed use and set the default appearance.
+ *
+ * @author Leslie C.Bomar 3rd
+ * @version 1.0
+ */
 public class TabLeftStyled extends Tab {
     private final Label label = new Label();
 
+    /**
+     * Initializes a JavaFX Tab, preformatted for left hand usage.
+     * @param text String to display on the Tab.
+     */
     public TabLeftStyled(String text) {
         this.label.setText(text);
         this.label.setFont(Styles.DefaultFont24);
@@ -22,6 +32,9 @@ public class TabLeftStyled extends Tab {
         this.deselectTab();
     }
 
+    /**
+     * Method changes the style of the tab to appear selected.
+     */
     public void selectTab() {
         this.label.setTextFill(Color.WHITE);
         this.setStyle(
@@ -31,6 +44,9 @@ public class TabLeftStyled extends Tab {
         );
     }
 
+    /**
+     * Method changes the style of the tab to appear unselected.
+     */
     public void deselectTab() {
         this.label.setTextFill(Color.BLACK);
         this.setStyle(

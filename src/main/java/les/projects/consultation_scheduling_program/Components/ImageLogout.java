@@ -4,8 +4,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
+/**
+ * This class extends the JavaFX BorderPane. Creates a formatted BorderPane with an image inside of it.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class ImageLogout extends BorderPane {
 
+    /**
+     * Creates a JavaFX BorderPane with an image in it used for loggins out of the application.
+     * @param w Desired width of the ImageLayout in pixels.
+     * @param h Desired height of the ImageLayout in pixels.
+     * @param margin Desired margin surrounding the image in pixels.
+     */
     public ImageLogout(int w, int h, double margin) {
         Region yMargin1 = new Region(),
                 yMargin2 = new Region(),

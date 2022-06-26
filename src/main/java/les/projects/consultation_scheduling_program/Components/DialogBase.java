@@ -10,10 +10,20 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import les.projects.consultation_scheduling_program.Main;
 
+/**
+ * Class extends the JavaFX Stage class. Creates a base class to format all dialog windows used in the app.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class DialogBase extends Stage {
     protected final HBox bottom = new HBox();
     protected final VBox center = new VBox();
 
+    /**
+     * Creates a JavaFX Stage preformatted for use in all dialog windows.
+     * @param windowTitle String to display in the title bar of the window.
+     */
     public DialogBase(String windowTitle) {
         BorderPane root = new BorderPane();
         this.setScene(new Scene(root));

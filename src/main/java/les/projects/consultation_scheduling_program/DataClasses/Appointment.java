@@ -16,6 +16,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
 
+/**
+ * This class manages the Appointment data object and related methods. It also handles all associated database methods.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class Appointment {
     private final SimpleObjectProperty<Customer> customer;
     private final SimpleObjectProperty<Contact> contact;
@@ -25,6 +31,19 @@ public class Appointment {
     private final SimpleObjectProperty<ZonedDateTime> start, end;
     public static ObservableList<Appointment> allAppointments;
 
+    /**
+     * Creates a new Appointment object.
+     * @param id The Appointment_ID value referenced in the database. (Integer)
+     * @param title The Title value referenced in the database. (String)
+     * @param description The Description value referenced in the database. (String)
+     * @param location The Location value referenced in the database. (String)
+     * @param type The Type value referenced in the database. (String)
+     * @param start A ZonedDateTime object instantiated using the Timestamp Start referenced in the database set to the LocalZone (ZonedDateTime)
+     * @param end A ZonedDateTime object instantiated using the Timestamp End referenced in the database set to the LocalZone (ZonedDateTime)
+     * @param customer A Customer object instantiated using the Customer_ID referenced in the database. (Customer)
+     * @param user A User object instantiated using the User_ID referenced in the database. (User)
+     * @param contact A Contact object instantiated using the Contact_ID in the database. (Contact)
+     */
     public Appointment(int id, String title, String description, String location,
                        String type, ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
         this.id = new SimpleIntegerProperty(id);
@@ -39,11 +58,30 @@ public class Appointment {
         this.contact = new SimpleObjectProperty<>(contact);
     }
 
+    /**
+     * This method overrides the default toSting() method for the appointment.
+     * @return Returns the appointment title as a String.
+     */
     @Override
     public String toString() {
         return this.title.get();
     }
 
+    /**
+     * This method creates a new Appointment in the database and then reloads all Appointment data from the database.
+     * This method intakes ZonedDateTime values in the local timezone and converts them to UCT before writing them to
+     * the database.
+     * @param title The title of the Appointment. (String)
+     * @param description The description of the Appointment. (String)
+     * @param location The location of the Appointment. (String)
+     * @param type The type of the Appointment. (Type)
+     * @param start The start date and time of the Appointment set to the local timezone. (ZonedDateTime)
+     * @param end The start date and time of the Appointment set to the local timezone. (ZonedDateTime)
+     * @param customer The Customer object associated with the Appointment. (Customer)
+     * @param user The User object associated with the Appointment. (User)
+     * @param contact The Contact object associated with the Appointment. (Contact)
+     * @return
+     */
     public static boolean add(String title, String description, String location,
                            String type, ZonedDateTime start, ZonedDateTime end,
                            Customer customer, User user,Contact contact) {
@@ -82,6 +120,20 @@ public class Appointment {
         }
     }
 
+    /**
+     * This method intakes user input and saves it to a preselected Appointment record. Note: This method intakes
+     * ZonedDateTime set to the local timezone and converts it to UCT before writing it to the database.
+     * @param title The title of the Appointment. (String)
+     * @param description The description of the Appointment. (String)
+     * @param location The location of the Appointment. (String)
+     * @param type The type of the Appointment. (Type)
+     * @param start The start date and time of the Appointment set to the local timezone. (ZonedDateTime)
+     * @param end The start date and time of the Appointment set to the local timezone. (ZonedDateTime)
+     * @param customer The Customer object associated with the Appointment. (Customer)
+     * @param user The User object associated with the Appointment. (User)
+     * @param contact The Contact object associated with the Appointment. (Contact)
+     * @return
+     */
     public final boolean update(String title, String description, String location, String type,
                           ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
         try {
@@ -114,6 +166,10 @@ public class Appointment {
         }
     }
 
+    /**
+     * This method deletes the Appointment from the database and reloads all Appointment data from the database.
+     * @return Returns true if the deletion was successful.
+     */
     public final boolean delete() {
         try {
             //Get the selected record.
@@ -134,8 +190,12 @@ public class Appointment {
         }
     }
 
-    public static ObservableList<Appointment> getAllAppointments() { return allAppointments;}
-
+    /**
+     * This method selects all Appointments for the current user and checks them to see if they will occur within 15
+     * minutes of the user's login. If there are appointments within 15 minutes then a dialog is displayed containing
+     * the appointment information. If there are no appointments within 15 minutes then a dialog is displayed stating
+     * that there are no upcoming appointments.
+     */
     public static void upcomingAppointments() {
         Appointment[] userAppointments = allAppointments.stream()
                 .filter(a -> a.getUser().equals(Main.currentUser)).toArray(Appointment[]::new);
@@ -158,6 +218,10 @@ public class Appointment {
         }
     }
 
+    /**
+     * This method queries the database for all Appointment data and parses it to populate the allAppointments list with
+     * Appointment objects.
+     */
     public static void loadData() {
         //Here we pull all the Appointment data from the database
         try {
@@ -197,36 +261,128 @@ public class Appointment {
         }
     }
 
-    //Formatters
-    public final String getStartFormatted() {
-        return this.start.get().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Main.locale));
-    }
-    public final String getEndFormatted() {
-        return this.end.get().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Main.locale));
-    }
-
     //Getters
+
+    /**
+     * Returns the Contact object associated to the Appointment.
+     * @return Contact object associated to the Appointment.
+     */
     public final Contact getContact() { return this.contact.get(); }
+
+    /**
+     * Returns the Customer object associated to the Appointment.
+     * @return Customer object associated to the Appointment.
+     */
     public final Customer getCustomer() { return this.customer.get(); }
+
+    /**
+     * Returns the description associated to the Appointment.
+     * @return Description of the Appointment. (String)
+     */
     public final String getDescription() { return this.description.get(); }
+
+    /**
+     * Returns the end date and time of the Appointment.
+     * @return The end time of the Appointment set to the local timezone. (ZonedDateTime)
+     */
     public final ZonedDateTime getEnd() { return this.end.get(); }
+
+    /**
+     * Returns ID of the Appointment.
+     * @return The ID of the Appointment. (Integer)
+     */
     public final int getId() { return this.id.get(); }
+
+    /**
+     * Returns the location of the Appointment.
+     * @return The location of the Appointment. (String)
+     */
     public final String getLocation() { return this.location.get(); }
+
+    /**
+     * Returns the start date and time of the Appointment.
+     * @return The start time of the Appointment set to the local timezone. (ZonedDateTime)
+     */
     public final ZonedDateTime getStart() { return this.start.get(); }
+
+    /**
+     * Returns the title of the Appointment.
+     * @return The title of the Appointment. (String)
+     */
     public final String getTitle() { return this.title.get(); }
+
+    /**
+     * Returns the type of the Appointment.
+     * @return The type of the Appointment. (String)
+     */
     public final String getType() { return this.type.get(); }
+
+    /**
+     * Returns the User object associated to the Appointment.
+     * @return User object associated to the Appointment.
+     */
     public final User getUser() { return this.user.get(); }
 
     //Property Getters
+
+    /**
+     * Returns the property value of the Contact.
+     * @return Property value of the Contact.
+     */
     public final ObjectProperty<Contact> getContactProperty() { return this.contact; }
+
+    /**
+     * Returns the property value of the Customer.
+     * @return Property value of the Customer.
+     */
     public final ObjectProperty<Customer> getCustomerProperty() { return this.customer; }
+
+    /**
+     * Returns the property value of the description.
+     * @return Property value of description.
+     */
     public final Property<String> getDescriptionProperty() { return this.description; }
+
+    /**
+     * Returns the property value of the end.
+     * @return Property value of end.
+     */
     public final ObjectProperty<ZonedDateTime> getEndProperty() { return this.end; }
+
+    /**
+     * Returns the property value of the ID.
+     * @return Property of the ID.
+     */
     public final Property<Number> getIdProperty() {  return this.id; }
+
+    /**
+     * Returns the property value of the location.
+     * @return Property of the location.
+     */
     public final Property<String> getLocationProperty() { return this.location; }
+
+    /**
+     * Returns the property value of the start.
+     * @return Property of the start.
+     */
     public final ObjectProperty<ZonedDateTime> getStartProperty() { return this.start; }
+
+    /**
+     * Return the property value of the title.
+     * @return Property of the title.
+     */
     public final Property<String> getTitleProperty() { return this.title; }
+
+    /**
+     * Return the property value of the type.
+     * @return Property of the type.
+     */
     public final Property<String> getTypeProperty() { return this.type; }
+
+    /**
+     * Return the property value of the user.
+     * @return Property of the user.
+     */
     public final ObjectProperty<User> getUserProperty() { return this.user; }
 
     //Property Setters

@@ -101,7 +101,7 @@ public class Customer {
     }
 
     public final ObservableList<Appointment> getAppointments() {
-        Appointment[] appointments = Appointment.getAllAppointments().stream()
+        Appointment[] appointments = Appointment.allAppointments.stream()
                 .filter(i -> i.getCustomer().equals(this)).toArray(Appointment[]::new);
         return FXCollections.observableArrayList(appointments);
     }

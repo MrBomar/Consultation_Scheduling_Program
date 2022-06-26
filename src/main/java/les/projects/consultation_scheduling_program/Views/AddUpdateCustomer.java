@@ -28,18 +28,15 @@ public class AddUpdateCustomer extends DialogBase {
     private final ComboBoxStyled<Division> division = new ComboBoxStyled<>(Division.allDivisions, "");
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"), true, false);
     private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, "");
-    private final TableView<Customer> customerTableView;
 
-    public AddUpdateCustomer(TableView<Customer> customerTableView) {
+    public AddUpdateCustomer() {
         super(lrb.getString("add_new_customer"));
         this.id.setPromptText("(Auto generated)");
-        this.customerTableView = customerTableView;
         this.build();
     }
 
-    public AddUpdateCustomer(TableView<Customer> customerTableView, Customer customer) {
+    public AddUpdateCustomer( Customer customer) {
         super(lrb.getString("update_customer"));
-        this.customerTableView = customerTableView;
         this.build();
 
         //FIXME - Insert logic to pull customer record and populate fields.
@@ -121,7 +118,6 @@ public class AddUpdateCustomer extends DialogBase {
                 DialogMessage dialog = new DialogMessage(Message.RecordSaved);
                 dialog.showAndWait();
                 this.close();
-                this.customerTableView.refresh();
             } else {
                 //We have fields that require filling out.
                 DialogMessage dialog = new DialogMessage(Message.InvalidInput);

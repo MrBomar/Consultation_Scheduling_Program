@@ -37,9 +37,7 @@ public class Division {
 
     public static void add(String divisionName, Country country) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String sql = "SELECT * FROM first_level_divisions";
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM first_level_divisions");
 
             rs.moveToInsertRow();
             rs.updateString("Division", divisionName);
@@ -47,7 +45,7 @@ public class Division {
             rs.updateString("Created_By", Main.currentUser.getUserName());
             rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
             rs.updateInt("Country_ID", country.getId());
-            rs.updateRow();
+            rs.insertRow();
 
             loadData();
         } catch (Exception e) {
@@ -60,10 +58,9 @@ public class Division {
 
     public final void update(String divisionName, Country country) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String sql = "SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId());
 
+            rs.next();
             rs.updateString("Division", divisionName);
             rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
             rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
@@ -80,10 +77,9 @@ public class Division {
 
     public final void delete() {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String sql = "SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId());
 
+            rs.next();
             rs.deleteRow();
 
             loadData();

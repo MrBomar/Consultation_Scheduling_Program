@@ -21,7 +21,8 @@ public class Customer {
     private final SimpleObjectProperty<Division> division;
     public static ObservableList<Customer> allCustomers;
 
-    public Customer(int id, String customerName, String address, String postalCode, String phone, Country country, Division division) {
+    public Customer(int id, String customerName, String address, String postalCode,
+                    String phone, Country country, Division division) {
         this.id = new SimpleIntegerProperty(id);
         this.name = new SimpleStringProperty(customerName);
         this.address = new SimpleStringProperty(address);
@@ -36,11 +37,10 @@ public class Customer {
         return this.name.get();
     }
 
-    public static void add(String customerName, String address, String postalCode, String phone, Country country, Division division) {
+    public static void add(String customerName, String address, String postalCode, String phone,
+                           Country country, Division division) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String sql = "SELECT * FROM customers";
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM customers");
 
             rs.moveToInsertRow();
             rs.updateString("Customer_Name", customerName);
@@ -52,7 +52,7 @@ public class Customer {
             rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
             rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
             rs.updateInt("Division_Id", division.getId());
-            rs.updateRow();
+            rs.insertRow();
 
             loadData();
         } catch (Exception e) {
@@ -65,10 +65,9 @@ public class Customer {
 
     public final void delete() {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM Customer WHERE Customer_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM Customers WHERE Customer_ID = " + this.getId());
 
+            rs.next();
             rs.deleteRow();
 
             loadData();
@@ -83,10 +82,9 @@ public class Customer {
     public final void update(
             String customerName, String address, String postalCode, String phone, Country country, Division division) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String sql = "SELECT * FROM customers WHERE Customer_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM customers WHERE Customer_ID = " + this.getId());
 
+            rs.next();
             rs.updateString("Customer_Name", customerName);
             rs.updateString("Address", address);
             rs.updateString("Postal_Code", postalCode);
@@ -106,7 +104,8 @@ public class Customer {
     }
 
     public final ObservableList<Appointment> getAppointments() {
-        Appointment[] appointments = Appointment.getAllAppointments().stream().filter(i -> i.getCustomer().equals(this)).toArray(Appointment[]::new);
+        Appointment[] appointments = Appointment.getAllAppointments().stream()
+                .filter(i -> i.getCustomer().equals(this)).toArray(Appointment[]::new);
         return FXCollections.observableArrayList(appointments);
     }
 
@@ -118,7 +117,8 @@ public class Customer {
             ResultSet rs = stmt.executeQuery(qry);
 
             if(!rs.next()) {
-                DialogMessage dialog = new DialogMessage("Data Not Found", "No customers were found in the database.");
+                DialogMessage dialog = new DialogMessage(
+                        "Data Not Found", "No customers were found in the database.");
                 dialog.showAndWait();
             } else {
                 allCustomers = FXCollections.observableList(new ArrayList<Customer>());

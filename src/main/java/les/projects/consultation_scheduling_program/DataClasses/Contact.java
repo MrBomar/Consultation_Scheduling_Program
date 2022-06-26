@@ -32,15 +32,13 @@ public class Contact {
 
     public static boolean add(String contactName, String email) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM contacts";
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM contacts");
 
             //Move to the insertRow and add record
             rs.moveToInsertRow();
             rs.updateString("Contact_Name", contactName);
             rs.updateString("Contact_Email", email);
-            rs.updateRow();
+            rs.insertRow();
 
             //Refresh the ObservableList
             loadData();
@@ -56,11 +54,10 @@ public class Contact {
 
     public void delete() {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM contact WHERE Contact_ID = " + this.getID();
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM contacts WHERE Contact_ID = " + this.getID());
 
             //Try to delete
+            rs.next();
             rs.deleteRow();
 
             //Refresh the ObservableList
@@ -88,7 +85,6 @@ public class Contact {
                 allContacts = FXCollections.observableList(new ArrayList<Contact>());
 
                 //Loop through results and add them to list.
-
                 do {
                     Contact contact = new Contact(
                             rs.getInt("Contact_ID"),
@@ -108,11 +104,10 @@ public class Contact {
 
     public void update(String contactName, String email) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String sql = "SELLECT * FROM contacts WHERE Contact_ID = " + this.getID();
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = JDBC.newResultSet("SELLECT * FROM contacts WHERE Contact_ID = " + this.getID());
 
             //Update the record
+            rs.next();
             rs.updateString("Contact_Name", contactName);
             rs.updateString("Email", email);
             rs.updateRow();

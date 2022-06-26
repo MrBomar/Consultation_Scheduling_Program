@@ -34,9 +34,7 @@ public class Country {
 
     public static void add(String countryName) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM countries";
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM countries");
 
             rs.moveToInsertRow();
             rs.updateString("Country", countryName);
@@ -57,10 +55,9 @@ public class Country {
 
     public void delete() {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM countries WHERE Country_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM countries WHERE Country_ID = " + this.getId());
 
+            rs.next();
             rs.deleteRow();
 
             loadData();
@@ -74,10 +71,9 @@ public class Country {
 
     public void update(String countryName){
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM countries WHERE Country_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM countries WHERE Country_ID = " + this.getId());
 
+            rs.next();
             rs.updateString("Country", countryName);
             rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
             rs.updateString("Last_Updated_By", Main.currentUser.getUserName());

@@ -28,9 +28,7 @@ public class User {
 
     public static void addUser(String name, String password) {
         try {
-            Statement stmt = JDBC.connection.createStatement();
-            String sql = "SELECT * FROM users";
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM users");
 
             rs.moveToInsertRow();
             rs.updateString("User_Name", name);
@@ -39,7 +37,7 @@ public class User {
             rs.updateString("Created_By", Main.currentUser.getUserName());
             rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
             rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
-            rs.updateRow();
+            rs.insertRow();
 
             loadData();
         } catch (Exception e) {

@@ -139,14 +139,16 @@ public class CustomersView extends BorderPane {
     }
 
     private void addCustomer(Event e) {
-        AddUpdateCustomer modal = new AddUpdateCustomer(this.customerTable);
+        AddUpdateCustomer modal = new AddUpdateCustomer();
         modal.showAndWait();
+        this.customerTable.setItems(Customer.allCustomers);
     }
 
     private void updateCustomer(Event e) {
         if(this.customerTable.getSelectionModel().getSelectedItems().size() > 0) {
-            AddUpdateCustomer modal = new AddUpdateCustomer(this.customerTable,this.customerTable.getSelectionModel().getSelectedItem());
+            AddUpdateCustomer modal = new AddUpdateCustomer(this.customerTable.getSelectionModel().getSelectedItem());
             modal.showAndWait();
+            this.customerTable.setItems(Customer.allCustomers);
         } else {
             DialogMessage dialog = new DialogMessage(Message.NoSelectedCustomer);
             dialog.showAndWait();
@@ -182,7 +184,7 @@ public class CustomersView extends BorderPane {
                 this.customerTable.getSelectionModel().getSelectedItem().delete();
             }
         }
-        this.customerTable.refresh();
+        this.customerTable.setItems(Customer.allCustomers);
     }
 
     private TableView<Customer> buildCustomerTable() {

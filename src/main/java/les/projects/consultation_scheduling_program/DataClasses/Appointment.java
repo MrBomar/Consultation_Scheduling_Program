@@ -52,9 +52,7 @@ public class Appointment {
                            Customer customer, User user,Contact contact) {
         try {
             //Get records
-            Statement stmt = JDBC.connection.createStatement();
-            String query = "SELECT * FROM appointments";
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM appointments");
 
             //Insert new record
             rs.moveToInsertRow();
@@ -68,9 +66,9 @@ public class Appointment {
             rs.updateString("Created_By", Main.currentUser.getUserName());
             rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
             rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
-            rs.updateInt("CustomerID", customer.getId());
-            rs.updateInt("User", user.getId());
-            rs.updateInt("Contact", contact.getID());
+            rs.updateInt("Customer_ID", customer.getId());
+            rs.updateInt("User_ID", user.getId());
+            rs.updateInt("Contact_ID", contact.getID());
 
             //Save new record
             rs.insertRow();
@@ -91,11 +89,10 @@ public class Appointment {
                           ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
         try {
             //Pull current record.
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM appointments WHERE Appointment_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM appointments WHERE Appointment_ID = " + this.getId());
 
             //Update the record fields
+            rs.next();
             rs.updateString("Title", title);
             rs.updateString("Description", description);
             rs.updateString("Location", location);
@@ -123,11 +120,10 @@ public class Appointment {
     public final boolean delete() {
         try {
             //Get the selected record.
-            Statement stmt = JDBC.connection.createStatement();
-            String qry = "SELECT * FROM appointments WHERE Appointment_ID = " + this.getId();
-            ResultSet rs = stmt.executeQuery(qry);
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM appointments WHERE Appointment_ID = " + this.getId());
 
             //Delete the selected record.
+            rs.next();
             rs.deleteRow();
 
             //Refresh the ObservableList

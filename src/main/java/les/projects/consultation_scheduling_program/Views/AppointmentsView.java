@@ -109,12 +109,14 @@ public class AppointmentsView extends BorderPane {
     private void addAppointmentClick(Event event) {
         AddUpdateAppointment modal = new AddUpdateAppointment(appointmentTable);
         modal.showAndWait();
+        appointmentTable.setItems(Appointment.allAppointments);
     }
 
     private void updateAppointmentClick (Event event) {
         if((long) this.appointmentTable.getSelectionModel().getSelectedItems().size() > 0) {
             AddUpdateAppointment modal = new AddUpdateAppointment(appointmentTable, this.appointmentTable.getSelectionModel().getSelectedItem());
             modal.showAndWait();
+            appointmentTable.setItems(Appointment.allAppointments);
         } else {
             DialogMessage dialog = new DialogMessage(Message.NoAppointmentSelected);
             dialog.showAndWait();
@@ -134,6 +136,7 @@ public class AppointmentsView extends BorderPane {
                 this.appointmentTable.refresh();
                 DialogMessage dm = new DialogMessage(Message.AppointmentCanceled, args);
                 dm.showAndWait();
+                appointmentTable.setItems(Appointment.allAppointments);
             }
         } else {
             DialogMessage dialog = new DialogMessage(Message.NoAppointmentSelected);

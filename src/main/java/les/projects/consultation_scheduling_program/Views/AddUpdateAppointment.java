@@ -101,12 +101,12 @@ public class AddUpdateAppointment extends DialogBase {
      * This event handler saves the data from the form into the Appointment object.
      * The Appointment object will handle the database updates.
      */
-    private boolean saveClick(Event e) {
+    private void saveClick(Event e) {
         if(!this.changesHaveBeenMade()) {
             //No changes were detects
             DialogMessage dialog = new DialogMessage(Message.NothingChanged);
             dialog.showAndWait();
-            return false;
+            return;
         }
 
         if(!this.requiredFieldsFilled()) {
@@ -115,9 +115,9 @@ public class AddUpdateAppointment extends DialogBase {
             dialog.showAndWait();
         }
 
-        if(!this.validTimeRange()) return false;
+        if(!this.validTimeRange()) return;
 
-        if(!this.noConflictingAppointments()) return false;
+        if(!this.noConflictingAppointments()) return;
 
         if (currentAppointment == null) {
             //There is no current appointment, so we need to add a new one.
@@ -150,7 +150,6 @@ public class AddUpdateAppointment extends DialogBase {
         dialog.showAndWait();
         Appointment.loadData();
         this.close();
-        return true;
     }
 
     /**

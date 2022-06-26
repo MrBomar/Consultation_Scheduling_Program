@@ -4,7 +4,6 @@ import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -102,7 +101,6 @@ public class AddUpdateCustomer extends DialogBase {
                             this.address.getInput(),
                             this.zip.getInput(),
                             this.phone.getInput(),
-                            this.country.getValue(),
                             this.division.getValue()
                     );
                 } else {
@@ -111,7 +109,6 @@ public class AddUpdateCustomer extends DialogBase {
                             this.address.getInput(),
                             this.zip.getInput(),
                             this.phone.getInput(),
-                            this.country.getValue(),
                             this.division.getValue()
                     );
                 }

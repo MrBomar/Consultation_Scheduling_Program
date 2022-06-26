@@ -4,26 +4,9 @@ import java.sql.Timestamp;
 import java.time.*;
 
 public abstract class DTC {
-    public static ZonedDateTime toUniversal(ZonedDateTime ldt) {
-        return ldt.withZoneSameInstant(ZoneId.of("UTC"));
-    }
-
-    public static ZonedDateTime toUniversal(LocalDate ld, LocalTime lt) {
-        return ZonedDateTime.of(ld,lt,ZoneId.of("UTC"));
-    }
 
     public static ZonedDateTime toLocal(ZonedDateTime udt) {
         return udt.withZoneSameInstant(ZoneId.systemDefault());
-    }
-
-    public static ZonedDateTime toLocal(LocalDate ld, LocalTime lt) {
-        return ZonedDateTime.of(ld,lt,ZoneId.systemDefault());
-    }
-
-    public static int[] getTime(ZonedDateTime udt) {
-        //Converts universal date time to local date time and returns the time as int[Hour,Minute]
-        ZonedDateTime toLocal = toLocal(udt);
-        return new int[] { toLocal.getHour(), toLocal.getMinute() };
     }
 
     public static String getTimeString(ZonedDateTime udt) {

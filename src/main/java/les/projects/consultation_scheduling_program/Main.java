@@ -1,12 +1,10 @@
 package les.projects.consultation_scheduling_program;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import les.projects.consultation_scheduling_program.DataClasses.*;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.Login;
@@ -68,9 +66,5 @@ public class Main extends Application {
         Division.loadData();
         Customer.loadData();
         Appointment.loadData();
-    }
-
-    public static void appointmentCheck() {
-
     }
 }

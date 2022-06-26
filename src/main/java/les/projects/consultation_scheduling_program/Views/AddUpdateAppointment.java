@@ -2,7 +2,6 @@ package les.projects.consultation_scheduling_program.Views;
 
 import javafx.event.Event;
 import javafx.geometry.Insets;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.VBox;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
@@ -36,16 +35,12 @@ public class AddUpdateAppointment extends DialogBase {
     private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("title"), true, false);
     private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"), false, false);
 
-    //Reference Only
-    private final TableView<Appointment> appointmentsTable;
-
     /**
      * <p>Method instantiates a dialog without any appointment record. Used for new appointment records.</p>
      */
-    public AddUpdateAppointment(TableView<Appointment> appointmentsTable) {
+    public AddUpdateAppointment() {
         super(lrb.getString("create_new_appointment"));
         this.id.setPromptText("(Auto generated)");
-        this.appointmentsTable = appointmentsTable;
         this.build();
     }
 
@@ -54,9 +49,8 @@ public class AddUpdateAppointment extends DialogBase {
      *
      * @param appointment The appointment object to be edited.
      */
-    public AddUpdateAppointment(TableView<Appointment> appointmentsTable, Appointment appointment) {
+    public AddUpdateAppointment(Appointment appointment) {
         super(lrb.getString("edit_appointment"));
-        this.appointmentsTable = appointmentsTable;
         this.build();
 
         this.currentAppointment = appointment;
@@ -240,8 +234,8 @@ public class AddUpdateAppointment extends DialogBase {
 
             LocalTime startLT = startZDT.toLocalTime();
             LocalTime endLT = endZDT.toLocalTime();
-            LocalTime rangeStart = LocalTime.of(8, 00);
-            LocalTime rangeEnd = LocalTime.of(22, 00);
+            LocalTime rangeStart = LocalTime.of(8, 0);
+            LocalTime rangeEnd = LocalTime.of(22, 0);
 
             if (startLT.isBefore(rangeStart) || startLT.isAfter(rangeEnd) || endLT.isBefore(rangeStart) || endLT.isAfter(rangeEnd)) {
                 //The times are not during the approved hours of operation.
@@ -274,10 +268,10 @@ public class AddUpdateAppointment extends DialogBase {
 
         Appointment[] customerAppointments = Appointment.allAppointments.stream()
                 .filter(i -> i.getCustomer().equals(this.customer.getValue())).toArray(Appointment[]::new);
-        for (Appointment appt : customerAppointments) {
-            if(isInWindow(this.start.getEntry(), appt.getStart(), appt.getEnd()) ||
-            isInWindow(this.end.getEntry(), appt.getStart(),appt.getEnd()) ||
-            overlapsWindow(appt.getStart(), appt.getEnd())
+        for (Appointment appointment : customerAppointments) {
+            if(isInWindow(this.start.getEntry(), appointment.getStart(), appointment.getEnd()) ||
+            isInWindow(this.end.getEntry(), appointment.getStart(),appointment.getEnd()) ||
+            overlapsWindow(appointment.getStart(), appointment.getEnd())
             ) {
                 System.out.println("We have a problem.");
                 //The input conflicts with existing appointment.

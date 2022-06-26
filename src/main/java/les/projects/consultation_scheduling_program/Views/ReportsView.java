@@ -1,7 +1,5 @@
 package les.projects.consultation_scheduling_program.Views;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -19,9 +17,7 @@ public class ReportsView extends Pane {
         Tab tab3 = new TabLeftStyled(lrb.getString("contact_appointment_schedule"));
 
         tabPane.getSelectionModel().selectedItemProperty().addListener(
-            new ChangeListener<Tab>() {
-                @Override
-                public void changed(ObservableValue<? extends Tab> observableValue, Tab oldTab, Tab newTab) {
+                (observableValue, oldTab, newTab) -> {
                     if(oldTab != null) {
                         TabLeftStyled oldTab1 = (TabLeftStyled) oldTab;
                         oldTab1.deselectTab();
@@ -30,7 +26,6 @@ public class ReportsView extends Pane {
                     TabLeftStyled newTab1 = (TabLeftStyled) newTab;
                     newTab1.selectTab();
                 }
-            }
         );
 
         tab1.setContent(new ReportsTab1());
@@ -45,11 +40,10 @@ public class ReportsView extends Pane {
     }
 
     private String tabPaneStyle() {
-        return new String (
-        "-fx-tab-min-width: 233px;" +
-                "-fx-tab-max-width: 233px;" +
-                "-fx-tab-min-height: 233px;" +
-                "-fx-tab-max-height: 233px;"
-        );
+        return
+            "-fx-tab-min-width: 233px;" +
+            "-fx-tab-max-width: 233px;" +
+            "-fx-tab-min-height: 233px;" +
+            "-fx-tab-max-height: 233px;";
     }
 }

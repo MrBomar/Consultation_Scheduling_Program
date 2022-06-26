@@ -7,18 +7,18 @@ import javafx.scene.layout.BorderPane;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
 public class PasswordFieldLabeledLarge extends BorderPane {
-    private Label label = new Label();
-    private PasswordField passwordField = new PasswordField();
-    private String initValue = "";
+    private final PasswordField passwordField = new PasswordField();
+    private final String initValue = "";
     boolean changed = false;
 
     public PasswordFieldLabeledLarge(String labelText, String placeholder, Boolean disabled) {
         this.setPadding(new Insets(0,0,20,0));
 
-        this.label.setText(labelText);
-        this.label.setFont(Styles.DefaultFont20);
-        this.label.setTextFill(Styles.TextColor);
-        this.setLeft(this.label);
+        Label label = new Label();
+        label.setText(labelText);
+        label.setFont(Styles.DefaultFont20);
+        label.setTextFill(Styles.TextColor);
+        this.setLeft(label);
 
         this.passwordField.setPromptText(placeholder);
         this.passwordField.setMinSize(276,38);
@@ -41,18 +41,11 @@ public class PasswordFieldLabeledLarge extends BorderPane {
         );
     }
 
-    public String getInput() {
+    public final String getInput() {
         return passwordField.getText();
     }
 
-    public void resetInput() {
+    public final void resetInput() {
         this.passwordField.setText("");
     }
-
-    public void setInitialValue(String s) {
-        this.initValue = s;
-        this.passwordField.setText(s);
-    }
-
-    public boolean isChanged() { return this.changed; }
 }

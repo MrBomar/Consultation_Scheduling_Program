@@ -1,6 +1,5 @@
 package les.projects.consultation_scheduling_program.Views;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -107,14 +106,14 @@ public class AppointmentsView extends BorderPane {
     }
 
     private void addAppointmentClick(Event event) {
-        AddUpdateAppointment modal = new AddUpdateAppointment(appointmentTable);
+        AddUpdateAppointment modal = new AddUpdateAppointment();
         modal.showAndWait();
         appointmentTable.setItems(Appointment.allAppointments);
     }
 
     private void updateAppointmentClick (Event event) {
         if((long) this.appointmentTable.getSelectionModel().getSelectedItems().size() > 0) {
-            AddUpdateAppointment modal = new AddUpdateAppointment(appointmentTable, this.appointmentTable.getSelectionModel().getSelectedItem());
+            AddUpdateAppointment modal = new AddUpdateAppointment(this.appointmentTable.getSelectionModel().getSelectedItem());
             modal.showAndWait();
             appointmentTable.setItems(Appointment.allAppointments);
         } else {

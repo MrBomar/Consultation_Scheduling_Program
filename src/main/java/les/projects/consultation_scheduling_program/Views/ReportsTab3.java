@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import les.projects.consultation_scheduling_program.Components.ButtonGap;
 import les.projects.consultation_scheduling_program.Components.ButtonStandard;
 import les.projects.consultation_scheduling_program.Components.ComboBoxStyled;
 import les.projects.consultation_scheduling_program.DataClasses.Contact;
@@ -27,9 +28,9 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 /**
  * Contact Appointment Schedule
  */
-public class ReportsTab3 extends VBox {
-    private ComboBoxStyled<Contact> selectContact = new ComboBoxStyled<>(Contact.allContacts);
-    private TableView appointments = new TableView();
+public final class ReportsTab3 extends VBox {
+    private final ComboBoxStyled<Contact> selectContact = new ComboBoxStyled<>(Contact.allContacts);
+    private final TableView<ReportThreeItem> appointments = new TableView<>();
     private final ObservableList<ReportThreeItem> scheduleItems = FXCollections.observableArrayList(new ArrayList<>());
 
     public ReportsTab3() {
@@ -102,9 +103,8 @@ public class ReportsTab3 extends VBox {
         this.appointments.getColumns().add(customerCol);
 
         ButtonStandard clear = new ButtonStandard("Clear");
-        clear.setOnMouseClicked(e -> {
-            this.selectContact.setValue(null);
-        });
+        clear.setOnMouseClicked(e -> this.selectContact.setValue(null));
+        dropDownGroup.getChildren().add(new ButtonGap());
         dropDownGroup.getChildren().add(clear);
 
         this.setPadding(Styles.Padding30px);

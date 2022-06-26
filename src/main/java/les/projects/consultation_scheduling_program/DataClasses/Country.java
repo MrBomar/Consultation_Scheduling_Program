@@ -5,17 +5,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 public class Country {
     private final SimpleIntegerProperty id;
@@ -105,7 +101,7 @@ public class Country {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No countries were found in the database.");
                 dialog.showAndWait();
             } else {
-                allCountries = FXCollections.observableList(new ArrayList<Country>());
+                allCountries = FXCollections.observableList(new ArrayList<>());
 
                 //Loop through the results
                 do {
@@ -132,13 +128,7 @@ public class Country {
         return this.name.get();
     }
     public static Country getById(int id) {
-        try {
-            return allCountries.stream().filter(d -> d.getId() == id).findFirst().get();
-        } catch (NoSuchElementException e) {
-            DialogMessage dialog = new DialogMessage(Message.MissingCountryRecord);
-            dialog.showAndWait();
-            return allCountries.stream().findFirst().get();
-        }
+        return allCountries.stream().filter(d -> d.getId() == id).findFirst().get();
     }
 
     //Property Getters

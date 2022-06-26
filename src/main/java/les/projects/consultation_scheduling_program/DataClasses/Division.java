@@ -6,17 +6,13 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 public class Division {
     private final SimpleIntegerProperty id;
@@ -64,6 +60,7 @@ public class Division {
             rs.updateString("Division", divisionName);
             rs.updateTimestamp("Last_Update", DTC.currentTimestamp());
             rs.updateString("Last_Updated_By", Main.currentUser.getUserName());
+            rs.updateInt("Country_ID", country.getId());
             rs.updateRow();
 
             loadData();
@@ -108,7 +105,7 @@ public class Division {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No divisions were found in the database.");
                 dialog.showAndWait();
             } else {
-                allDivisions = FXCollections.observableList(new ArrayList<Division>());
+                allDivisions = FXCollections.observableList(new ArrayList<>());
 
                 //Loop through results and add division to list.
                 do {
@@ -132,15 +129,7 @@ public class Division {
     public final Country getCountry() { return this.country.get(); }
     public final String getName() { return this.name.get(); }
     public final Integer getId() { return this.id.get(); }
-    public static Division getById(int id) {
-        try {
-            return allDivisions.stream().filter(d -> d.getId() == id).findFirst().get();
-        } catch (NoSuchElementException e) {
-            DialogMessage dialog = new DialogMessage(Message.MissingDivisionRecord);
-            dialog.showAndWait();
-            return allDivisions.stream().findFirst().get();
-        }
-    }
+    public static Division getById(int id) { return allDivisions.stream().filter(d -> d.getId() == id).findFirst().get(); }
 
     //Property Getters
     public final Property<Country> getCountryProperty() { return this.country; }

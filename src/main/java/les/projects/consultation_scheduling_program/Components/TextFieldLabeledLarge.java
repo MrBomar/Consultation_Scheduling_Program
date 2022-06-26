@@ -7,18 +7,17 @@ import javafx.scene.layout.BorderPane;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
 public class TextFieldLabeledLarge extends BorderPane {
-    private Label label = new Label();
-    private TextField textField = new TextField();
-    private String initValue = "";
+    private final TextField textField = new TextField();
+    private final String initValue = "";
     boolean changed = false;
 
     public TextFieldLabeledLarge(String labelText, String placeholder, Boolean disabled) {
         this.setPadding(new Insets(0,0,20,0));
 
-        this.label.setText(labelText);
-        this.label.setFont(Styles.DefaultFont20);
-        this.label.setTextFill(Styles.TextColor);
-        this.setLeft(this.label);
+        Label label = new Label(labelText);
+        label.setFont(Styles.DefaultFont20);
+        label.setTextFill(Styles.TextColor);
+        this.setLeft(label);
 
         this.textField.setPromptText(placeholder);
         this.textField.setMinSize(276,38);
@@ -48,11 +47,4 @@ public class TextFieldLabeledLarge extends BorderPane {
     public void resetInput() {
         this.textField.setText("");
     }
-
-    public void setInitialValue(String s) {
-        this.initValue = s;
-        this.textField.setText(s);
-    }
-
-    public boolean isChanged() { return this.changed; }
 }

@@ -92,24 +92,23 @@ public class DateTimePicker extends BorderPane {
         this.datePicker.setValue(this.initialValue.toLocalDate());
         int hour1 = this.initialValue.getHour();
         int hour2 = (hour1 > 12) ? hour1 - 12 : hour1;
-        this.hourPicker.setValue(this.hourPicker.getItems().stream().filter(h -> h.number == hour2).findFirst().get());
-        this.minutePicker.setValue(this.minutePicker.getItems().stream().filter(m -> m.number == this.initialValue.getMinute()).findFirst().get());
+
+       this.hourPicker.getItems().stream().filter(h -> h.number == hour2).findFirst().ifPresent(this.hourPicker::setValue);
+       this.minutePicker.getItems().stream().filter(m -> m.number == this.initialValue.getMinute()).findFirst().ifPresent(this.minutePicker::setValue);
+
         Meridiem meridiem = (hour1 > 11) ? Meridiem.PM : Meridiem.AM;
         this.meridiemPicker.setValue(meridiem);
     }
 
     public boolean isChanged() {
         if(this.validEntry()) {
-            if(getEntry().getMonth() == this.initialValue.getMonth() &&
-            getEntry().getDayOfMonth() == this.initialValue.getDayOfMonth() &&
-            getEntry().getYear() == this.initialValue.getYear() &&
-            getEntry().getHour() == this.initialValue.getHour() &&
-            getEntry().getMinute() == this.initialValue.getMinute())
-            return false;
+            return getEntry().getMonth() != this.initialValue.getMonth() ||
+                    getEntry().getDayOfMonth() != this.initialValue.getDayOfMonth() ||
+                    getEntry().getYear() != this.initialValue.getYear() ||
+                    getEntry().getHour() != this.initialValue.getHour() ||
+                    getEntry().getMinute() != this.initialValue.getMinute();
         } else {
             return true;
         }
-        return true;
     }
-
 }

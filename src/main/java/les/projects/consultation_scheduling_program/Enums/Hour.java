@@ -27,8 +27,7 @@ public enum Hour {
     }
 
     public static ObservableList<Hour> getHours() {
-        ObservableList<Hour> list = FXCollections.observableArrayList(values());
-        return list;
+        return FXCollections.observableArrayList(values());
     }
 
     public static Hour getObjById(int id) {
@@ -46,5 +45,5 @@ public enum Hour {
     public String toString() {
         return "" + this.number;
     }
-};
+}
 

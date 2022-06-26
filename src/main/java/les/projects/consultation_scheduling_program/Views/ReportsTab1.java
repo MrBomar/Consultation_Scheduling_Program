@@ -2,15 +2,10 @@ package les.projects.consultation_scheduling_program.Views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import les.projects.consultation_scheduling_program.Components.ComboBoxStyled;
-import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.ReportOneItem;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
@@ -26,10 +21,9 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
  * Customer Appointments by Type and Month.
  */
 public class ReportsTab1 extends VBox {
-    private ComboBoxStyled<Customer> selectContact = new ComboBoxStyled<Customer>(Customer.allCustomers);
-    private TableView appointments = new TableView();
 
     public ReportsTab1() {
+        TableView<ReportOneItem> appointments = new TableView<>();
         this.setMinSize(Main.appWidth - 313, Main.appHeight - 70);
         this.setMaxSize(Main.appWidth - 313, Main.appHeight - 70);
         this.setBackground(Styles.BackgroundWhite);
@@ -61,9 +55,9 @@ public class ReportsTab1 extends VBox {
         monthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         countCol.setCellValueFactory(new PropertyValueFactory<>("count"));
 
-        this.appointments.getColumns().add(typeCol);
-        this.appointments.getColumns().add(monthCol);
-        this.appointments.getColumns().add(countCol);
+        appointments.getColumns().add(typeCol);
+        appointments.getColumns().add(monthCol);
+        appointments.getColumns().add(countCol);
 
         this.setPadding(Styles.Padding30px);
         this.getChildren().addAll(appointments);

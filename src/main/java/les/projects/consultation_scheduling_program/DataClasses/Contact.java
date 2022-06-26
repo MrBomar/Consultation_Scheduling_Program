@@ -5,14 +5,11 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 public class Contact {
     private final SimpleIntegerProperty id;
@@ -82,7 +79,7 @@ public class Contact {
                  DialogMessage dialog = new DialogMessage("Data Not Found", "No contacts found in database.");
                  dialog.showAndWait();
             } else {
-                allContacts = FXCollections.observableList(new ArrayList<Contact>());
+                allContacts = FXCollections.observableList(new ArrayList<>());
 
                 //Loop through results and add them to list.
                 do {
@@ -104,7 +101,7 @@ public class Contact {
 
     public void update(String contactName, String email) {
         try {
-            ResultSet rs = JDBC.newResultSet("SELLECT * FROM contacts WHERE Contact_ID = " + this.getID());
+            ResultSet rs = JDBC.newResultSet("SELECT * FROM contacts WHERE Contact_ID = " + this.getID());
 
             //Update the record
             rs.next();
@@ -129,13 +126,7 @@ public class Contact {
         return this.name.get();
     }
     public static Contact getById(int id) {
-        try {
-            return allContacts.stream().filter(i -> i.getID() == id).findFirst().get();
-        } catch (NoSuchElementException e) {
-            DialogMessage dialog = new DialogMessage(Message.MissingContactRecord);
-            dialog.showAndWait();
-            return allContacts.stream().findFirst().get();
-        }
+        return allContacts.stream().filter(i -> i.getID() == id).findFirst().get();
     }
 
     //Property Getters

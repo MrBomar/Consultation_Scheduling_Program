@@ -8,7 +8,6 @@ import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -16,8 +15,6 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class Appointment {
     private final SimpleObjectProperty<Customer> customer;
@@ -177,7 +174,7 @@ public class Appointment {
 
                 //Loop through results and create new appointments.
                 do {
-                    Appointment appt = new Appointment(
+                    Appointment appointment = new Appointment(
                             rs.getInt("Appointment_ID"),
                             rs.getString("Title"),
                             rs.getString("Description"),
@@ -189,7 +186,7 @@ public class Appointment {
                             User.getById(rs.getInt("User_ID")),
                             Contact.getById(rs.getInt(("Contact_ID")))
                     );
-                    allAppointments.add(appt);
+                    allAppointments.add(appointment);
                 } while (rs.next());
             }
         } catch (Exception e) {

@@ -11,11 +11,6 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 public class DialogConfirmation extends DialogBase {
     private Boolean result = false;
 
-    public DialogConfirmation(String title, String message) {
-        super(title);
-        this.format(message);
-    }
-
     public DialogConfirmation(Message message) {
         super(message.title);
         this.format(message.message);

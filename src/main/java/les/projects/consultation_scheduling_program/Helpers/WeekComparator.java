@@ -30,10 +30,6 @@ public abstract class WeekComparator {
         end = start.plusDays(8);
         LocalDate suspect = suspectTime.toLocalDate();
 
-        if(suspect.isAfter(start) && suspect.isBefore(end)) {
-            return true;
-        } else {
-            return false;
-        }
+        return suspect.isAfter(start) && suspect.isBefore(end);
     }
 }

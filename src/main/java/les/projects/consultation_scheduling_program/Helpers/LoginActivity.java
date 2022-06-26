@@ -9,30 +9,6 @@ import java.time.ZonedDateTime;
 
 public abstract class LoginActivity {
 
-    class LoginItem {
-        private String userName;
-        private ZonedDateTime dateTime;
-        private Boolean successful;
-
-        public LoginItem(String userName, ZonedDateTime dateTime, Boolean successful) {
-            this.userName = userName;
-            this.dateTime = dateTime;
-            this.successful = successful;
-        }
-
-        public String getUserName() {
-            return userName;
-        }
-
-        public ZonedDateTime getDateTime() {
-            return dateTime;
-        }
-
-        public Boolean getSuccessful() {
-            return successful;
-        }
-    }
-
     public static void loginAttempt(String userName, Boolean successful) {
         try {
             ZonedDateTime dateTime = ZonedDateTime.now();

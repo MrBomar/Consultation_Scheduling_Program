@@ -7,14 +7,13 @@ import javafx.scene.layout.VBox;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
 public class TextAreaLabeled extends VBox {
-    private Label label;
-    private TextArea text;
+    private final TextArea text;
     private String initValue = "";
     private boolean changed = false;
 
     public TextAreaLabeled(String labelText) {
-        this.label = new Label(labelText);
-        this.label.setFont(Styles.DefaultFont18);
+        Label label = new Label(labelText);
+        label.setFont(Styles.DefaultFont18);
 
         this.text = new TextArea();
         this.text.setMinSize(400, 120);
@@ -23,7 +22,7 @@ public class TextAreaLabeled extends VBox {
         this.text.setStyle(Styles.StyleTextArea);
 
         this.setPadding(new Insets(10,0,0,0));
-        this.getChildren().addAll(this.label, this.text);
+        this.getChildren().addAll(label, this.text);
 
         //Event listeners
         this.text.focusedProperty().addListener(

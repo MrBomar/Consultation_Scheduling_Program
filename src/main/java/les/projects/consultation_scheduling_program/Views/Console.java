@@ -13,9 +13,9 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 
 public class Console extends VBox {
     //Instantiate tabs
-    TabConsole appointmentsTab = new TabConsole(lrb.getString("appointments"), Styles.BackgroundWhite, false);
-    TabConsole customersTab = new TabConsole(lrb.getString("customers"), Styles.BackgroundGrey, false);
-    TabConsole reportsTab = new TabConsole(lrb.getString("reports"), Styles.BackgroundGrey, false);
+    TabConsole appointmentsTab = new TabConsole(lrb.getString("appointments"), false);
+    TabConsole customersTab = new TabConsole(lrb.getString("customers"), false);
+    TabConsole reportsTab = new TabConsole(lrb.getString("reports"), false);
     private static Pane currentView;
 
     public Console(Pane view) {
@@ -57,15 +57,9 @@ public class Console extends VBox {
         logoutButton.setOnMouseClicked(logout);
 
         //Add listeners
-        this.appointmentsTab.setOnMouseClicked((EventHandler<? super MouseEvent>) (event)->{
-            this.openAppointments();
-        });
-        this.customersTab.setOnMouseClicked(((EventHandler<? super MouseEvent>) (event)->{
-            this.openCustomers();
-        }));
-        this.reportsTab.setOnMouseClicked((EventHandler<? super MouseEvent>) (event)->{
-            this.openReports();
-        });
+        this.appointmentsTab.setOnMouseClicked(e -> this.openAppointments());
+        this.customersTab.setOnMouseClicked(e -> this.openCustomers());
+        this.reportsTab.setOnMouseClicked(e -> this.openReports());
 
         //Compile top bar
         tabBar.getChildren().addAll(this.appointmentsTab,this.customersTab,this.reportsTab,region1,logoutButton);
@@ -87,11 +81,11 @@ public class Console extends VBox {
         this.setTabs();
     }
 
-    private EventHandler<MouseEvent> logout = event -> {
+    private final EventHandler<MouseEvent> logout = event -> {
         DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmLogout);
         dialog.showAndWait();
-        if(dialog.getResult() == true){
+        if(dialog.getResult()){
             Main.logoutView();
-        };
+        }
     };
 }

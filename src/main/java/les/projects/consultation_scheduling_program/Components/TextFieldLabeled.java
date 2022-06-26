@@ -7,14 +7,13 @@ import javafx.scene.layout.BorderPane;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
 public class TextFieldLabeled extends BorderPane {
-    private Label label;
-    private TextField textField;
+    private final TextField textField;
     private String initValue = "";
     private boolean changed = false;
 
     public TextFieldLabeled(String labelText, boolean required, boolean disabled) {
-        this.label = new Label(labelText);
-        this.label.setFont(Styles.DefaultFont18);
+        Label label = new Label(labelText);
+        label.setFont(Styles.DefaultFont18);
 
         this.textField = new TextField();
         this.textField.setMinSize(200,25);
@@ -27,7 +26,7 @@ public class TextFieldLabeled extends BorderPane {
         this.setMinWidth(400);
         this.setMaxWidth(400);
         this.setPrefWidth(400);
-        this.setLeft(this.label);
+        this.setLeft(label);
         this.setRight(this.textField);
 
         //Disabled properties
@@ -60,12 +59,6 @@ public class TextFieldLabeled extends BorderPane {
     public boolean isChanged() { return this.changed; }
 
     public boolean isNotBlank() {
-        switch(this.textField.getText()) {
-            case "":
-            case " ":
-                return false;
-            default:
-                return true;
-        }
+        return this.textField.getText().equals("") || this.textField.getText().equals(" ");
     }
 }

@@ -236,15 +236,13 @@ public class CustomersView extends BorderPane {
                 }
 
             }));
-            combo.focusedProperty().addListener(e -> {
-                cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem());
-            });
+            combo.focusedProperty().addListener(e -> cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem()));
             cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(combo));
             return cell;
         });
 
         divisionCol.setCellFactory(cellData -> {
-            TableCell<Customer, Division> cell = new TableCell();
+            TableCell<Customer, Division> cell = new TableCell<>();
             ComboBox<Division> combo = new ComboBox<>(Division.allDivisions);
             combo.valueProperty().bindBidirectional(cell.itemProperty());
             combo.focusedProperty().addListener(e->{

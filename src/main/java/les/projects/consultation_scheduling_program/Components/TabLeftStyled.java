@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
 public class TabLeftStyled extends Tab {
-    private Label label = new Label();
+    private final Label label = new Label();
 
     public TabLeftStyled(String text) {
         this.label.setText(text);

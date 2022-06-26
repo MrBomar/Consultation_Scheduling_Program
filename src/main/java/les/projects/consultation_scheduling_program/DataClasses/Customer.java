@@ -3,16 +3,13 @@ package les.projects.consultation_scheduling_program.DataClasses;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
-
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.NoSuchElementException;
 
 public class Customer {
     private final SimpleIntegerProperty id;
@@ -38,7 +35,7 @@ public class Customer {
     }
 
     public static void add(String customerName, String address, String postalCode, String phone,
-                           Country country, Division division) {
+                           Division division) {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM customers");
 
@@ -80,7 +77,7 @@ public class Customer {
     }
 
     public final void update(
-            String customerName, String address, String postalCode, String phone, Country country, Division division) {
+            String customerName, String address, String postalCode, String phone, Division division) {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM customers WHERE Customer_ID = " + this.getId());
 
@@ -121,7 +118,7 @@ public class Customer {
                         "Data Not Found", "No customers were found in the database.");
                 dialog.showAndWait();
             } else {
-                allCustomers = FXCollections.observableList(new ArrayList<Customer>());
+                allCustomers = FXCollections.observableList(new ArrayList<>());
 
                 //Loop through result and add customers
                 do {
@@ -153,15 +150,7 @@ public class Customer {
     public final String getName() { return this.name.get(); }
     public final String getPhone() { return this.phone.get(); }
     public final String getPostalCode() { return this.postalCode.get(); }
-    public static Customer getById(int id) {
-        try {
-            return allCustomers.stream().filter(i -> i.getId() == id).findFirst().get();
-        } catch (NoSuchElementException e) {
-            DialogMessage dialog = new DialogMessage(Message.MissingCustomerRecord);
-            dialog.showAndWait();
-            return allCustomers.stream().findFirst().get();
-        }
-    }
+    public static Customer getById(int id) { return allCustomers.stream().filter(i -> i.getId() == id).findFirst().get(); }
 
     //Property Getters
     public final Property<String> getAddressProperty() { return this.address; }

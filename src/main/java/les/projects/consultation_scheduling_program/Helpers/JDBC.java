@@ -22,7 +22,6 @@ public abstract class JDBC {
         try {
             Class.forName(driver);
             connection = DriverManager.getConnection(jdbcUrl, userName, password);
-            System.out.println("Connection successful!");
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
         }
@@ -31,9 +30,8 @@ public abstract class JDBC {
     public static void closeConnection(){
         try {
             connection.close();
-            System.out.println("Connection closed!");
         } catch (Exception e) {
-            System.out.println("Error:" + e.getMessage());
+            //Do nothing.
         }
     }
 

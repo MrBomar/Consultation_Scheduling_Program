@@ -38,7 +38,6 @@ public class Login extends DialogBase {
 
     private void attemptLogin(Event event) {
         if(User.verifyUser(userId.getInput(), password.getInput())) {
-            System.out.println("User ID and password verified.");
             LoginActivity.loginAttempt(userId.getInput(), true);
             try {
                 Main.currentUser = User.getUserByUserName(userId.getInput());

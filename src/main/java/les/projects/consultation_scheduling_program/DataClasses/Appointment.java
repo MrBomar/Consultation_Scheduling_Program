@@ -173,7 +173,7 @@ public class Appointment {
                 DialogMessage dialog = new DialogMessage("Data Not Found", "No appointments were found in the database.");
                 dialog.showAndWait();
             } else {
-                allAppointments = FXCollections.observableList(new ArrayList<Appointment>());
+                allAppointments = FXCollections.observableList(new ArrayList<>());
 
                 //Loop through results and create new appointments.
                 do {

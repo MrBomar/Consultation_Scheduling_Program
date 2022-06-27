@@ -12,8 +12,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 
 /**
@@ -80,7 +78,7 @@ public class Appointment {
      * @param customer The Customer object associated with the Appointment. (Customer)
      * @param user The User object associated with the Appointment. (User)
      * @param contact The Contact object associated with the Appointment. (Contact)
-     * @return
+     * @return Returns true if the Appointment was added to the database.
      */
     public static boolean add(String title, String description, String location,
                            String type, ZonedDateTime start, ZonedDateTime end,
@@ -132,7 +130,7 @@ public class Appointment {
      * @param customer The Customer object associated with the Appointment. (Customer)
      * @param user The User object associated with the Appointment. (User)
      * @param contact The Contact object associated with the Appointment. (Contact)
-     * @return
+     * @return Returns true if the item was updated in the database.
      */
     public final boolean update(String title, String description, String location, String type,
                           ZonedDateTime start, ZonedDateTime end, Customer customer, User user, Contact contact) {
@@ -386,14 +384,64 @@ public class Appointment {
     public final ObjectProperty<User> getUserProperty() { return this.user; }
 
     //Property Setters
+
+    /**
+     * Takes in a Contact object and sets it as the Appointment contact.
+     * @param contact Contact object of the contact on the Appointment.
+     */
     public final void setContact(Contact contact) { this.contact.set(contact); }
+
+    /**
+     * Takes in a Customer object and sets it at the customer for the Appointment.
+     * @param customer Customer of the Appointment.
+     */
     public final void setCustomer(Customer customer) { this.customer.set(customer); }
+
+    /**
+     * Takes in a string and sets it as the description for the Appointment.
+     * @param description Description of the appointment.
+     */
     public final void setDescription(String description) { this.description.set(description); }
+
+    /**
+     * Takes in a ZonedDateTime and sets it as the End for the Appointment.
+     * @param end End date and time.
+     */
     public final void setEnd(ZonedDateTime end) { this.end.set(end); }
+
+    /**
+     * Takes in an integer and sets it as the Appointment ID.
+     * @param id Record ID.
+     */
     public final void setId(int id) { this.id.set(id); }
+
+    /**
+     * Takes in a string and sets it as the Appointment location.
+     * @param location Location of the appointment.
+     */
     public final void setLocation(String location) { this.location.set(location); }
+
+    /**
+     * Takes in a ZonedDateTime and sets it as the Appointment Start.
+     * @param start The start date and time of the appointment.
+     */
     public final void setStart(ZonedDateTime start) { this.start.set(start); }
+
+    /**
+     * Takes in a String and set it as the appointment title.
+     * @param title Appointment title.
+     */
     public final void setTitle(String title) { this.title.set(title); }
+
+    /**
+     * Takes in a String and sets it as the Appointment Type.
+     * @param type Appointment Type.
+     */
     public final void setType(String type) { this.type.set(type); }
+
+    /**
+     * Takes in a User object and sets it as the User who created the appointment.
+     * @param user Appointment User.
+     */
     public final void setUser(User user) { this.user.set(user); }
 }

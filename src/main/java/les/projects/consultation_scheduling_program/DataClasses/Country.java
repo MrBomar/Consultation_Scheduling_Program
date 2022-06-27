@@ -13,6 +13,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * Country class stores and manages the country data from the database.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class Country {
     private final SimpleIntegerProperty id;
     private final SimpleStringProperty name;
@@ -23,11 +29,19 @@ public class Country {
         this.name = new SimpleStringProperty(countryName);
     }
 
+    /**
+     * Replaces thedefault toString() function. Returns the country name.
+     * @return Country name.
+     */
     @Override
     public String toString() {
         return this.getName();
     }
 
+    /**
+     * Adds a new country to the database and refreshes the country observable list.
+     * @param countryName The name of the country.
+     */
     public static void add(String countryName) {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM countries");
@@ -49,7 +63,10 @@ public class Country {
         }
     }
 
-    public void delete() {
+    /**
+     * Deletes the country record from the database.
+     */
+    public final void delete() {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM countries WHERE Country_ID = " + this.getId());
 
@@ -65,7 +82,11 @@ public class Country {
         }
     }
 
-    public void update(String countryName){
+    /**
+     * Updates the country information in the database.
+     * @param countryName
+     */
+    public final void update(String countryName){
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM countries WHERE Country_ID = " + this.getId());
 
@@ -84,12 +105,19 @@ public class Country {
         }
     }
 
+    /**
+     * Returns all division objects related to the country.
+     * @return Division data object.
+     */
     public ObservableList<Division> getDivisions() {
         Division[] filteredDivisions =
                 Division.allDivisions.stream().filter(i -> i.getCountry().equals(this)).toArray(Division[]::new);
         return FXCollections.observableArrayList(filteredDivisions);
     }
 
+    /**
+     * Pulls all country data from the database and loads it into the application as Country objects.
+     */
     public static void loadData() {
         //Query the database
         try {
@@ -121,21 +149,51 @@ public class Country {
     }
 
     //Getters
-    public final int getId() {
-        return this.id.get();
-    }
-    public final String getName() {
-        return this.name.get();
-    }
-    public static Country getById(int id) {
-        return allCountries.stream().filter(d -> d.getId() == id).findFirst().get();
-    }
+
+    /**
+     * Gets the country record ID.
+     * @return Country ID
+     */
+    public final int getId() { return this.id.get(); }
+
+    /**
+     * Gets the country name.
+     * @return Country name.
+     */
+    public final String getName() { return this.name.get(); }
+
+    /**
+     * Returns a Country object using the country ID.
+     * @param id Country record ID.
+     * @return Country object.
+     */
+    public static Country getById(int id) { return allCountries.stream().filter(d -> d.getId() == id).findFirst().get(); }
 
     //Property Getters
+
+    /**
+     * Gets the ID property.
+     * @return Property value.
+     */
     public final Property<Number> getIdProperty() { return this.id; }
+
+    /**
+     * Gets the name property.
+     * @return Name property of the country.
+     */
     public final Property<String> getNameProperty() { return this.name; }
 
     //Setters
+
+    /**
+     * Sets the country record ID
+     * @param id Country_ID
+     */
     public final void setId(int id) { this.id.set(id); }
+
+    /**
+     * Sets the country name.
+     * @param countryName Country name.
+     */
     public final void setName(String countryName) { this.name.set(countryName); }
 }

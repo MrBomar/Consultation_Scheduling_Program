@@ -11,22 +11,44 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * This class stores information related to the contacts in the database.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class Contact {
     private final SimpleIntegerProperty id;
     private final SimpleStringProperty name, email;
     public static ObservableList<Contact> allContacts;
 
+    /**
+     * Instantiates a new Contact object.
+     * @param contactId The contact ID.
+     * @param contactName The contact name.
+     * @param email The contact email address.
+     */
     public Contact(int contactId, String contactName, String email) {
         this.id = new SimpleIntegerProperty(contactId);
         this.name = new SimpleStringProperty(contactName);
         this.email = new SimpleStringProperty(email);
     }
 
+    /**
+     * Overrides the default toString() function.
+     * @return Returns a String containing the contact name.
+     */
     @Override
     public String toString() {
         return this.name.get();
     }
 
+    /**
+     * Creates a new contact in the databse.
+     * @param contactName The name of the contact.
+     * @param email The email address of the contact.
+     * @return Returns true if the contact was added to the database.
+     */
     public static boolean add(String contactName, String email) {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM contacts");
@@ -49,7 +71,10 @@ public class Contact {
         }
     }
 
-    public void delete() {
+    /**
+     * Deletes the contact associated with this object from the database.
+     */
+    public final void delete() {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM contacts WHERE Contact_ID = " + this.getID());
 
@@ -67,6 +92,9 @@ public class Contact {
         }
     }
 
+    /**
+     * Loads the contact data from the database and creates new contact objects from the data.
+     */
     public static void loadData() {
         //Load the data from the database.
         try {
@@ -99,7 +127,12 @@ public class Contact {
         }
     }
 
-    public void update(String contactName, String email) {
+    /**
+     * Updates the current contact in the database.
+     * @param contactName Name of the contact.
+     * @param email Email address of the contact.
+     */
+    public final void update(String contactName, String email) {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM contacts WHERE Contact_ID = " + this.getID());
 
@@ -120,22 +153,71 @@ public class Contact {
     }
 
     //Getters
+
+    /**
+     * Get the contact email address.
+     * @return Email address
+     */
     public final String getEmail() { return this.email.get(); }
-    public int getID() { return this.id.get(); }
-    public String getName() {
+
+    /**
+     * Get the contact ID.
+     * @return Contact ID.
+     */
+    public final int getID() { return this.id.get(); }
+
+    /**
+     * Get the name of the contact.
+     * @return Contact name.
+     */
+    public final String getName() {
         return this.name.get();
     }
-    public static Contact getById(int id) {
-        return allContacts.stream().filter(i -> i.getID() == id).findFirst().get();
-    }
+
+    /**
+     * Gets the contact object with the provided Contact ID.
+     * @param id Contact ID number.
+     * @return Contact data object.
+     */
+    public static Contact getById(int id) { return allContacts.stream().filter(i -> i.getID() == id).findFirst().get(); }
 
     //Property Getters
+
+    /**
+     * Gets the email property of the contact.
+     * @return The email property of the contact.
+     */
     public final Property<String> getEmailProperty() { return this.email; }
+
+    /**
+     * Gets the ID property of the contact.
+     * @return The ID property of the contact.
+     */
     public final Property<Number> getIdProperty() {  return this.id; }
+
+    /**
+     * Gets the name property of the contact.
+     * @return The name property of the contact.
+     */
     public final Property<String> getNameProperty() { return this.name; }
 
     //Setters
+
+    /**
+     * Sets the email address of the contact.
+     * @param email Email address.
+     */
     public final void setEmail(String email) { this.email.set(email); }
+
+    /**
+     * Sets the ID of the contact.
+     * @param id ID number.
+     */
     public final void setId(int id) { this.id.set(id); }
+
+    /**
+     * Sets the name of the contact.
+     * @param name Contact name.
+     */
     public final void setName(String name) { this.name.set(name); }
 }

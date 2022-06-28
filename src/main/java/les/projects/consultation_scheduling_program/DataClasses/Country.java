@@ -30,7 +30,7 @@ public class Country {
     }
 
     /**
-     * Replaces thedefault toString() function. Returns the country name.
+     * Replaces the default toString() function. Returns the country name.
      * @return Country name.
      */
     @Override

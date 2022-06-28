@@ -11,6 +11,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+/**
+ * This class manages the data objects related to the Customers table in the database.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class Customer {
     private final SimpleIntegerProperty id;
     private final SimpleStringProperty name, address, postalCode, phone;
@@ -18,6 +24,17 @@ public class Customer {
     private final SimpleObjectProperty<Division> division;
     public static ObservableList<Customer> allCustomers;
 
+    /**
+     * Instantiates a Customer object which stores the details of the customer and provides methods for editing
+     * the customer data.
+     * @param id The record number of the customer.
+     * @param customerName The name of the customer.
+     * @param address The address of the customer.
+     * @param postalCode The postal code of the customer.
+     * @param phone The phone number of the customer.
+     * @param country The country where the customer resides.
+     * @param division The division(city/town) where the customer resides.
+     */
     public Customer(int id, String customerName, String address, String postalCode,
                     String phone, Country country, Division division) {
         this.id = new SimpleIntegerProperty(id);
@@ -29,11 +46,23 @@ public class Customer {
         this.division = new SimpleObjectProperty<>(division);
     }
 
+    /**
+     * Overrides the default toString() method for the Customer class.
+     * @return The name of the customer.
+     */
     @Override
     public String toString() {
         return this.name.get();
     }
 
+    /**
+     * Method to create a new customer, add it to the database, and refresh the Customer list.
+     * @param customerName The name of the customer.
+     * @param address The address of the customer.
+     * @param postalCode The postal code of the customer.
+     * @param phone The phone number of the customer.
+     * @param division The division(city/town) of the customer.
+     */
     public static void add(String customerName, String address, String postalCode, String phone,
                            Division division) {
         try {
@@ -60,6 +89,9 @@ public class Customer {
         }
     }
 
+    /**
+     * Deletes the current customer object from the the database and refreshes the Customer list.
+     */
     public final void delete() {
         try {
             ResultSet rs = JDBC.newResultSet("SELECT * FROM Customers WHERE Customer_ID = " + this.getId());
@@ -76,6 +108,14 @@ public class Customer {
         }
     }
 
+    /**
+     * This method updates the information related to the customer in the database and refreshes the Customer list.
+     * @param customerName The name of the customer.
+     * @param address The address of the customer.
+     * @param postalCode The postal code of the customer.
+     * @param phone The phone number of the customer.
+     * @param division The division(city/town) where the customer is located.
+     */
     public final void update(
             String customerName, String address, String postalCode, String phone, Division division) {
         try {
@@ -100,12 +140,19 @@ public class Customer {
         }
     }
 
+    /**
+     * This method returns a filtered Appointment list for all appointment associated with the current customer.
+     * @return A list of all appointments belonging to the customer.
+     */
     public final ObservableList<Appointment> getAppointments() {
         Appointment[] appointments = Appointment.allAppointments.stream()
                 .filter(i -> i.getCustomer().equals(this)).toArray(Appointment[]::new);
         return FXCollections.observableArrayList(appointments);
     }
 
+    /**
+     * This method loads all of the customer records from the database.
+     */
     public static void loadData() {
         try {
             //Load data from database
@@ -143,31 +190,142 @@ public class Customer {
     }
 
     //Getters
+
+    /**
+     * This method gets the address of the customer.
+     * @return The addresses of the customer.
+     */
     public final String getAddress() { return this.address.get(); }
+
+    /**
+     * This method gets the Country object belonging to the customer.
+     * @return The Country object representing where the customer resides.
+     */
     public final Country getCountry() { return this.country.get(); }
+
+    /**
+     * This method gets the Division object belonging to the customer.
+     * @return The Division object representing where the customer resides.
+     */
     public final Division getDivision() { return this.division.get(); }
+
+    /**
+     * This method gets the record ID of the customer record.
+     * @return The record ID of the customer.
+     */
     public final Integer getId() { return this.id.get(); }
+
+    /**
+     * This method get the name of the customer.
+     * @return The name of the customer.
+     */
     public final String getName() { return this.name.get(); }
+
+    /**
+     * This method gets the phone number of the customer.
+     * @return The phone number of the customer.
+     */
     public final String getPhone() { return this.phone.get(); }
+
+    /**
+     * This method returns the postal code of the customer.
+     * @return The postal code of the customer.
+     */
     public final String getPostalCode() { return this.postalCode.get(); }
+
+    /**
+     * This method locates and return the Customer object using the customer record ID.
+     * @param id The customer record ID.
+     * @return The Customer object associated with the record ID.
+     */
     public static Customer getById(int id) { return allCustomers.stream().filter(i -> i.getId() == id).findFirst().get(); }
 
     //Property Getters
+
+    /**
+     * This method returns the address property of the Customer object.
+     * @return The address property of the Customer object.
+     */
     public final Property<String> getAddressProperty() { return this.address; }
+
+    /**
+     * This method returns the country property of the Customer object.
+     * @return The country property of the Customer object.
+     */
     public final ObjectProperty<Country> getCountryProperty() { return this.country; }
+
+    /**
+     * This method returns the division property of the Customer object.
+     * @return The division property of the Customer object.
+     */
     public final ObjectProperty<Division> getDivisionProperty() { return this.division; }
+
+    /**
+     * This method returns the ID property of the Customer object.
+     * @return The ID property of the Customer object.
+     */
     public final Property<Number> getIdProperty() { return this.id; }
+
+    /**
+     * This method returns the name property of the Customer object.
+     * @return The name property of the Customer object.
+     */
     public final Property<String> getNameProperty() { return this.name; }
+
+    /**
+     * This method returns the phone number property of the Customer object.
+     * @return The phone number property of the Customer object.
+     */
     public final Property<String> getPhoneProperty() { return this.phone; }
+
+    /**
+     * This method returns the postal code property of the Customer object.
+     * @return
+     */
     public final Property<String> getPostalCodeProperty() { return this.postalCode; }
 
     //Property Setter
+
+    /**
+     * This method sets the address of the customer.
+     * @param address The address of the customer.
+     */
     public final void setAddress(String address) { this.address.set(address); }
+
+    /**
+     * This method sets the Country object of the customer.
+     * @param country The Country object where the customer resides.
+     */
     public final void setCountry(Country country) { this.country.set(country); }
+
+    /**
+     * This method sets the Division object of the customer.
+     * @param division The Division object where the customer resides.
+     */
     public final void setDivision(Division division) { this.division.set(division);}
+
+    /**
+     * This method sets the record ID of the customer.
+     * @param id The record ID of the customer.
+     */
     public final void setId(int id) { this.id.set(id); }
+
+    /**
+     * This method sets the name of the customer.
+     * @param name The name of the customer.
+     */
     public final void setName(String name) { this.name.set(name); }
+
+    /**
+     * This method sets the phone number of the customer.
+     * @param phone The phone number of the customer.
+     */
     public final void setPhone(String phone) { this.phone.set(phone); }
+
+    /**
+     * This method sets the postal code of the customer.
+     * @param postalCode The postal code of the customer.
+     */
     public final void setPostalCode(String postalCode) { this.postalCode.set(postalCode); }
 }
 

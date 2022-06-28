@@ -7,8 +7,19 @@ import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * This class creates a text file on the system that records each login attempt.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public abstract class LoginActivity {
 
+    /**
+     * This method writes the login attempt to the login_activity.txt file.
+     * @param userName The name of the user.
+     * @param successful The result of the login attempt. True = success.
+     */
     public static void loginAttempt(String userName, Boolean successful) {
         try {
             ZonedDateTime dateTime = ZonedDateTime.now();

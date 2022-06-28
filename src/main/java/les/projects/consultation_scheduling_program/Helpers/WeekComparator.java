@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 /**
- * This class is used to help compare dates
+ * This class is used to help compare dates.
+ *
  * @author Leslie C. Bomar 3rd
+ * @version 1.0
  */
 public abstract class WeekComparator {
 

@@ -11,18 +11,31 @@ import les.projects.consultation_scheduling_program.Main;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
+/**
+ * This class renders the main console where all views are rendered.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class Console extends VBox {
     //Instantiate tabs
-    TabConsole appointmentsTab = new TabConsole(lrb.getString("appointments"), false);
-    TabConsole customersTab = new TabConsole(lrb.getString("customers"), false);
-    TabConsole reportsTab = new TabConsole(lrb.getString("reports"), false);
+    private final TabConsole appointmentsTab = new TabConsole(lrb.getString("appointments"), false);
+    private final TabConsole customersTab = new TabConsole(lrb.getString("customers"), false);
+    private final TabConsole reportsTab = new TabConsole(lrb.getString("reports"), false);
     private static Pane currentView;
 
+    /**
+     * Instantiates the console view.
+     * @param view The main view we are rendering over.
+     */
     public Console(Pane view) {
         currentView = view;
         this.setTabs();
     }
 
+    /**
+     * Method is used to select the active tab control.
+     */
     private void setTabs() {
         this.getChildren().setAll(this.tabBar(), currentView);
         if(currentView.getClass() == AppointmentsView.class) {
@@ -40,6 +53,10 @@ public class Console extends VBox {
         }
     }
 
+    /**
+     * This method renders the bar which hold the tabs.
+     * @return Return the tab bar at the top of the console.
+     */
     private HBox tabBar() {
         //Create tab bar HBox and style it
         HBox tabBar = new HBox();
@@ -66,21 +83,36 @@ public class Console extends VBox {
         return tabBar;
     }
 
+    /**
+     * This method changes the console's inset view to render the Appointments view and adjusts the rendering of the
+     * tabs to show the Appointments tabs is selected.
+     */
     private void openAppointments() {
         currentView = new AppointmentsView();
         this.setTabs();
     }
 
+    /**
+     * This method changes the console's inset view to render the Customers view and adjusts the rendering of the
+     * tabs to show the Customers tabs is selected.
+     */
     private void openCustomers() {
         currentView = new CustomersView();
         this.setTabs();
     }
 
+    /**
+     * This method changes the console's inset view to render the Reports view and adjusts the rendering of the
+     * tabs to show the Reports tabs is selected.
+     */
     private void openReports() {
         currentView = new ReportsView();
         this.setTabs();
     }
 
+    /**
+     * This method handles the user clicking on the logout button.
+     */
     private final EventHandler<MouseEvent> logout = event -> {
         DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmLogout);
         dialog.showAndWait();

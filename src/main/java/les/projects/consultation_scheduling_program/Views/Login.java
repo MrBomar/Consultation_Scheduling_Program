@@ -14,10 +14,19 @@ import les.projects.consultation_scheduling_program.Main;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
+/**
+ * This class renders the login dialog.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class Login extends DialogBase {
     private final TextFieldLabeledLarge userId = new TextFieldLabeledLarge(lrb.getString("user_id"), "", false);
     private final PasswordFieldLabeledLarge password = new PasswordFieldLabeledLarge(lrb.getString("password"), "", false);
 
+    /**
+     * Instantiates the login dialog.
+     */
     public Login() {
         super(lrb.getString("program_title"));
         User.loadData();
@@ -36,6 +45,10 @@ public class Login extends DialogBase {
         this.setOnCloseRequest(e -> Platform.exit());
     }
 
+    /**
+     * Attempts to match the username and password provided against the records in the database.
+     * @param event Mouse event.
+     */
     private void attemptLogin(Event event) {
         if(User.verifyUser(userId.getInput(), password.getInput())) {
             LoginActivity.loginAttempt(userId.getInput(), true);

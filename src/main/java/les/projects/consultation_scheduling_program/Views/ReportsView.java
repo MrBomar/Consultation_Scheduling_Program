@@ -7,8 +7,17 @@ import javafx.scene.layout.Pane;
 import les.projects.consultation_scheduling_program.Components.TabLeftStyled;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
+/**
+ * This class renders the Reports view which contains the reports.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class ReportsView extends Pane {
 
+    /**
+     * Renders the report view and tabs.
+     */
     public ReportsView() {
         TabPane tabPane = new TabPane();
 
@@ -39,6 +48,10 @@ public class ReportsView extends Pane {
         this.getChildren().add(tabPane);
     }
 
+    /**
+     * Returns a CSS String with formatting preferences for formatting the tabs.
+     * @return CSS String for styling the tabs.
+     */
     private String tabPaneStyle() {
         return
             "-fx-tab-min-width: 233px;" +

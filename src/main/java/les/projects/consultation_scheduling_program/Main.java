@@ -8,10 +8,15 @@ import javafx.stage.Stage;
 import les.projects.consultation_scheduling_program.DataClasses.*;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.Login;
-
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * This class is the launch of the application.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class Main extends Application {
     public static Stage appStage;
     public static double appWidth = 1305;
@@ -21,6 +26,12 @@ public class Main extends Application {
     public static final ResourceBundle lrb = ResourceBundle.getBundle("Labels", locale);
     public static final ResourceBundle mrb = ResourceBundle.getBundle("Messages", locale);
 
+
+    /**
+     * Required method for JavaFX.
+     * @param stage The base of the application view.
+     * @throws IOException
+     */
     @Override
     public void start(Stage stage) throws IOException {
         appStage = stage;
@@ -36,16 +47,26 @@ public class Main extends Application {
         logoutView();
     }
 
+    /**
+     * Method called when the application is close. Is used to close the database connection on exit.
+     */
     @Override
     public void stop() {
         JDBC.closeConnection();
     }
 
+    /**
+     * Required Java Method.
+     * @param args
+     */
     public static void main(String[] args) {
         JDBC.openConnection();
         launch();
     }
 
+    /**
+     * Method for closing the active windows and returning to the login screen.
+     */
     public static void logoutView() {
         //Create Scene
         currentUser = null;
@@ -60,6 +81,9 @@ public class Main extends Application {
         login.show();
     }
 
+    /**
+     * Method for initial loading of data from the database.
+     */
     public static void loadData() {
         Contact.loadData();
         Country.loadData();

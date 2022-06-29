@@ -15,15 +15,22 @@ import les.projects.consultation_scheduling_program.DataClasses.User;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.WeekComparator;
-
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
+/**
+ * This class renders the Appointments view.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class AppointmentsView extends BorderPane {
     private final TableView<Appointment> appointmentTable = new TableView<>(Appointment.allAppointments);
 
+    /**
+     * This constructor instantiates the Appointments view.
+     */
     public AppointmentsView() {
         //Appointment header
         HBox header = new HBox();
@@ -105,12 +112,20 @@ public class AppointmentsView extends BorderPane {
         this.setBottom(footer);
     }
 
+    /**
+     * This method opens the Add/Update Appointment modal in add mode.
+     * @param event The mouse event.
+     */
     private void addAppointmentClick(Event event) {
         AddUpdateAppointment modal = new AddUpdateAppointment();
         modal.showAndWait();
         appointmentTable.setItems(Appointment.allAppointments);
     }
 
+    /**
+     * This method opens the Add/Update Appointment modal in update mode, using the object selected in the TableView.
+     * @param event The mouse event.
+     */
     private void updateAppointmentClick (Event event) {
         if((long) this.appointmentTable.getSelectionModel().getSelectedItems().size() > 0) {
             AddUpdateAppointment modal = new AddUpdateAppointment(this.appointmentTable.getSelectionModel().getSelectedItem());
@@ -122,6 +137,10 @@ public class AppointmentsView extends BorderPane {
         }
     }
 
+    /**
+     * This method calls the delete() method on the Appointment object selected in the TableView.
+     * @param event The mouse event.
+     */
     private void deleteAppointmentClick (Event event) {
         if(!this.appointmentTable.getSelectionModel().isEmpty()) {
             String[] args = new String[] {
@@ -143,6 +162,9 @@ public class AppointmentsView extends BorderPane {
         }
     }
 
+    /**
+     * This method constructs the table columns.
+     */
     private void buildTable() {
         TableColumn<Appointment, Integer> idCol = new TableColumn<>(lrb.getString("id"));
         TableColumn<Appointment, String> titleCol = new TableColumn<>(lrb.getString("title"));
@@ -179,12 +201,18 @@ public class AppointmentsView extends BorderPane {
         this.appointmentTable.getColumns().add(contactCol);
     }
 
+    /**
+     * This method checks the system date and filters all appointments for appointments occurring in the current month.
+     */
     private void selectCurrentMonth() {
         Appointment[] filteredAppointments = Appointment.allAppointments.stream().filter(i -> i.getStart().getMonth().equals(LocalDate.now().getMonth())).toArray(Appointment[]::new);
         ObservableList<Appointment> observableAppointments = FXCollections.observableArrayList(filteredAppointments);
         this.appointmentTable.setItems(observableAppointments);
     }
 
+    /**
+     * This method checks the system date and filters all appointments for appointments occurring in the current week.
+     */
     private void selectCurrentWeek() {
         Appointment[] filteredAppointments = Appointment.allAppointments.stream().filter(i ->
             WeekComparator.isSameWeek(i.getStart(), ZonedDateTime.now())).toArray(Appointment[]::new);
@@ -192,6 +220,9 @@ public class AppointmentsView extends BorderPane {
         this.appointmentTable.setItems(observableAppointments);
     }
 
+    /**
+     * This method removes the filter from the appointments list.
+     */
     private void selectAll() {
         this.appointmentTable.setItems(Appointment.allAppointments);
     }

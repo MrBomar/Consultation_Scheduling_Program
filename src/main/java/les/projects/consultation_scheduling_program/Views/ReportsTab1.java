@@ -10,7 +10,6 @@ import les.projects.consultation_scheduling_program.DataClasses.ReportOneItem;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
-
 import java.sql.ResultSet;
 import java.time.Month;
 import java.util.ArrayList;
@@ -18,10 +17,16 @@ import java.util.ArrayList;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
- * Customer Appointments by Type and Month.
+ * This class renders the Customer Appointments by Type and Month report.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
  */
 public class ReportsTab1 extends VBox {
 
+    /**
+     * Instantiates the report.
+     */
     public ReportsTab1() {
         TableView<ReportOneItem> appointments = new TableView<>();
         this.setMinSize(Main.appWidth - 313, Main.appHeight - 70);

@@ -20,6 +20,12 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
+/**
+ * This class renders the Customers view.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class CustomersView extends BorderPane {
     private final ComboBox<Country> countryComboBox = new ComboBox<>(Country.allCountries);
     private final ComboBox<Division> divisionComboBox = new ComboBox<>(Division.allDivisions);
@@ -27,6 +33,9 @@ public class CustomersView extends BorderPane {
     private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("all_customers"));
     private final TableView<Customer> customerTable;
 
+    /**
+     * This constructor instantiates the Customers view.
+     */
     public CustomersView() {
         //Customer header
         HBox header = new HBox();
@@ -138,12 +147,20 @@ public class CustomersView extends BorderPane {
         this.setBottom(footer);
     }
 
+    /**
+     * This method opens the Add/Update Customer modal in add mode.
+     * @param e Mouse event.
+     */
     private void addCustomer(Event e) {
         AddUpdateCustomer modal = new AddUpdateCustomer();
         modal.showAndWait();
         this.customerTable.setItems(Customer.allCustomers);
     }
 
+    /**
+     * This method opens the Add/Update Customer modal in update mode selecting the object selected in the TableView.
+     * @param e Mouse event.
+     */
     private void updateCustomer(Event e) {
         if(this.customerTable.getSelectionModel().getSelectedItems().size() > 0) {
             AddUpdateCustomer modal = new AddUpdateCustomer(this.customerTable.getSelectionModel().getSelectedItem());
@@ -155,6 +172,10 @@ public class CustomersView extends BorderPane {
         }
     }
 
+    /**
+     * This method calls the delete() method of the Customer object selected in the TableView.
+     * @param e Mouse event.
+     */
     private void deleteCustomer(Event e) {
         if(this.customerTable.getSelectionModel().isEmpty()){
             //There is no customer selected.
@@ -187,6 +208,10 @@ public class CustomersView extends BorderPane {
         this.customerTable.setItems(Customer.allCustomers);
     }
 
+    /**
+     * This method builds the TableView.
+     * @return The Customers Table.
+     */
     private TableView<Customer> buildCustomerTable() {
         TableView<Customer> table = new TableView<>(Customer.allCustomers);
         TableColumn<Customer, Integer> idCol = new TableColumn<>(lrb.getString("id"));
@@ -275,10 +300,16 @@ public class CustomersView extends BorderPane {
         return table;
     }
 
+    /**
+     * This method removes the filter from the TableView.
+     */
     private void selectAll() {
         this.customerTable.setItems(Customer.allCustomers);
     }
 
+    /**
+     * This method manages the selection of Country and Division and filters the TableView based on the selections.
+     */
     private void selectByCountryAndDivision() {
         if(!this.divisionComboBox.getSelectionModel().isEmpty()) {
             //Assign filteredCustomers to customerTable

@@ -18,7 +18,9 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
  * This class renders the Add/Update Appointment dialog.
+ *
  * @author Leslie C. Bomar 3rd
+ * @version 1.0
  */
 public class AddUpdateAppointment extends DialogBase {
     //Object Data
@@ -36,7 +38,7 @@ public class AddUpdateAppointment extends DialogBase {
     private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"), false, false);
 
     /**
-     * <p>Method instantiates a dialog without any appointment record. Used for new appointment records.</p>
+     * This constructor creates an instance of the Add/Update Appointment modal in add mode.
      */
     public AddUpdateAppointment() {
         super(lrb.getString("create_new_appointment"));
@@ -45,8 +47,7 @@ public class AddUpdateAppointment extends DialogBase {
     }
 
     /**
-     * <p>Method is used to open the dialog with an existing record for editing.</p>
-     *
+     * This constructor creates an instance of the Add/Update Appointment modal in update mode.
      * @param appointment The appointment object to be edited.
      */
     public AddUpdateAppointment(Appointment appointment) {
@@ -148,7 +149,6 @@ public class AddUpdateAppointment extends DialogBase {
 
     /**
      * This method launches a new dialog confirming the user wants to drop changes and close the appointment dialog.
-     *
      * @param event The event is only used as a trigger.
      */
     private void confirmCancel(Event event) {
@@ -167,7 +167,6 @@ public class AddUpdateAppointment extends DialogBase {
 
     /**
      * This method checks all input elements on the form to see if their data changed from their initial state.
-     *
      * @return Returns true if any of the data have been changed from initial state.
      */
     private boolean changesHaveBeenMade() {
@@ -177,7 +176,6 @@ public class AddUpdateAppointment extends DialogBase {
 
     /**
      * This method checks all input elements to ensure that they have valid data.
-     *
      * @return Returns true if all input elements contain valid data.
      */
     private boolean requiredFieldsFilled() {
@@ -224,7 +222,6 @@ public class AddUpdateAppointment extends DialogBase {
 
     /**
      * This method verifies the date and time values that have been entered in the DateTimePicker are valid for business purposes.
-     *
      * @return True if the dates and times entered are valid, false otherwise.
      */
     public boolean validTimeRange() {
@@ -259,7 +256,6 @@ public class AddUpdateAppointment extends DialogBase {
     /**
      * Method pulls all appointment for the selected customer and verifies that the current time and date provided do
      * not occur within and existing appointment's time frame.
-     *
      * @return True if there are no previously scheduled appointment during the time specified.
      */
     public boolean noConflictingAppointments() {
@@ -284,10 +280,24 @@ public class AddUpdateAppointment extends DialogBase {
         return result;
     }
 
+    /**
+     * This method checks compares a single date time entry against an appointment start and end to see if the entry
+     * falls between the start and end.
+     * @param entry A single point of date and time.
+     * @param start The start of the time window to check against.
+     * @param end The end of the time window to check against.
+     * @return Returns true of the entry falls between the start and the end.
+     */
     private boolean isInWindow(ZonedDateTime entry, ZonedDateTime start, ZonedDateTime end) {
         return (entry.isAfter(start) && entry.isBefore(end));
     }
 
+    /**
+     * This method checks the entry end and start to see if the entry overlaps an existing appointment's window.
+     * @param start The start of the appointment.
+     * @param end The end of the appointment.
+     * @return Returns true if the user's entry overlaps the appointment window.
+     */
     private boolean overlapsWindow(ZonedDateTime start, ZonedDateTime end) {
         boolean onOrBeforeStart = this.start.getEntry().isEqual(start) || this.start.getEntry().isBefore(start);
         boolean onOrAfterEnd = this.end.getEntry().isEqual(end) || this.end.getEntry().isAfter(end);

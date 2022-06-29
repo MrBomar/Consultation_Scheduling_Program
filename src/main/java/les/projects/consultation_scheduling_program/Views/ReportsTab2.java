@@ -26,13 +26,19 @@ import java.util.ArrayList;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
- * Customer Appointment Schedule.
+ * This class renders the Customer Appointment Schedule report.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
  */
 public final class ReportsTab2 extends VBox {
     private final ComboBoxStyled<Customer> selectCustomer = new ComboBoxStyled<>(Customer.allCustomers);
     private final TableView<ReportTwoItem> appointments = new TableView<>();
     private final ObservableList<ReportTwoItem> allItems = FXCollections.observableArrayList(new ArrayList<>());
 
+    /**
+     * This constructor instantiates the report.
+     */
     public ReportsTab2() {
         this.setMinSize(Main.appWidth - 313, Main.appHeight - 70);
         this.setMaxSize(Main.appWidth - 313, Main.appHeight - 70);

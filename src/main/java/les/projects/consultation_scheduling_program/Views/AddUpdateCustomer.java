@@ -15,9 +15,14 @@ import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Main;
-
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
+/**
+ * This class renders the Add/Update Customer dialog.
+ *
+ * @author Leslie C. Bomar 3rd
+ * @version 1.0
+ */
 public class AddUpdateCustomer extends DialogBase {
     private Customer currentCustomer;
     private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("customer_id"), false, true);
@@ -28,12 +33,19 @@ public class AddUpdateCustomer extends DialogBase {
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"), true, false);
     private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, "");
 
+    /**
+     * This constructor creates an instance of the Add/Update Customer modal in add mode.
+     */
     public AddUpdateCustomer() {
         super(lrb.getString("add_new_customer"));
         this.id.setPromptText("(Auto generated)");
         this.build();
     }
 
+    /**
+     * This constructor creates an instance of the Add/Update Customer modal in update mode.
+     * @param customer The customer object to be edited.
+     */
     public AddUpdateCustomer( Customer customer) {
         super(lrb.getString("update_customer"));
         this.build();
@@ -49,6 +61,9 @@ public class AddUpdateCustomer extends DialogBase {
         this.country.setValue(this.currentCustomer.getCountry());
     }
 
+    /**
+     * This method builds the form a applies formatting.
+     */
     private void build() {
         BorderPane borderPane = new BorderPane();
         Scene scene = new Scene(borderPane);
@@ -91,6 +106,11 @@ public class AddUpdateCustomer extends DialogBase {
         this.setOnCloseRequest(this::confirmCancel);
     }
 
+    /**
+     * This method verifies all fields are filled out and that the data is valid, then calls the save methods
+     * in the Customer class.
+     * @param e The event generated on click.
+     */
     private void saveClick(Event e) {
         if(this.changesHaveBeenMade()) {
             if(this.requiredFieldsFilled()) {
@@ -127,6 +147,11 @@ public class AddUpdateCustomer extends DialogBase {
         }
     }
 
+    /**
+     * This method asks the user if they want to discard changes before exiting the form. If they decline to discard
+     * said changes then the form stays open.
+     * @param event The event generated on close.
+     */
     private void confirmCancel(Event event) {
         if(this.changesHaveBeenMade()) {
             DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmDropChanges);
@@ -136,18 +161,25 @@ public class AddUpdateCustomer extends DialogBase {
                 this.close();
             } else {
                 event.consume();
-                //FIXME - Insert logic to save changes to the database
             }
         } else {
             this.close();
         }
     }
 
+    /**
+     * This method checks each input element on the form to ensure that changes have been made.
+     * @return If the data on the form has changed then method returns true.
+     */
     private boolean changesHaveBeenMade() {
         return this.name.isChanged() || this.address.isChanged() || this.zip.isChanged() || this.phone.isChanged() ||
                 this.division.isChanged();
     }
 
+    /**
+     * This method checks each input field to make sure they meet data requirements.
+     * @return Returns true if all fields are properly filled out.
+     */
     private boolean requiredFieldsFilled() {
         if(!this.name.isNotBlank()) {
             //Name is blank

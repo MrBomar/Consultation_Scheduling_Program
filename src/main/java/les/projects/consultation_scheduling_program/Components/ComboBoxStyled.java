@@ -80,5 +80,9 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
         this.setPrefWidth(i);
     }
 
+    /**
+     * Method checks to see if the value of the ComboBox has changed.
+     * @return Returns true if anything has changed.
+     */
     public boolean isChanged() { return this.changed; }
 }

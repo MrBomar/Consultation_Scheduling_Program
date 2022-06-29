@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import les.projects.consultation_scheduling_program.Enums.Styles;
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
  * The class extends the JavaFX BorderPane class. The BorderPane contains a TextField and a Label.
@@ -49,7 +50,7 @@ public class TextFieldLabeled extends BorderPane {
 
         //Required properties
         if(required) {
-            this.textField.setPromptText("(Required)");
+            this.textField.setPromptText("(" + lrb.getString("required") + ")");
             this.textField.setStyle(Styles.StyleTextFieldRequired);
         }
 

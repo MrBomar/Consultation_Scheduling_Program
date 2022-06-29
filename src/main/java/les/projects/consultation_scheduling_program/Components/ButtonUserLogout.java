@@ -8,6 +8,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import les.projects.consultation_scheduling_program.Enums.Styles;
+import les.projects.consultation_scheduling_program.Main;
+
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
  * Class extends the JavaFX VBox to create a clickable element for logging out of the program.
@@ -23,7 +26,8 @@ public class ButtonUserLogout extends VBox {
     public ButtonUserLogout() {
         //Exit button
         HBox logoutButtonItems = new HBox();
-        Text userInfo = new Text("User:\nLeslie C. Bomar 3rd");
+
+        Text userInfo = new Text(lrb.getString("user") + Main.currentUser.getUserName());
         userInfo.setFont(Styles.DefaultFont18);
         userInfo.setFill(Styles.TextColor);
         Region buttonRegion = new Region();

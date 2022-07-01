@@ -61,57 +61,56 @@ public enum Message {
      * Message displayed to the user if the query could not be executed.
      */
     DatabaseError(
-            "Database Error",
-            "The query could not be executed."
+            mrb.getString("database_error_title"),
+            mrb.getString("database_error_message")
     ),
 
     /**
      * The message displayed if the specified data could not be found in the database.
      */
     DataNotFound(
-            "Data Not Found",
-            "No {} found in the database."
+            mrb.getString("data_not_found_title"),
+            mrb.getString("data_not_found_message")
     ),
 
     /**
      * The message displayed if the data in the database can't be uploaded.
      */
     DataNotLoaded(
-            "Data Could Not Be Loaded",
-            "The {} could not be loaded from the database."
+            mrb.getString("data_not_loaded_title"),
+            mrb.getString("data_not_loaded_message")
     ),
 
     /**
      * Message informs the user that either the form is incomplete, or the information entered is invalid.
      */
     InvalidInput(
-            "Invalid Input",
-            "This form contains invalid information or there are required fields that have not been filled." +
-                    "Please verify the data entered."
+            mrb.getString("invalid_input_title"),
+            mrb.getString("invalid_input_message")
     ),
 
     /**
      * Message displayed when a required field is blank.
      */
     InvalidInputEntered(
-            "Invalid Input",
-            "You must type a {}, any {} will do."
+            mrb.getString("invalid_input_entered_title"),
+            mrb.getString("invalid_input_entered_message")
     ),
 
     /**
      * Message displayed when a required field has no selection.
      */
     InvalidInputSelected(
-            "Invalid Input",
-            "No {} is selected. Please select a {} before saving."
+            mrb.getString("invalid_input_selected_title"),
+            mrb.getString("invalid_input_selected_message")
     ),
 
     /**
      * Message displayed when the time selected cannot be converted to a DateTime object.
      */
     InvalidInputTime(
-            "Invalid Input",
-            "The '{}' time and date specified is invalid. Please review your entry."
+            mrb.getString("invalid_input_time_title"),
+            mrb.getString("invalid_input_time_message")
     ),
 
     /**
@@ -119,16 +118,16 @@ public enum Message {
      * range of appointment hours.
      */
     InvalidTimeRange(
-            "Invalid Time Range",
-            "All appointments must be scheduled between 08:00 am and 10:00 pm Eastern Standard Time."
+            mrb.getString("invalid_time_range_title"),
+            mrb.getString("invalid_time_range_message")
     ),
 
     /**
      * Message informing the user that the appointment start time must take place before the end time.
      */
     InvalidTimeOrder(
-            "Invalid Time Order",
-            "The appointment end time and date must be set after the appointment start time and date."
+            mrb.getString("invalid_time_order_title"),
+            mrb.getString("invalid_time_order_message")
     ),
 
     /**
@@ -159,8 +158,8 @@ public enum Message {
      * Message displayed if the customer attempts to save a record that contains no changes.
      */
     NothingChanged(
-            "Nothing Changes",
-            "You haven't made any changes to the data, so nothing needs to be saved."
+            mrb.getString("nothing_changed_title"),
+            mrb.getString("nothing_changed_message")
     ),
 
     /**
@@ -175,49 +174,48 @@ public enum Message {
      * Message displayed when a record could not be added.
      */
     RecordNotAdded(
-            "Could Not Add Record",
-            "The {} could not be added to the database."
+            mrb.getString("record_not_added_title"),
+            mrb.getString("record_not_added_description")
     ),
 
     /**
      * Message displayed when a record could not be deleted.
      */
     RecordNotDeleted(
-            "Could Not Delete Record",
-            "The {} could not be deleted from the database."
+            mrb.getString("record_not_deleted_title"),
+            mrb.getString("record_not_deleted_message")
     ),
 
     /**
      * Message displayed when a record could not be updated.
      */
     RecordNotUpdated(
-            "Record Could Not Be Updated",
-            "The {} could not be updated in the database."
+            mrb.getString("record_not_updated_title"),
+            mrb.getString("record_not_updated_message")
     ),
 
     /**
      * Message displayed confirming the record has been saved.
      */
     RecordSaved(
-            "Record Saved",
-            "Your changes have been saved."
+            mrb.getString("record_saved_title"),
+            mrb.getString("record_saved_message")
     ),
 
     /**
      * Message displayed when a record could not be uploaded from the database.
      */
     ReportNotLoaded(
-            "Report Cannot Be Loaded",
-            "Cannot load the {} report."
+            mrb.getString("report_not_loaded_title"),
+            mrb.getString("report_not_loaded_message")
     ),
 
     /**
      * Message displayed after login if the user has upcoming appointment.
      */
     UpcomingAppointment(
-            "Upcoming Appointment",
-            "The following appointment is starting within 15 minutes. \n \nAppointment ID: {}" +
-                    "\nDate: {}\nTime: {}"
+            mrb.getString("upcoming_appointment_title"),
+            mrb.getString("upcoming_appointment_message")
     )
     ;
 

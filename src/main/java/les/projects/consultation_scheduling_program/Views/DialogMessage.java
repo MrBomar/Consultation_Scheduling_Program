@@ -62,7 +62,7 @@ public class DialogMessage extends DialogBase {
     private void build(String m) {
         this.center.getChildren().add(new DialogText(m));
 
-        ButtonStandard ok = new ButtonStandard(lrb.getString("ok"));
+        ButtonStandard ok = new ButtonStandard(lrb.getString("OK"));
         ok.setOnMouseClicked(e -> this.close());
         this.bottom.getChildren().add(ok);
     }

@@ -50,7 +50,7 @@ public class TextFieldLabeled extends BorderPane {
 
         //Required properties
         if(required) {
-            this.textField.setPromptText("(" + lrb.getString("required") + ")");
+            this.textField.setPromptText("(" + lrb.getString("Required") + ")");
             this.textField.setStyle(Styles.StyleTextFieldRequired);
         }
 

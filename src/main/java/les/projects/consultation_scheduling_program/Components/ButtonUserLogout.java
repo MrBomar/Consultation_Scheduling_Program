@@ -27,7 +27,7 @@ public class ButtonUserLogout extends VBox {
         //Exit button
         HBox logoutButtonItems = new HBox();
 
-        Text userInfo = new Text(lrb.getString("user") + Main.currentUser.getUserName());
+        Text userInfo = new Text(lrb.getString("User") + Main.currentUser.getUserName());
         userInfo.setFont(Styles.DefaultFont18);
         userInfo.setFill(Styles.TextColor);
         Region buttonRegion = new Region();

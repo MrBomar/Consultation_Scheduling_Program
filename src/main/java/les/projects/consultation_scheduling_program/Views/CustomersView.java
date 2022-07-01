@@ -17,7 +17,6 @@ import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
-
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
@@ -179,7 +178,7 @@ public class CustomersView extends BorderPane {
     private void deleteCustomer(Event e) {
         if(this.customerTable.getSelectionModel().isEmpty()){
             //There is no customer selected.
-            DialogMessage dialog = new DialogMessage("No Customer Selected", "There is no customer selected above. You must select a customer before deleting them.");
+            DialogMessage dialog = new DialogMessage(Message.NoSelectedCustomer);
             dialog.showAndWait();
             return;
         }

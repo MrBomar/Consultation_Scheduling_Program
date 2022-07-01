@@ -1,5 +1,6 @@
 package les.projects.consultation_scheduling_program.Helpers;
 
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -59,7 +60,7 @@ public abstract class JDBC {
             Statement stmt = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
             return stmt.executeQuery(query);
         } catch (Exception e) {
-            DialogMessage dialog = new DialogMessage("Database Error", "Query could not be executed.");
+            DialogMessage dialog = new DialogMessage(Message.DatabaseError);
             dialog.showAndWait();
             throw e;
         }

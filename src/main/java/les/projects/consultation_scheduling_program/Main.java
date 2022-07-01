@@ -30,7 +30,7 @@ public class Main extends Application {
     /**
      * Required method for JavaFX.
      * @param stage The base of the application view.
-     * @throws IOException
+     * @throws IOException Self explanatory.
      */
     @Override
     public void start(Stage stage) throws IOException {
@@ -57,7 +57,7 @@ public class Main extends Application {
 
     /**
      * Required Java Method.
-     * @param args
+     * @param args Array of string to use in starting arguments.
      */
     public static void main(String[] args) {
         JDBC.openConnection();

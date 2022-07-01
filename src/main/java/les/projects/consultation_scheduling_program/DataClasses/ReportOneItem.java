@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
- * This class manages the data objects related to the first report. These object are extracts from the
+ * This class manages the data objects related to the first report. These objects are extracts from the
  * Appointments table.
  *
  * @author Leslie C. Bomar 3rd

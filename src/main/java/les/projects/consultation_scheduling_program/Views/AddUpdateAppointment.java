@@ -9,6 +9,7 @@ import les.projects.consultation_scheduling_program.DataClasses.Contact;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Main;
+
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -41,7 +42,7 @@ public class AddUpdateAppointment extends DialogBase {
      */
     public AddUpdateAppointment() {
         super(lrb.getString("create_new_appointment"));
-        this.id.setPromptText("(" + lrb.getString("Auto-Generated") + ")");
+        this.id.setPromptText("(Auto generated)");
         this.build();
     }
 
@@ -69,9 +70,9 @@ public class AddUpdateAppointment extends DialogBase {
      * This method is used to format components and add them to the view.
      */
     private void build() {
-        BorderPaneStyled customerPane = new BorderPaneStyled(lrb.getString("Customer"), true);
+        BorderPaneStyled customerPane = new BorderPaneStyled(lrb.getString("customer"), true);
         customerPane.setRight(this.customer);
-        BorderPaneStyled contactPane = new BorderPaneStyled(lrb.getString("Contact"), true);
+        BorderPaneStyled contactPane = new BorderPaneStyled(lrb.getString("contact"), true);
         contactPane.setRight(this.contact);
 
         VBox center = new VBox();
@@ -80,9 +81,9 @@ public class AddUpdateAppointment extends DialogBase {
         this.center.getChildren().add(center);
 
         //Add Buttons
-        ButtonStandard save = new ButtonStandard(lrb.getString("Save"));
+        ButtonStandard save = new ButtonStandard(lrb.getString("save"));
         save.setOnMouseClicked(this::saveClick);
-        ButtonStandard cancel = new ButtonStandard(lrb.getString("Cancel"));
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
         cancel.setOnMouseClicked(this::confirmCancel);
         this.bottom.getChildren().addAll(save, new ButtonGap(), cancel);
 
@@ -180,34 +181,64 @@ public class AddUpdateAppointment extends DialogBase {
     private boolean requiredFieldsFilled() {
         if (this.contact.getSelectionModel().isEmpty()) {
             //Contact is not selected
-            DialogMessage dialog = new DialogMessage(Message.NoSelectedContact);
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputSelected,
+                    new String[]{
+                            lrb.getString("contact"),
+                            lrb.getString("contact")
+                    });
             dialog.showAndWait();
             return false;
         } else if (this.customer.getSelectionModel().isEmpty()) {
             //Customer is not selected
-            DialogMessage dialog = new DialogMessage(Message.NoSelectedCustomer);
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputSelected,
+                    new String[]{
+                            lrb.getString("customer"),
+                            lrb.getString("customer")
+                    });
             dialog.showAndWait();
             return false;
         } else if (!this.end.validEntry()) {
             //End time is not valid
-            String[] words = new String[] {lrb.getString("End")};
-            DialogMessage dialog = new DialogMessage(Message.InvalidTimeValue, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputTime,
+                    new String[]{
+                            lrb.getString("End"),
+                            lrb.getString("End")
+                    });
             dialog.showAndWait();
             return false;
         } else if (!this.location.isNotBlank()) {
             //Location is blank
-            DialogMessage dialog = new DialogMessage(Message.NoLocationEntered);
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[]{
+                            lrb.getString("location"),
+                            lrb.getString("location")
+                    });
             dialog.showAndWait();
             return false;
         } else if (!this.start.validEntry()) {
             //Start time is not valid
-            String[] words = new String[] {lrb.getString("Start")};
-            DialogMessage dialog = new DialogMessage(Message.InvalidTimeValue, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputTime,
+                    new String[] {
+                            lrb.getString("Start"),
+                            lrb.getString("Start")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else if (!this.title.isNotBlank()) {
             //Title is blank
-            DialogMessage dialog = new DialogMessage(Message.NoTitleEntered);
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[] {
+                            lrb.getString("title"),
+                            lrb.getString("title")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else {

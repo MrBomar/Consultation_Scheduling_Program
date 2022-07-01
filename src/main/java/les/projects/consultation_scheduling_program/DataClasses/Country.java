@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
@@ -12,6 +13,8 @@ import les.projects.consultation_scheduling_program.Views.DialogMessage;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
  * Country class stores and manages the country data from the database.
@@ -57,8 +60,8 @@ public class Country {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Record Could Not Be Added", "The country could not be added to the database.");
+            String[] words = new String[] {lrb.getString("country")};
+            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded, words);
             dialog.showAndWait();
         }
     }
@@ -76,15 +79,15 @@ public class Country {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Record Could Not Be Deleted", "The country could not be deleted from the database.");
+            String[] words = new String[] {lrb.getString("country")};
+            DialogMessage dialog = new DialogMessage(Message.RecordNotDeleted, words);
             dialog.showAndWait();
         }
     }
 
     /**
      * Updates the country information in the database.
-     * @param countryName
+     * @param countryName The name of the country.
      */
     public final void update(String countryName){
         try {
@@ -99,8 +102,8 @@ public class Country {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Record Could Not Be Updated", "The country could not be updated in the database.");
+            String[] words = new String[] {lrb.getString("country")};
+            DialogMessage dialog = new DialogMessage(Message.RecordNotUpdated, words);
             dialog.showAndWait();
         }
     }
@@ -126,7 +129,8 @@ public class Country {
             ResultSet rs = stmt.executeQuery(qry);
 
             if(!rs.next()) {
-                DialogMessage dialog = new DialogMessage("Data Not Found", "No countries were found in the database.");
+                String[] words = new String[] {lrb.getString("countries")};
+                DialogMessage dialog = new DialogMessage(Message.DataNotFound, words);
                 dialog.showAndWait();
             } else {
                 allCountries = FXCollections.observableList(new ArrayList<>());
@@ -142,8 +146,8 @@ public class Country {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Data Could Not Be Loaded", "The countries could not be loaded from the database.");
+            String[] words = new String[] {lrb.getString("countries")};
+            DialogMessage dialog = new DialogMessage(Message.DataNotLoaded, words);
             dialog.showAndWait();
         }
     }

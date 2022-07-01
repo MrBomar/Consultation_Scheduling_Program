@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleStringProperty;
 import java.time.ZonedDateTime;
 
 /**
- * This class manages the data objects related to the second report. These object are extracts from the
+ * This class manages the data objects related to the second report. These objects are extracts from the
  * Appointments table.
  *
  * @author Leslie C. Bomar 3rd
@@ -42,35 +42,35 @@ public final class ReportTwoItem {
      * This method gets the Customer object related to the appointment.
      * @return The Customer object related to the appointment.
      */
-    public final Customer getCustomer() { return this.customer.get(); }
+    public Customer getCustomer() { return this.customer.get(); }
 
     /**
      * This method gets the Contact object related to the appointment.
      * @return The Contact object related to the appointment.
      */
-    public final Contact getContact() { return this.contact.get(); }
+    public Contact getContact() { return this.contact.get(); }
 
     /**
      * This method gets the type of the appointment.
      * @return The type of the appointment.
      */
-    public final String getType() { return this.type.get(); }
+    public String getType() { return this.type.get(); }
 
     /**
      * This method gets the title of the appointment.
      * @return The title of the appointment.
      */
-    public final String getTitle() { return this.title.get(); }
+    public String getTitle() { return this.title.get(); }
 
     /**
      * This method gets the start date and time of the appointment.
      * @return The start date and time of the appointment.
      */
-    public final ZonedDateTime getStart() { return this.start.get(); }
+    public ZonedDateTime getStart() { return this.start.get(); }
 
     /**
      * This method get the end date and time of the appointment.
      * @return The end date and time of the appointment.
      */
-    public final ZonedDateTime getEnd() { return this.end.get(); }
+    public ZonedDateTime getEnd() { return this.end.get(); }
 }

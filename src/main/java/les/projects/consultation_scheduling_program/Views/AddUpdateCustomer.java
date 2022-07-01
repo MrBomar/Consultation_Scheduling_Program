@@ -62,7 +62,7 @@ public class AddUpdateCustomer extends DialogBase {
     }
 
     /**
-     * This method builds the form a applies formatting.
+     * This method builds the form and applies formatting.
      */
     private void build() {
         BorderPane borderPane = new BorderPane();
@@ -70,9 +70,9 @@ public class AddUpdateCustomer extends DialogBase {
         this.setScene(scene);
 
         //Adding ComboBoxes and their containers.
-        BorderPaneStyled countryPane = new BorderPaneStyled("Country", true);
+        BorderPaneStyled countryPane = new BorderPaneStyled(lrb.getString("Country"), true);
         countryPane.setRight(this.country);
-        BorderPaneStyled divisionPane = new BorderPaneStyled("Division", true);
+        BorderPaneStyled divisionPane = new BorderPaneStyled(lrb.getString("Division"), true);
         divisionPane.setRight(this.division);
         this.country.setWidth(200);
         this.division.setWidth(200);
@@ -183,27 +183,57 @@ public class AddUpdateCustomer extends DialogBase {
     private boolean requiredFieldsFilled() {
         if(!this.name.isNotBlank()) {
             //Name is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input", "Customer name cannot be blank.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[] {
+                            lrb.getString("customer_name"),
+                            lrb.getString("customer_name")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else if (!this.address.isNotBlank()) {
             //Address is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input", "Address cannot be blank.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[] {
+                            lrb.getString("address"),
+                            lrb.getString("address")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else if (!this.zip.isNotBlank()) {
             //Zip is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input", "Zip Code cannot be blank.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[] {
+                            lrb.getString("zip_code"),
+                            lrb.getString("zip_code")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else if (!this.phone.isNotBlank()) {
             //Phone is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input", "Phone number cannot be blank.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[] {
+                            lrb.getString("phone_number"),
+                            lrb.getString("phone_number")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else if (this.division.getSelectionModel().isEmpty()) {
             //Division is not selected
-            DialogMessage dialog = new DialogMessage("Invalid Input", "No division is selected. Please select a division.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputSelected,
+                    new String[] {
+                            lrb.getString("division"),
+                            lrb.getString("division")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else {

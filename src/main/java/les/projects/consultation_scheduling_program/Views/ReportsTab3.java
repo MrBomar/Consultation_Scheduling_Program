@@ -81,14 +81,14 @@ public final class ReportsTab3 extends VBox {
         }
 
         //Build report columns
-        TableColumn<ReportThreeItem, Contact> contactCol = new TableColumn<>(lrb.getString("contact"));
-        TableColumn<ReportThreeItem, Integer> appointmentCol = new TableColumn<>(lrb.getString("appointment"));
-        TableColumn<ReportThreeItem, String> titleCol = new TableColumn<>(lrb.getString("title"));
-        TableColumn<ReportThreeItem, String> typeCol = new TableColumn<>(lrb.getString("type"));
-        TableColumn<ReportThreeItem, String> descriptionCol = new TableColumn<>(lrb.getString("description"));
-        TableColumn<ReportThreeItem, Timestamp> startCol = new TableColumn<>(lrb.getString("start"));
-        TableColumn<ReportThreeItem, Timestamp> endCol = new TableColumn<>(lrb.getString("end"));
-        TableColumn<ReportThreeItem, Integer> customerCol = new TableColumn<>(lrb.getString("customer"));
+        TableColumn<ReportThreeItem, Contact> contactCol = new TableColumn<>(lrb.getString("Contact"));
+        TableColumn<ReportThreeItem, Integer> appointmentCol = new TableColumn<>(lrb.getString("Appointment"));
+        TableColumn<ReportThreeItem, String> titleCol = new TableColumn<>(lrb.getString("Title"));
+        TableColumn<ReportThreeItem, String> typeCol = new TableColumn<>(lrb.getString("Type"));
+        TableColumn<ReportThreeItem, String> descriptionCol = new TableColumn<>(lrb.getString("Description"));
+        TableColumn<ReportThreeItem, Timestamp> startCol = new TableColumn<>(lrb.getString("Start"));
+        TableColumn<ReportThreeItem, Timestamp> endCol = new TableColumn<>(lrb.getString("End"));
+        TableColumn<ReportThreeItem, Integer> customerCol = new TableColumn<>(lrb.getString("Customer"));
 
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
         appointmentCol.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
@@ -108,7 +108,7 @@ public final class ReportsTab3 extends VBox {
         this.appointments.getColumns().add(endCol);
         this.appointments.getColumns().add(customerCol);
 
-        ButtonStandard clear = new ButtonStandard("Clear");
+        ButtonStandard clear = new ButtonStandard(lrb.getString("Clear"));
         clear.setOnMouseClicked(e -> this.selectContact.setValue(null));
         dropDownGroup.getChildren().add(new ButtonGap());
         dropDownGroup.getChildren().add(clear);

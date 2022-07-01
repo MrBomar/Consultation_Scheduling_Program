@@ -7,6 +7,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import les.projects.consultation_scheduling_program.DataClasses.ReportOneItem;
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
@@ -47,14 +48,15 @@ public class ReportsTab1 extends VBox {
             appointments.setItems(items);
         } catch (Exception e) {
             DialogMessage dialog = new DialogMessage(
-                    "Report Cannot Be Loaded","Cannot load appointments_by_type_and_month.");
+                    Message.ReportNotLoaded,
+                    new String[] {"appointments_by_type_and_month"});
             dialog.showAndWait();
         }
 
         //Build report columns
-        TableColumn<ReportOneItem, String> typeCol = new TableColumn<>(lrb.getString("type"));
-        TableColumn<ReportOneItem, Integer> monthCol = new TableColumn<>("Month");
-        TableColumn<ReportOneItem, Integer> countCol = new TableColumn<>("Count");
+        TableColumn<ReportOneItem, String> typeCol = new TableColumn<>(lrb.getString("Type"));
+        TableColumn<ReportOneItem, Integer> monthCol = new TableColumn<>(lrb.getString("Month"));
+        TableColumn<ReportOneItem, Integer> countCol = new TableColumn<>(lrb.getString("Count"));
 
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         monthCol.setCellValueFactory(new PropertyValueFactory<>("month"));

@@ -1,6 +1,7 @@
 package les.projects.consultation_scheduling_program.DataClasses;
 
 import javafx.collections.FXCollections;
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
@@ -8,6 +9,8 @@ import les.projects.consultation_scheduling_program.Views.DialogMessage;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.*;
+
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
  * This class stores the data related to the users in the database and provides method for adding, removing,
@@ -63,8 +66,7 @@ public class User {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Record Could Not Be Added","The user could not be added to the database.");
+            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded,new String[]{lrb.getString("user")});
             dialog.showAndWait();
         }
     }
@@ -89,7 +91,7 @@ public class User {
     public static String getUserName(int id) { return allUsers.stream().filter(i -> i.id == id).findFirst().get().userName; }
 
     /**
-     * This method compares the user name and password entered in the login form and verifies if it matches any of
+     * This method compares the username and password entered in the login form and verifies if it matches any of
      * the user records.
      * @param userName The supplied name of the user.
      * @param inputPassword The supplied password of the user.
@@ -100,15 +102,15 @@ public class User {
         Boolean anyMatch = allUsers.stream().anyMatch(i -> i.getUserName().equals(userName));
         if(anyMatch) {
             String objPassword = allUsers.stream().filter(i -> i.userName.equals(userName)).findFirst().get().userPassword;
-            if(inputPassword.equals(objPassword)) return true;
+            return inputPassword.equals(objPassword);
         }
         return false;
     }
 
     /**
-     * This method gets a User object by matching the supplied user name.
-     * @param userName
-     * @return
+     * This method gets a User object by matching the supplied username.
+     * @param userName The username of the user.
+     * @return The user object related to the username.
      */
     public static User getUserByUserName(String userName) {
         return allUsers.stream().filter(i -> i.userName.equals(userName)).findFirst().get();
@@ -122,7 +124,7 @@ public class User {
     public static User getById(int id) { return allUsers.stream().filter(i -> i.id == id).findFirst().get(); }
 
     /**
-     * This method load the data from the databse and creates User objects from the Users table.
+     * This method load the data from the database and creates User objects from the Users table.
      */
     public static void loadData() {
         try {
@@ -132,10 +134,10 @@ public class User {
             ResultSet rs = stmt.executeQuery(qry);
 
             if (!rs.next()) {
-                DialogMessage dialog = new DialogMessage("Data Not Found", "No users were found in the database.");
+                DialogMessage dialog = new DialogMessage(Message.DataNotFound,new String[]{lrb.getString("user")});
                 dialog.showAndWait();
             } else {
-                allUsers = FXCollections.observableList(new ArrayList<User>());
+                allUsers = FXCollections.observableList(new ArrayList<>());
 
                 //Loop through results and add users to the list.
                 do {
@@ -149,8 +151,7 @@ public class User {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Data Could Not Be Loaded","Users could not be loaded from the database.");
+            DialogMessage dialog = new DialogMessage(Message.DataNotLoaded,new String[]{lrb.getString("user")});
             dialog.showAndWait();
         }
     }

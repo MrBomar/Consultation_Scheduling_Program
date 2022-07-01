@@ -15,6 +15,7 @@ import les.projects.consultation_scheduling_program.Components.ComboBoxStyled;
 import les.projects.consultation_scheduling_program.DataClasses.Contact;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.ReportTwoItem;
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
@@ -74,7 +75,8 @@ public final class ReportsTab2 extends VBox {
             this.appointments.setItems(this.allItems);
         } catch (Exception e) {
             DialogMessage dialog = new DialogMessage(
-                    "Report Cannot Be Loaded","Cannot load customer_appointment_schedule.");
+                    Message.ReportNotLoaded,
+                    new String[] {"customer_appointment_schedule"});
             dialog.showAndWait();
         }
 
@@ -99,7 +101,7 @@ public final class ReportsTab2 extends VBox {
         this.appointments.getColumns().add(startCol);
         this.appointments.getColumns().add(endCol);
 
-        ButtonStandard clear = new ButtonStandard("Clear");
+        ButtonStandard clear = new ButtonStandard(lrb.getString("Clear"));
         clear.setOnMouseClicked(e-> this.selectCustomer.setValue(null));
         dropDownGroup.getChildren().add(new ButtonGap());
         dropDownGroup.getChildren().add(clear);

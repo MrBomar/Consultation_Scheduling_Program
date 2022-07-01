@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
@@ -13,6 +14,8 @@ import les.projects.consultation_scheduling_program.Views.DialogMessage;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
  * This class stores data related to the first_level_divisions in the database and provides methods for managing
@@ -62,8 +65,7 @@ public class Division {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Record Could Not Be Added","The division could not be added to the database.");
+            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded,new String[]{lrb.getString("division")});
             dialog.showAndWait();
         }
     }
@@ -89,7 +91,9 @@ public class Division {
         } catch (Exception e) {
             e.printStackTrace();
             DialogMessage dialog = new DialogMessage(
-                    "Record Could Not Be Updated","The division could not be updated in the database.");
+                    Message.RecordNotUpdated,
+                    new String[] {lrb.getString("division")}
+            );
             dialog.showAndWait();
         }
     }
@@ -108,7 +112,9 @@ public class Division {
         } catch (Exception e) {
             e.printStackTrace();
             DialogMessage dialog = new DialogMessage(
-                    "Record Could Not Be Deleted","The division could not be deleted from the database.");
+                    Message.RecordNotDeleted,
+                    new String[] {lrb.getString("division")}
+            );
             dialog.showAndWait();
         }
     }
@@ -135,7 +141,10 @@ public class Division {
             ResultSet rs = stmt.executeQuery(qry);
 
             if(!rs.next()) {
-                DialogMessage dialog = new DialogMessage("Data Not Found", "No divisions were found in the database.");
+                DialogMessage dialog = new DialogMessage(
+                        Message.DataNotFound,
+                        new String[] {lrb.getString("divisions")}
+                );
                 dialog.showAndWait();
             } else {
                 allDivisions = FXCollections.observableList(new ArrayList<>());
@@ -153,7 +162,9 @@ public class Division {
         } catch (Exception e) {
             e.printStackTrace();
             DialogMessage dialog = new DialogMessage(
-                    "Data Could Not Be Loaded","Division data could not be loaded from the database.");
+                    Message.DataNotLoaded,
+                    new String[] {lrb.getString("division")}
+            );
             dialog.showAndWait();
         }
     }

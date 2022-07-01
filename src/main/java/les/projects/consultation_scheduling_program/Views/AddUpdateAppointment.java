@@ -181,38 +181,64 @@ public class AddUpdateAppointment extends DialogBase {
     private boolean requiredFieldsFilled() {
         if (this.contact.getSelectionModel().isEmpty()) {
             //Contact is not selected
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "No contact is selected. Please select a contact before saving.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputSelected,
+                    new String[]{
+                            lrb.getString("contact"),
+                            lrb.getString("contact")
+                    });
             dialog.showAndWait();
             return false;
         } else if (this.customer.getSelectionModel().isEmpty()) {
             //Customer is not selected
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "No customer is selected. Please select a customer before saving.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputSelected,
+                    new String[]{
+                            lrb.getString("customer"),
+                            lrb.getString("customer")
+                    });
             dialog.showAndWait();
             return false;
         } else if (!this.end.validEntry()) {
             //End time is not valid
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "The 'End' time and date specified is invalid. Please review your entry.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputTime,
+                    new String[]{
+                            lrb.getString("End"),
+                            lrb.getString("End")
+                    });
             dialog.showAndWait();
             return false;
         } else if (!this.location.isNotBlank()) {
             //Location is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "You must type a location, any location will do.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[]{
+                            lrb.getString("location"),
+                            lrb.getString("location")
+                    });
             dialog.showAndWait();
             return false;
         } else if (!this.start.validEntry()) {
             //Start time is not valid
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "The 'Start' time and date specified is invalid. Please review your entry.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputTime,
+                    new String[] {
+                            lrb.getString("Start"),
+                            lrb.getString("Start")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else if (!this.title.isNotBlank()) {
             //Title is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "You must type a title, any title will do.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.InvalidInputEntered,
+                    new String[] {
+                            lrb.getString("title"),
+                            lrb.getString("title")
+                    }
+            );
             dialog.showAndWait();
             return false;
         } else {

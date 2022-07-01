@@ -5,11 +5,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
  * This class stores information related to the contacts in the database.
@@ -64,8 +67,8 @@ public class Contact {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Could Not Add Record", "The contact could not be added to the database.");
+            String[] words = new String[] {lrb.getString("contact")};
+            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded, words);
             dialog.showAndWait();
             return false;
         }
@@ -86,8 +89,8 @@ public class Contact {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Could Not Delete Record", "The contact could not be deleted from the database.");
+            String[] words = new String[] {lrb.getString("contact")};
+            DialogMessage dialog = new DialogMessage(Message.RecordNotDeleted, words);
             dialog.showAndWait();
         }
     }
@@ -104,8 +107,9 @@ public class Contact {
             ResultSet rs = stmt.executeQuery(qry);
 
             if(!rs.next()) {
-                 DialogMessage dialog = new DialogMessage("Data Not Found", "No contacts found in database.");
-                 dialog.showAndWait();
+                String[] words = new String[] {lrb.getString("contacts")};
+                DialogMessage dialog = new DialogMessage(Message.DataNotFound, words);
+                dialog.showAndWait();
             } else {
                 allContacts = FXCollections.observableList(new ArrayList<>());
 
@@ -121,8 +125,8 @@ public class Contact {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(
-                    "Data Could Not Be Loaded", " The contacts could not be loaded from the database.");
+            String[] words = new String[] {lrb.getString("contacts")};
+            DialogMessage dialog = new DialogMessage(Message.DataNotLoaded, words);
             dialog.showAndWait();
         }
     }
@@ -146,8 +150,8 @@ public class Contact {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage("" +
-                    "Record Could Not Be Updated", "Contact could not be updated in the database.");
+            String[] words = new String[] {lrb.getString("contact")};
+            DialogMessage dialog = new DialogMessage(Message.RecordNotUpdated, words);
             dialog.showAndWait();
         }
     }

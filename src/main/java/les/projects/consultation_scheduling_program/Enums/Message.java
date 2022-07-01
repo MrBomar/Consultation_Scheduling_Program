@@ -3,7 +3,7 @@ package les.projects.consultation_scheduling_program.Enums;
 import static les.projects.consultation_scheduling_program.Main.mrb;
 
 /**
- * This enum list contains all of the messages displayed to the user in dialogs.
+ * This enum list contains all the messages displayed to the user in dialogs.
  *
  * @author Leslie C. Bomar 3rd
  * @version 1.0
@@ -65,6 +65,21 @@ public enum Message {
             mrb.getString("customer_deleted_message")
     ),
 
+    DatabaseError(
+            "Database Error",
+            "The query could not be executed."
+    ),
+
+    DataNotFound(
+            "Data Not Found",
+            "No {} found in the database."
+    ),
+
+    DataNotLoaded(
+            "Data Could Not Be Loaded",
+            "The {} could not be loaded from the database."
+    ),
+
     /**
      * Message informs the user that either the form is incomplete, or the information entered is invalid.
      */
@@ -72,6 +87,21 @@ public enum Message {
             "Invalid Input",
             "This form contains invalid information or there are required fields that have not been filled." +
                     "Please verify the data entered."
+    ),
+
+    InvalidInputEntered(
+            "Invalid Input",
+            "You must type a {}, any {} will do."
+    ),
+
+    InvalidInputSelected(
+            "Invalid Input",
+            "No {} is selected. Please select a {} before saving."
+    ),
+
+    InvalidInputTime(
+            "Invalid Input",
+            "The '{}' time and date specified is invalid. Please review your entry."
     ),
 
     /**
@@ -195,12 +225,32 @@ public enum Message {
             mrb.getString("prog_error_missing_class_message")
     ),
 
+    RecordNotAdded(
+            "Could Not Add Record",
+            "The {} could not be added to the database."
+    ),
+
+    RecordNotDeleted(
+            "Could Not Delete Record",
+            "The {} could not be deleted from the database."
+    ),
+
+    RecordNotUpdated(
+            "Record Could Not Be Updated",
+            "The {} could not be updated in the database."
+    ),
+
     /**
      * Message displayed confirming the record has been saved.
      */
     RecordSaved(
             "Record Saved",
             "Your changes have been saved."
+    ),
+
+    ReportNotLoaded(
+            "Report Cannot Be Loaded",
+            "Cannot load the {} report."
     ),
 
     /**

@@ -11,7 +11,6 @@ import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.LoginActivity;
 import les.projects.consultation_scheduling_program.Main;
-
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
@@ -61,7 +60,7 @@ public class Login extends DialogBase {
                 close();
             } catch (NullPointerException e) {
                 e.printStackTrace();
-                DialogMessage dialog = new DialogMessage("Login Failed","We could not match the Username provided. Login denied.");
+                DialogMessage dialog = new DialogMessage(Message.LoginFail);
                 dialog.showAndWait();
                 userId.resetInput();
                 password.resetInput();

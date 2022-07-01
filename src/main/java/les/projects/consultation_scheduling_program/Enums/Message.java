@@ -58,23 +58,24 @@ public enum Message {
     ),
 
     /**
-     * Message confirming that the customer has been deleted.
+     * Message displayed to the user if the query could not be executed.
      */
-    CustomerDeleted(
-            mrb.getString("customer_deleted_title"),
-            mrb.getString("customer_deleted_message")
-    ),
-
     DatabaseError(
             "Database Error",
             "The query could not be executed."
     ),
 
+    /**
+     * The message displayed if the specified data could not be found in the database.
+     */
     DataNotFound(
             "Data Not Found",
             "No {} found in the database."
     ),
 
+    /**
+     * The message displayed if the data in the database can't be uploaded.
+     */
     DataNotLoaded(
             "Data Could Not Be Loaded",
             "The {} could not be loaded from the database."
@@ -89,16 +90,25 @@ public enum Message {
                     "Please verify the data entered."
     ),
 
+    /**
+     * Message displayed when a required field is blank.
+     */
     InvalidInputEntered(
             "Invalid Input",
             "You must type a {}, any {} will do."
     ),
 
+    /**
+     * Message displayed when a required field has no selection.
+     */
     InvalidInputSelected(
             "Invalid Input",
             "No {} is selected. Please select a {} before saving."
     ),
 
+    /**
+     * Message displayed when the time selected cannot be converted to a DateTime object.
+     */
     InvalidInputTime(
             "Invalid Input",
             "The '{}' time and date specified is invalid. Please review your entry."
@@ -127,54 +137,6 @@ public enum Message {
     LoginFail (
             mrb.getString("login_failed_title"),
             mrb.getString("login_failed_message")
-    ),
-
-    /**
-     * Message displayed if the specified contact cannot be found.
-     */
-    MissingContactRecord(
-            "No Contact Record",
-            "The record for the specified customer could not be found."
-    ),
-
-    /**
-     * Message displayed if the specified country cannot be found.
-     */
-    MissingCountryRecord(
-            "No Country Record",
-            "The record for the specified country could not be found."
-    ),
-
-    /**
-     * Message displayed of the specified customer cannot be found.
-     */
-    MissingCustomerRecord(
-            "No Customer Record",
-            "The record for the specified customer could not be found."
-    ),
-
-    /**
-     * Message displayed if the specified division cannot be found.
-     */
-    MissingDivisionRecord(
-            "Do Division Record",
-            "The record for the specified division could not be found."
-    ),
-
-    /**
-     * Message displayed if the specified hour is not in the Hour enum.
-     */
-    MissingHourRecord(
-            "No Hour Record",
-            "The record for the specified hour could not be found."
-    ),
-
-    /**
-     * Message displayed if the specified minute is not in the Minute enum.
-     */
-    MissingMinuteRecord(
-            "No Minute Record",
-            "The record for the specified minute could not be found."
     ),
 
     /**
@@ -210,31 +172,24 @@ public enum Message {
     ),
 
     /**
-     * Message displayed if the user attempts to perform a record function without selecting a record.
+     * Message displayed when a record could not be added.
      */
-    NoValueSelected(
-            mrb.getString("no_value_selected_title"),
-            mrb.getString("no_value_selected_message")
-    ),
-
-    /**
-     * Message displayed if a method cannot find the required class.
-     */
-    ProgrammingError_MissingClass(
-            mrb.getString("prog_error_missing_class_title"),
-            mrb.getString("prog_error_missing_class_message")
-    ),
-
     RecordNotAdded(
             "Could Not Add Record",
             "The {} could not be added to the database."
     ),
 
+    /**
+     * Message displayed when a record could not be deleted.
+     */
     RecordNotDeleted(
             "Could Not Delete Record",
             "The {} could not be deleted from the database."
     ),
 
+    /**
+     * Message displayed when a record could not be updated.
+     */
     RecordNotUpdated(
             "Record Could Not Be Updated",
             "The {} could not be updated in the database."
@@ -248,6 +203,9 @@ public enum Message {
             "Your changes have been saved."
     ),
 
+    /**
+     * Message displayed when a record could not be uploaded from the database.
+     */
     ReportNotLoaded(
             "Report Cannot Be Loaded",
             "Cannot load the {} report."

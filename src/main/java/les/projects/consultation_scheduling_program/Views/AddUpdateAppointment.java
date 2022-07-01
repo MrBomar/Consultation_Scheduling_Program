@@ -9,7 +9,6 @@ import les.projects.consultation_scheduling_program.DataClasses.Contact;
 import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Main;
-
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -42,7 +41,7 @@ public class AddUpdateAppointment extends DialogBase {
      */
     public AddUpdateAppointment() {
         super(lrb.getString("create_new_appointment"));
-        this.id.setPromptText("(Auto generated)");
+        this.id.setPromptText("(" + lrb.getString("Auto-Generated") + ")");
         this.build();
     }
 
@@ -70,9 +69,9 @@ public class AddUpdateAppointment extends DialogBase {
      * This method is used to format components and add them to the view.
      */
     private void build() {
-        BorderPaneStyled customerPane = new BorderPaneStyled(lrb.getString("customer"), true);
+        BorderPaneStyled customerPane = new BorderPaneStyled(lrb.getString("Customer"), true);
         customerPane.setRight(this.customer);
-        BorderPaneStyled contactPane = new BorderPaneStyled(lrb.getString("contact"), true);
+        BorderPaneStyled contactPane = new BorderPaneStyled(lrb.getString("Contact"), true);
         contactPane.setRight(this.contact);
 
         VBox center = new VBox();
@@ -81,9 +80,9 @@ public class AddUpdateAppointment extends DialogBase {
         this.center.getChildren().add(center);
 
         //Add Buttons
-        ButtonStandard save = new ButtonStandard(lrb.getString("save"));
+        ButtonStandard save = new ButtonStandard(lrb.getString("Save"));
         save.setOnMouseClicked(this::saveClick);
-        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("Cancel"));
         cancel.setOnMouseClicked(this::confirmCancel);
         this.bottom.getChildren().addAll(save, new ButtonGap(), cancel);
 
@@ -181,38 +180,34 @@ public class AddUpdateAppointment extends DialogBase {
     private boolean requiredFieldsFilled() {
         if (this.contact.getSelectionModel().isEmpty()) {
             //Contact is not selected
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "No contact is selected. Please select a contact before saving.");
+            DialogMessage dialog = new DialogMessage(Message.NoSelectedContact);
             dialog.showAndWait();
             return false;
         } else if (this.customer.getSelectionModel().isEmpty()) {
             //Customer is not selected
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "No customer is selected. Please select a customer before saving.");
+            DialogMessage dialog = new DialogMessage(Message.NoSelectedCustomer);
             dialog.showAndWait();
             return false;
         } else if (!this.end.validEntry()) {
             //End time is not valid
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "The 'End' time and date specified is invalid. Please review your entry.");
+            String[] words = new String[] {lrb.getString("End")};
+            DialogMessage dialog = new DialogMessage(Message.InvalidTimeValue, words);
             dialog.showAndWait();
             return false;
         } else if (!this.location.isNotBlank()) {
             //Location is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "You must type a location, any location will do.");
+            DialogMessage dialog = new DialogMessage(Message.NoLocationEntered);
             dialog.showAndWait();
             return false;
         } else if (!this.start.validEntry()) {
             //Start time is not valid
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "The 'Start' time and date specified is invalid. Please review your entry.");
+            String[] words = new String[] {lrb.getString("Start")};
+            DialogMessage dialog = new DialogMessage(Message.InvalidTimeValue, words);
             dialog.showAndWait();
             return false;
         } else if (!this.title.isNotBlank()) {
             //Title is blank
-            DialogMessage dialog = new DialogMessage("Invalid Input",
-                    "You must type a title, any title will do.");
+            DialogMessage dialog = new DialogMessage(Message.NoTitleEntered);
             dialog.showAndWait();
             return false;
         } else {

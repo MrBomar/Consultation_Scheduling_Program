@@ -91,6 +91,11 @@ public enum Message {
             "The appointment end time and date must be set after the appointment start time and date."
     ),
 
+    InvalidTimeValue(
+            mrb.getString("invalid_time_value_title"),
+            mrb.getString("invalid_time_value_message")
+    ),
+
     /**
      * Message informing the user that the login process failed.
      */
@@ -156,11 +161,35 @@ public enum Message {
     ),
 
     /**
+     * Message displayed if the form is missing a location.
+     */
+    NoLocationEntered (
+            mrb.getString("no_location_entered_title"),
+            mrb.getString("no_location_entered_message")
+    ),
+
+    /**
+     * Message displayed if the user attempts to perform an action on a customer but no customer is selected.
+     */
+    NoSelectedContact (
+            mrb.getString("no_selected_contact_title"),
+            mrb.getString("no_selected_contact_message")
+    ),
+
+    /**
      * Message displayed if the user attempts to perform an action on a customer but no customer is selected.
      */
     NoSelectedCustomer (
             mrb.getString("no_selected_customer_title"),
             mrb.getString("no_selected_customer_message")
+    ),
+
+    /**
+     * Messages displayed if the title is missing.
+     */
+    NoTitleEntered(
+            mrb.getString("no_title_entered_title"),
+            mrb.getString("no_title_entered_message")
     ),
 
     /**

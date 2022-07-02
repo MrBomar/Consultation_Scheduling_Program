@@ -64,7 +64,9 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
             } else {
                 if(this.getSelectionModel().isEmpty()) {
                     this.changed = true;
-                } else this.changed = !this.initialValue.equals(this.getValue());
+                } else {
+                    this.changed = !this.initialValue.equals(this.getValue());
+                };
             }
         });
     }

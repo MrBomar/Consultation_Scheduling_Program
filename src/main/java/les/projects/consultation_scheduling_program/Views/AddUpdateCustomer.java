@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -32,6 +33,8 @@ public class AddUpdateCustomer extends DialogBase {
     private final ComboBoxStyled<Division> division = new ComboBoxStyled<>(Division.allDivisions, true);
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("Phone_Number"), true, false);
     private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, true);
+    private final ButtonStandard save = new ButtonStandard(lrb.getString("Save"));
+    private final ButtonStandard cancel = new ButtonStandard(lrb.getString("Cancel"));
 
     /**
      * This constructor creates an instance of the Add/Update Customer modal in add mode.
@@ -56,8 +59,8 @@ public class AddUpdateCustomer extends DialogBase {
         this.address.setInitialValue(this.currentCustomer.getAddress());
         this.zip.setInitialValue(this.currentCustomer.getPostalCode());
         this.phone.setInitialValue(this.currentCustomer.getPhone());
-        this.division.setValue(this.currentCustomer.getDivision());
-        this.country.setValue(this.currentCustomer.getCountry());
+        this.division.setInitialValue(this.currentCustomer.getDivision());
+        this.country.setInitialValue(this.currentCustomer.getCountry());
     }
 
     /**
@@ -85,19 +88,16 @@ public class AddUpdateCustomer extends DialogBase {
         borderPane.setCenter(center);
 
         HBox bottom = new HBox();
-        ButtonStandard save = new ButtonStandard(lrb.getString("Save"));
-        save.setOnMouseClicked(this::saveClick);
         Pane gap = new Pane();
         gap.setMinWidth(30);
         gap.setMaxWidth(30);
         gap.setPrefWidth(30);
-        ButtonStandard cancel = new ButtonStandard(lrb.getString("Cancel"));
-        cancel.setOnMouseClicked(this::confirmCancel);
-        bottom.getChildren().addAll(save, gap, cancel);
+        this.save.setOnMouseClicked(this::saveClick);
+        this.cancel.setOnMouseClicked(this::confirmCancel);
+        bottom.getChildren().addAll(this.save, gap, this.cancel);
         bottom.setAlignment(Pos.CENTER_RIGHT);
         borderPane.setBottom(bottom);
         borderPane.setPadding(new Insets(20,30,30,30));
-        cancel.setOnMouseClicked(this::confirmCancel);
 
         this.setResizable(false);
         this.initOwner(Main.appStage);
@@ -111,6 +111,7 @@ public class AddUpdateCustomer extends DialogBase {
      * @param e The event generated on click.
      */
     private void saveClick(Event e) {
+        this.save.requestFocus();
         if(this.changesHaveBeenMade()) {
             if(this.requiredFieldsFilled()) {
                 if(currentCustomer == null) {
@@ -152,6 +153,7 @@ public class AddUpdateCustomer extends DialogBase {
      * @param event The event generated on close.
      */
     private void confirmCancel(Event event) {
+        this.cancel.requestFocus();
         if(this.changesHaveBeenMade()) {
             DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmDropChanges);
             dialog.showAndWait();
@@ -171,8 +173,13 @@ public class AddUpdateCustomer extends DialogBase {
      * @return If the data on the form has changed then method returns true.
      */
     private boolean changesHaveBeenMade() {
-        return this.name.isChanged() || this.address.isChanged() || this.zip.isChanged() || this.phone.isChanged() ||
-                this.division.isChanged();
+        if(this.name.isChanged()) return true;
+        if(this.address.isChanged()) return true;
+        if(this.zip.isChanged()) return true;
+        if(this.phone.isChanged()) return true;
+        if(this.country.isChanged()) return true;
+        if(this.division.isChanged()) return true;
+        return false;
     }
 
     /**
@@ -224,7 +231,7 @@ public class AddUpdateCustomer extends DialogBase {
             );
             dialog.showAndWait();
             return false;
-        } else if (this.division.getSelectionModel().isEmpty()) {
+        } else if (this.division.getSelectionModel().isEmpty() || this.division.getValue() == null) {
             //Division is not selected
             DialogMessage dialog = new DialogMessage(
                     Message.InvalidInputSelected,

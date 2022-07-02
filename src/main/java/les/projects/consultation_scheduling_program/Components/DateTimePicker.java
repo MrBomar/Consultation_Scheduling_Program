@@ -32,6 +32,7 @@ public class DateTimePicker extends BorderPane {
     /**
      * This constructor produces a BorderPane containing a DatePicker and ComboBoxes for building a ZonedDateTime object.
      * @param labelText String to apply to DateTimePicker label.
+     * @param required Set to true if entry is required.
      */
     public DateTimePicker(String labelText, boolean required) {
         HBox hBox = new HBox();

@@ -297,7 +297,7 @@ public class Customer {
 
     /**
      * This method returns the postal code property of the Customer object.
-     * @return
+     * @return The postal code property of the Customer object.
      */
     public final Property<String> getPostalCodeProperty() { return this.postalCode; }
 

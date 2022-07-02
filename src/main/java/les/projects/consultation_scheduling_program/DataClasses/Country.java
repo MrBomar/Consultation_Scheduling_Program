@@ -29,8 +29,8 @@ public class Country {
 
     /**
      * This constructor instantiates a Country object.
-     * @param countryId
-     * @param countryName
+     * @param countryId The ID number for this record.
+     * @param countryName The name of this country.
      */
     public Country(int countryId, String countryName) {
         this.id = new SimpleIntegerProperty(countryId);

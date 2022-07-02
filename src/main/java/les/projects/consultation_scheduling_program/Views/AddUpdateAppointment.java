@@ -96,6 +96,7 @@ public class AddUpdateAppointment extends DialogBase {
     /**
      * This event handler saves the data from the form into the Appointment object.
      * The Appointment object will handle the database updates.
+     * @param e The mouse event calling this method.
      */
     private void saveClick(Event e) {
         if(!this.changesHaveBeenMade()) {

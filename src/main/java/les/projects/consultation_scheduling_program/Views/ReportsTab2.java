@@ -66,7 +66,15 @@ public final class ReportsTab2 extends VBox {
         });
 
         try {
-            ResultSet rs = JDBC.newResultSet("SELECT * FROM customer_appointment_schedule");
+            ResultSet rs = JDBC.newResultSet(
+                    "SELECT Customer_ID, " +
+                            "Contact_ID, " +
+                            "Type, " +
+                            "Title, " +
+                            "Start, " +
+                            "End " +
+                            "FROM appointments"
+            );
             while(rs.next()) {
                 allItems.add(new ReportTwoItem(
                         Customer.getById(rs.getInt("Customer_ID")),

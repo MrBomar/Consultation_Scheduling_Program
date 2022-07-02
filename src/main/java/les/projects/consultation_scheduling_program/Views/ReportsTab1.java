@@ -35,7 +35,13 @@ public class ReportsTab1 extends VBox {
         this.setBackground(Styles.BackgroundWhite);
 
         try {
-            ResultSet rs = JDBC.newResultSet("SELECT * FROM appointments_by_type_and_month");
+            ResultSet rs = JDBC.newResultSet(
+                    "    SELECT Type, " +
+                    "MONTH(Start) AS Month, " +
+                    "COUNT(Appointment_ID) AS Count " +
+                    "FROM appointments " +
+                    "GROUP BY Type, Month"
+            );
 
             ObservableList<ReportOneItem> items = FXCollections.observableArrayList(new ArrayList<>());
             while(rs.next()) {

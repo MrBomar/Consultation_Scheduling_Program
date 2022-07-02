@@ -1,15 +1,13 @@
 package les.projects.consultation_scheduling_program.Views;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
-import javafx.util.Callback;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
 import les.projects.consultation_scheduling_program.DataClasses.Contact;
@@ -169,7 +167,10 @@ public class AppointmentsView extends BorderPane {
     }
 
     /**
-     * This method constructs the table columns.
+     * This method constructs the table columns. Two lambda expressions are used in the method for setting the
+     * CellValueFactory. Using these expressions prevented me from having to create CallBacks which are for more
+     * verbose than the lambda expressions. Using the lambda expressions allows the code to be more concise and
+     * readable.
      */
     private void buildTable() {
         TableColumn<Appointment, Integer> idCol = new TableColumn<>(lrb.getString("ID"));
@@ -189,8 +190,12 @@ public class AppointmentsView extends BorderPane {
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
         locCol.setCellValueFactory(new PropertyValueFactory<>("location"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
-        endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        startCol.setCellValueFactory(
+                x -> new SimpleStringProperty(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(x.getValue().getStart()))
+        );
+        endCol.setCellValueFactory(
+                x -> new SimpleStringProperty(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(x.getValue().getEnd()))
+        );
         customerCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
         userCol.setCellValueFactory(new PropertyValueFactory<>("user"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));

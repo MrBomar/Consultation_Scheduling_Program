@@ -1,5 +1,6 @@
 package les.projects.consultation_scheduling_program.Views;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -22,6 +23,8 @@ import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import java.sql.ResultSet;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 
 import static les.projects.consultation_scheduling_program.Main.lrb;
@@ -84,15 +87,19 @@ public final class ReportsTab2 extends VBox {
         TableColumn<ReportTwoItem, Contact> contactCol = new TableColumn<>(lrb.getString("Contact"));
         TableColumn<ReportTwoItem, String> typeCol = new TableColumn<>(lrb.getString("Type"));
         TableColumn<ReportTwoItem, String> titleCol = new TableColumn<>(lrb.getString("Title"));
-        TableColumn<ReportTwoItem, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("Start"));
-        TableColumn<ReportTwoItem, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("End"));
+        TableColumn<ReportTwoItem, String> startCol = new TableColumn<>(lrb.getString("Start"));
+        TableColumn<ReportTwoItem, String> endCol = new TableColumn<>(lrb.getString("End"));
 
         customerCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        startCol.setCellValueFactory(new PropertyValueFactory<>("start"));
-        endCol.setCellValueFactory(new PropertyValueFactory<>("end"));
+        startCol.setCellValueFactory(x -> new SimpleStringProperty(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(x.getValue().getStart())
+        ));
+        endCol.setCellValueFactory(x -> new SimpleStringProperty(
+                DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).format(x.getValue().getEnd())
+        ));
 
         this.appointments.getColumns().add(customerCol);
         this.appointments.getColumns().add(contactCol);

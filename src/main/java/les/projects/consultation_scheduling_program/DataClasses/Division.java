@@ -30,6 +30,12 @@ public class Division {
     private final SimpleObjectProperty<Country> country;
     public static ObservableList<Division> allDivisions;
 
+    /**
+     * This constructor instantiates a new Division object.
+     * @param divisionId The record ID of the division.
+     * @param divisionName The name of the division.
+     * @param country The country object related to where this division is located.
+     */
     public Division(int divisionId, String divisionName, Country country) {
         this.id = new SimpleIntegerProperty(divisionId);
         this.name = new SimpleStringProperty(divisionName);
@@ -81,7 +87,9 @@ public class Division {
      */
     public final void update(String divisionName, Country country) {
         try {
-            ResultSet rs = JDBC.newResultSet("SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId());
+            ResultSet rs = JDBC.newResultSet(
+                    "SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId()
+            );
 
             rs.next();
             rs.updateString("Division", divisionName);
@@ -106,7 +114,9 @@ public class Division {
      */
     public final void delete() {
         try {
-            ResultSet rs = JDBC.newResultSet("SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId());
+            ResultSet rs = JDBC.newResultSet(
+                    "SELECT * FROM first_level_divisions WHERE Division_ID = " + this.getId()
+            );
 
             rs.next();
             rs.deleteRow();
@@ -123,7 +133,9 @@ public class Division {
     }
 
     /**
-     * This method filters the Customer list to retrieve a list of Customer related to this division.
+     * This method filters the Customer list to retrieve a list of Customer related to this division. A lambda
+     * expression is used in the stream to filter the customer list instead of instantiating a Predicate,
+     * which is more verbose and harder to understand.
      * @return An list of Customer objects residing in this division.
      */
     public final ObservableList<Customer> getCustomers() {

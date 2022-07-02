@@ -8,7 +8,7 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
- * The class extends the JavaFX BorderPane class. The BorderPane contains a TextField and a Label.
+ * This class extends the JavaFX BorderPane class. The BorderPane contains a TextField and a Label.
  *
  * @author Leslie C. Bomar 3rd
  * @version 1.0
@@ -20,7 +20,9 @@ public class TextFieldLabeled extends BorderPane {
     private boolean changed = false;
 
     /**
-     * Initializes a BorderPane containing a TextField and a Label.
+     * This constructor instantiates a BorderPane containing a TextField and a Label. A lambda expression was used to
+     * add an event listener to the focusedProperty of the textField, eliminating the need to instantiate an
+     * EventListener.
      * @param labelText String to display in the TextField.
      * @param required Set to true if input from the user is required.
      * @param disabled Set to true to disallow user input.

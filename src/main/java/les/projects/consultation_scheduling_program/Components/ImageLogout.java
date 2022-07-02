@@ -13,7 +13,7 @@ import javafx.scene.layout.Region;
 public class ImageLogout extends BorderPane {
 
     /**
-     * Creates a JavaFX BorderPane with an image in it used for loggins out of the application.
+     * This constructor creates a JavaFX BorderPane with an image in it used for loggins out of the application.
      * @param w Desired width of the ImageLayout in pixels.
      * @param h Desired height of the ImageLayout in pixels.
      * @param margin Desired margin surrounding the image in pixels.

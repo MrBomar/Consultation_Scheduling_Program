@@ -16,7 +16,7 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 public class ReportsView extends Pane {
 
     /**
-     * Renders the report view and tabs.
+     * This constructor renders the report view and tabs.
      */
     public ReportsView() {
         TabPane tabPane = new TabPane();
@@ -44,19 +44,12 @@ public class ReportsView extends Pane {
         //Setting TabPane properties
         tabPane.getTabs().addAll(tab1, tab2, tab3);
         tabPane.setSide(Side.LEFT);
-        tabPane.setStyle(this.tabPaneStyle());
+        tabPane.setStyle(
+                "-fx-tab-min-width: 233px;" +
+                "-fx-tab-max-width: 233px;" +
+                "-fx-tab-min-height: 233px;" +
+                "-fx-tab-max-height: 233px;"
+        );
         this.getChildren().add(tabPane);
-    }
-
-    /**
-     * Returns a CSS String with formatting preferences for formatting the tabs.
-     * @return CSS String for styling the tabs.
-     */
-    private String tabPaneStyle() {
-        return
-            "-fx-tab-min-width: 233px;" +
-            "-fx-tab-max-width: 233px;" +
-            "-fx-tab-min-height: 233px;" +
-            "-fx-tab-max-height: 233px;";
     }
 }

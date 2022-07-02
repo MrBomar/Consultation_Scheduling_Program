@@ -84,15 +84,19 @@ public class User {
     public final String getUserName() { return this.userName; }
 
     /**
-     * This method gets the name of the user using the record ID of the user.
+     * This method gets the name of the user using the record ID of the user. A lambda is used to filter the user list
+     * instead of using a Predicate, which is more verbose and harder to understand.
      * @param id The record ID of the user.
      * @return The name of the user.
      */
-    public static String getUserName(int id) { return allUsers.stream().filter(i -> i.id == id).findFirst().get().userName; }
+    public static String getUserName(int id) {
+        return allUsers.stream().filter(i -> i.id == id).findFirst().get().userName;
+    }
 
     /**
      * This method compares the username and password entered in the login form and verifies if it matches any of
-     * the user records.
+     * the user records. Two lambdas are used for filter lists instead of using Predicates, which are more verbose
+     * and harder to understand.
      * @param userName The supplied name of the user.
      * @param inputPassword The supplied password of the user.
      * @return Returns true if the username and password match a record in the user list.
@@ -108,7 +112,8 @@ public class User {
     }
 
     /**
-     * This method gets a User object by matching the supplied username.
+     * This method gets a User object by matching the supplied username. A lambda is used here to filter the list of
+     * users instead of using a Predicate, which is more verbose and harder to use.
      * @param userName The username of the user.
      * @return The user object related to the username.
      */

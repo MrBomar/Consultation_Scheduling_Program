@@ -73,7 +73,7 @@ public enum Hour {
     public final int number;
 
     /**
-     * This method initializes the Hour object.
+     * This constructor instantiates the Hour object.
      * @param number The hour.
      */
     Hour(int number) { this.number = number; }

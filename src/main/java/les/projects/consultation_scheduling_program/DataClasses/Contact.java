@@ -26,7 +26,7 @@ public class Contact {
     public static ObservableList<Contact> allContacts;
 
     /**
-     * Instantiates a new Contact object.
+     * This constructor instantiates a new Contact object.
      * @param contactId The contact ID.
      * @param contactName The contact name.
      * @param email The contact email address.
@@ -38,7 +38,7 @@ public class Contact {
     }
 
     /**
-     * Overrides the default toString() function.
+     * This method overrides the default toString() function.
      * @return Returns a String containing the contact name.
      */
     @Override
@@ -47,7 +47,7 @@ public class Contact {
     }
 
     /**
-     * Creates a new contact in the databse.
+     * This method creates a new contact in the database.
      * @param contactName The name of the contact.
      * @param email The email address of the contact.
      * @return Returns true if the contact was added to the database.
@@ -77,7 +77,7 @@ public class Contact {
     }
 
     /**
-     * Deletes the contact associated with this object from the database.
+     * This method deletes the contact associated with this object from the database.
      */
     public final void delete() {
         try {
@@ -91,14 +91,16 @@ public class Contact {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("contact")};
-            DialogMessage dialog = new DialogMessage(Message.RecordNotDeleted, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotDeleted,
+                    new String[] {lrb.getString("contact")}
+            );
             dialog.showAndWait();
         }
     }
 
     /**
-     * Loads the contact data from the database and creates new contact objects from the data.
+     * This method loads the contact data from the database and creates new contact objects from the data.
      */
     public static void loadData() {
         //Load the data from the database.
@@ -138,7 +140,7 @@ public class Contact {
     }
 
     /**
-     * Updates the current contact in the database.
+     * This method updates the current contact in the database.
      * @param contactName Name of the contact.
      * @param email Email address of the contact.
      */
@@ -167,19 +169,19 @@ public class Contact {
     //Getters
 
     /**
-     * Get the contact email address.
+     * This method gets the contact email address.
      * @return Email address
      */
     public final String getEmail() { return this.email.get(); }
 
     /**
-     * Get the contact ID.
+     * This method gets the contact ID.
      * @return Contact ID.
      */
     public final int getID() { return this.id.get(); }
 
     /**
-     * Get the name of the contact.
+     * This method gets the name of the contact.
      * @return Contact name.
      */
     public final String getName() {
@@ -187,7 +189,7 @@ public class Contact {
     }
 
     /**
-     * Gets the contact object with the provided Contact ID.
+     * This method gets the contact object with the provided Contact ID.
      * @param id Contact ID number.
      * @return Contact data object.
      */
@@ -196,19 +198,19 @@ public class Contact {
     //Property Getters
 
     /**
-     * Gets the email property of the contact.
+     * This method gets the email property of the contact.
      * @return The email property of the contact.
      */
     public final Property<String> getEmailProperty() { return this.email; }
 
     /**
-     * Gets the ID property of the contact.
+     * This method gets the ID property of the contact.
      * @return The ID property of the contact.
      */
     public final Property<Number> getIdProperty() {  return this.id; }
 
     /**
-     * Gets the name property of the contact.
+     * This method gets the name property of the contact.
      * @return The name property of the contact.
      */
     public final Property<String> getNameProperty() { return this.name; }
@@ -216,19 +218,19 @@ public class Contact {
     //Setters
 
     /**
-     * Sets the email address of the contact.
+     * This method sets the email address of the contact.
      * @param email Email address.
      */
     public final void setEmail(String email) { this.email.set(email); }
 
     /**
-     * Sets the ID of the contact.
+     * This method sets the ID of the contact.
      * @param id ID number.
      */
     public final void setId(int id) { this.id.set(id); }
 
     /**
-     * Sets the name of the contact.
+     * This method sets the name of the contact.
      * @param name Contact name.
      */
     public final void setName(String name) { this.name.set(name); }

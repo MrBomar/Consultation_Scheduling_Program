@@ -15,7 +15,7 @@ public class TabLeftStyled extends Tab {
     private final Label label = new Label();
 
     /**
-     * Initializes a JavaFX Tab, preformatted for left hand usage.
+     * This constructor instantiates a JavaFX Tab, preformatted for left hand placement.
      * @param text String to display on the Tab.
      */
     public TabLeftStyled(String text) {
@@ -33,7 +33,7 @@ public class TabLeftStyled extends Tab {
     }
 
     /**
-     * Method changes the style of the tab to appear selected.
+     * This method changes the style of the tab to appear selected.
      */
     public void selectTab() {
         this.label.setTextFill(Color.WHITE);
@@ -45,7 +45,7 @@ public class TabLeftStyled extends Tab {
     }
 
     /**
-     * Method changes the style of the tab to appear unselected.
+     * This method changes the style of the tab to appear unselected.
      */
     public void deselectTab() {
         this.label.setTextFill(Color.BLACK);

@@ -31,7 +31,7 @@ public class Appointment {
     public static ObservableList<Appointment> allAppointments;
 
     /**
-     * Creates a new Appointment object.
+     * This constructor instantiates a new Appointment object.
      * @param id The Appointment_ID value referenced in the database. (Integer)
      * @param title The Title value referenced in the database. (String)
      * @param description The Description value referenced in the database. (String)
@@ -199,9 +199,14 @@ public class Appointment {
 
     /**
      * This method selects all Appointments for the current user and checks them to see if they will occur within 15
-     * minutes of the user's login. If there are appointments within 15 minutes then a dialog is displayed containing
-     * the appointment information. If there are no appointments within 15 minutes then a dialog is displayed stating
-     * that there are no upcoming appointments.
+     * minutes of the user's login.
+     *
+     * If there are appointments within 15 minutes then a dialog is displayed containing the appointment information.
+     * If there are no appointments within 15 minutes then a dialog is displayed stating that there are no upcoming
+     * appointments.
+     *
+     * A lambda is used for filtering the appointments list to prevent us from having to instantiate a Predicate,
+     * which is more verbose and hard to understand.
      */
     public static void upcomingAppointments() {
         Appointment[] userAppointments = allAppointments.stream()
@@ -400,61 +405,61 @@ public class Appointment {
     //Property Setters
 
     /**
-     * Takes in a Contact object and sets it as the Appointment contact.
+     * This method takes in a Contact object and sets it as the Appointment contact.
      * @param contact Contact object of the contact on the Appointment.
      */
     public final void setContact(Contact contact) { this.contact.set(contact); }
 
     /**
-     * Takes in a Customer object and sets it at the customer for the Appointment.
+     * This method takes in a Customer object and sets it at the customer for the Appointment.
      * @param customer Customer of the Appointment.
      */
     public final void setCustomer(Customer customer) { this.customer.set(customer); }
 
     /**
-     * Takes in a string and sets it as the description for the Appointment.
+     * This method takes in a string and sets it as the description for the Appointment.
      * @param description Description of the appointment.
      */
     public final void setDescription(String description) { this.description.set(description); }
 
     /**
-     * Takes in a ZonedDateTime and sets it as the End for the Appointment.
+     * This method takes in a ZonedDateTime and sets it as the End for the Appointment.
      * @param end End date and time.
      */
     public final void setEnd(ZonedDateTime end) { this.end.set(end); }
 
     /**
-     * Takes in an integer and sets it as the Appointment ID.
+     * This method takes in an integer and sets it as the Appointment ID.
      * @param id Record ID.
      */
     public final void setId(int id) { this.id.set(id); }
 
     /**
-     * Takes in a string and sets it as the Appointment location.
+     * This method takes in a string and sets it as the Appointment location.
      * @param location Location of the appointment.
      */
     public final void setLocation(String location) { this.location.set(location); }
 
     /**
-     * Takes in a ZonedDateTime and sets it as the Appointment Start.
+     * This method takes in a ZonedDateTime and sets it as the Appointment Start.
      * @param start The start date and time of the appointment.
      */
     public final void setStart(ZonedDateTime start) { this.start.set(start); }
 
     /**
-     * Takes in a String and set it as the appointment title.
+     * This method takes in a String and set it as the appointment title.
      * @param title Appointment title.
      */
     public final void setTitle(String title) { this.title.set(title); }
 
     /**
-     * Takes in a String and sets it as the Appointment Type.
+     * This method takes in a String and sets it as the Appointment Type.
      * @param type Appointment Type.
      */
     public final void setType(String type) { this.type.set(type); }
 
     /**
-     * Takes in a User object and sets it as the User who created the appointment.
+     * This method takes in a User object and sets it as the User who created the appointment.
      * @param user Appointment User.
      */
     public final void setUser(User user) { this.user.set(user); }

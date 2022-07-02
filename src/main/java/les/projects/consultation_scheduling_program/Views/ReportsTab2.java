@@ -22,7 +22,6 @@ import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import java.sql.ResultSet;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
@@ -42,6 +41,9 @@ public final class ReportsTab2 extends VBox {
 
     /**
      * This constructor instantiates the report.
+     *      Two lambda expressions are user to set the Value Factories to formatted date time strings.
+     *      One lambda is used to filter the items list instead of instantiating a Predicate.
+     *      One lambda is used to eliminate instantiating an EventListener.
      */
     public ReportsTab2() {
         this.setMinSize(Main.appWidth - 313, Main.appHeight - 70);

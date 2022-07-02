@@ -30,7 +30,7 @@ public class DateTimePicker extends BorderPane {
     private ZonedDateTime initialValue;
 
     /**
-     * Produces a BorderPane containing a DatePicker and ComboBoxes for building a ZonedDateTime object.
+     * This constructor produces a BorderPane containing a DatePicker and ComboBoxes for building a ZonedDateTime object.
      * @param labelText String to apply to DateTimePicker label.
      */
     public DateTimePicker(String labelText, boolean required) {
@@ -118,7 +118,7 @@ public class DateTimePicker extends BorderPane {
     }
 
     /**
-     * Method is used to detect if the value of the DateTimePicker has been changed.
+     * This method is used to detect if the value of the DateTimePicker has been changed.
      * @return Returns true of the value has been changed.
      */
     public boolean isChanged() {

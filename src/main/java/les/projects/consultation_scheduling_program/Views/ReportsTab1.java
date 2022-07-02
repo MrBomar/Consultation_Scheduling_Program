@@ -26,7 +26,7 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 public class ReportsTab1 extends VBox {
 
     /**
-     * Instantiates the report.
+     * This constructor instantiates the report.
      */
     public ReportsTab1() {
         TableView<ReportOneItem> appointments = new TableView<>();

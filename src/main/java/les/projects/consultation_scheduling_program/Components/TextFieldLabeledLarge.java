@@ -18,7 +18,8 @@ public class TextFieldLabeledLarge extends BorderPane {
     boolean changed = false;
 
     /**
-     * Initializes a JavaFX BorderPane containing a TextField and Label.
+     * This constructor instantiates a JavaFX BorderPane containing a TextField and Label. A lambda expression was used
+     * to set a listener on the textField's focusedProperty instead of instantiating an EventListener.
      * @param labelText String to display on the Label.
      * @param placeholder String to set as prompt text on the TextField.
      * @param disabled Set to true to disallow user input.

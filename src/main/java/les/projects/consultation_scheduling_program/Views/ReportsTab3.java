@@ -41,6 +41,9 @@ public final class ReportsTab3 extends VBox {
 
     /**
      * This constructor instantiates the report.
+     *      Two lambda expressions are user to set the Value Factories to formatted date time strings.
+     *      One lambda is used to filter the items list instead of instantiating a Predicate.
+     *      One lambda is used to eliminate instantiating an EventListener.
      */
     public ReportsTab3() {
         this.setMinSize(Main.appWidth - 313, Main.appHeight - 70);

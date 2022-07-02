@@ -28,8 +28,8 @@ public class Customer {
     public static ObservableList<Customer> allCustomers;
 
     /**
-     * Instantiates a Customer object which stores the details of the customer and provides methods for editing
-     * the customer data.
+     * This constructor instantiates a Customer object which stores the details of the customer and provides methods
+     * for editing the customer data.
      * @param id The record number of the customer.
      * @param customerName The name of the customer.
      * @param address The address of the customer.
@@ -50,7 +50,7 @@ public class Customer {
     }
 
     /**
-     * Overrides the default toString() method for the Customer class.
+     * This method overrides the default toString() method for the Customer class.
      * @return The name of the customer.
      */
     @Override
@@ -59,7 +59,7 @@ public class Customer {
     }
 
     /**
-     * Method to create a new customer, add it to the database, and refresh the Customer list.
+     * This method creates anew customer record in the database and refreshes the Customer list.
      * @param customerName The name of the customer.
      * @param address The address of the customer.
      * @param postalCode The postal code of the customer.
@@ -95,7 +95,7 @@ public class Customer {
     }
 
     /**
-     * Deletes the current customer object from the database and refreshes the Customer list.
+     * This method deletes the current customer from the database and refreshes the Customer list.
      */
     public final void delete() {
         try {
@@ -151,6 +151,8 @@ public class Customer {
 
     /**
      * This method returns a filtered Appointment list for all appointment associated with the current customer.
+     * A lambda is used here to filter the appointments list instead of using a Predicate, which is more verbose and
+     * harder to understand.
      * @return A list of all appointments belonging to the customer.
      */
     public final ObservableList<Appointment> getAppointments() {

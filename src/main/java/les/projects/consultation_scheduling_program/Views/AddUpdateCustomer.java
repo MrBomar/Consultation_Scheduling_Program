@@ -50,7 +50,6 @@ public class AddUpdateCustomer extends DialogBase {
         super(lrb.getString("Update_Customer"));
         this.build();
 
-        //FIXME - Insert logic to pull customer record and populate fields.
         this.currentCustomer = customer;
         this.id.setInitialValue(this.currentCustomer.getId().toString());
         this.name.setInitialValue(this.currentCustomer.getName());

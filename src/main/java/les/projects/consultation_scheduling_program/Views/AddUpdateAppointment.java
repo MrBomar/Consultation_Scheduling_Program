@@ -281,7 +281,8 @@ public class AddUpdateAppointment extends DialogBase {
 
     /**
      * Method pulls all appointment for the selected customer and verifies that the current time and date provided do
-     * not occur within and existing appointment's time frame.
+     * not occur within and existing appointment's time frame. A lambda expression is used to filter the appointments
+     * list instead of instantiating a Predicate, which is more verbose and harder to understand.
      * @return True if there are no previously scheduled appointment during the time specified.
      */
     public boolean noConflictingAppointments() {

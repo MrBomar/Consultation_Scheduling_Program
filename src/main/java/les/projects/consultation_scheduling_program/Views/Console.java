@@ -25,7 +25,7 @@ public class Console extends VBox {
     private static Pane currentView;
 
     /**
-     * Instantiates the console view.
+     * This constructor instantiates the console view.
      * @param view The main view we are rendering over.
      */
     public Console(Pane view) {
@@ -34,7 +34,7 @@ public class Console extends VBox {
     }
 
     /**
-     * Method is used to select the active tab control.
+     * This method is used to select the active tab control.
      */
     private void setTabs() {
         this.getChildren().setAll(this.tabBar(), currentView);
@@ -54,7 +54,8 @@ public class Console extends VBox {
     }
 
     /**
-     * This method renders the bar which hold the tabs.
+     * This method renders the bar which hold the tabs. Three lambda expressions are used to assign action to onMouse
+     * events instead of instantiating and eventHandler which is more verbose.
      * @return Return the tab bar at the top of the console.
      */
     private BorderPane tabBar() {
@@ -115,8 +116,6 @@ public class Console extends VBox {
     private final EventHandler<MouseEvent> logout = event -> {
         DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmLogout);
         dialog.showAndWait();
-        if(dialog.getResult()){
-            Main.logoutView();
-        }
+        if(dialog.getResult()) Main.logoutView();
     };
 }

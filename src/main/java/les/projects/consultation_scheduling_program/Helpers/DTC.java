@@ -58,15 +58,12 @@ public abstract class DTC {
 
         //We must assume that the timestamp from the database is set to UTC.
         Instant databaseDateTime = timestamp.toInstant();
-//        System.out.println("Timestamp converted to Instant: " + databaseDateTime);
 
         //We must take that time and add the UTC timezone.
         ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(databaseDateTime, ZoneId.of("UTC"));
-//        System.out.println("Instant converted to ZonedDateTime (Time should not have changed): " + zonedDateTime);
 
         //We can now adjust the ZonedDateTime from UTC to the systemDefault() timezone.
         ZonedDateTime localDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault());
-//        System.out.println("UTC ZonedDateTime converted to systemDefault ZonedDateTime: " + localDateTime);
         return localDateTime;
     }
 

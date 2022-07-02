@@ -33,7 +33,9 @@ public class AppointmentsView extends BorderPane {
     private final TableView<Appointment> appointmentTable = new TableView<>(Appointment.allAppointments);
 
     /**
-     * This constructor instantiates the Appointments view.
+     * This constructor instantiates the Appointments view. This constructor uses a lambda when adding a listener to
+     * the appointmentSelector. Using a lambda here prevents me from having to create a separate method, instead I can
+     * just inject the functionality of method into the addListener statement directly.
      */
     public AppointmentsView() {
         //Appointment header
@@ -97,13 +99,10 @@ public class AppointmentsView extends BorderPane {
         footerSpacer2.setMinWidth(30);
         footerSpacer3.setMinWidth(30);
         ButtonWide addAppointment = new ButtonWide(lrb.getString("Add_Appointment"));
-        //Used Lambda Here
         addAppointment.setOnMouseClicked(this::addAppointmentClick);
         ButtonWide updateAppointment = new ButtonWide(lrb.getString("Update_Appointment"));
-        //Used Lambda Here
         updateAppointment.setOnMouseClicked(this::updateAppointmentClick);
         ButtonWide deleteAppointment = new ButtonWide(lrb.getString("Delete_Appointment"));
-        //Used Lambda Here
         deleteAppointment.setOnMouseClicked(this::deleteAppointmentClick);
         footer.getChildren().addAll(footerSpacer1, addAppointment, footerSpacer3, updateAppointment, footerSpacer2, deleteAppointment);
 
@@ -214,6 +213,8 @@ public class AppointmentsView extends BorderPane {
 
     /**
      * This method checks the system date and filters all appointments for appointments occurring in the current month.
+     * A lambda is used to filter the appointments list instead of instantiating a Predicate, which is more verbose and
+     * harder to understand.
      */
     private void selectCurrentMonth() {
         Appointment[] filteredAppointments = Appointment.allAppointments.stream()
@@ -224,6 +225,8 @@ public class AppointmentsView extends BorderPane {
 
     /**
      * This method checks the system date and filters all appointments for appointments occurring in the current week.
+     * A lambda is used to filter the appointments list instead of instantiating a Predicate, which is more verbose and
+     * harder to understand.
      */
     private void selectCurrentWeek() {
         Appointment[] filteredAppointments = Appointment.allAppointments.stream().filter(i ->

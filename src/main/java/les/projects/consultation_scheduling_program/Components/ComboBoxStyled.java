@@ -18,7 +18,7 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     private boolean changed = false;
 
     /**
-     * Creates a JavaFX ComboBox for displaying objects.
+     * This constructor instantiates a JavaFX ComboBox for displaying objects.
      * @param observableList An ObservableList of data objects to be displayed in the ComboBox.
      */
     public ComboBoxStyled(ObservableList<T> observableList) {
@@ -27,7 +27,8 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     }
 
     /**
-     * Creates a JavaFX ComboBox for displaying object. The ComboBox displays placeholder text if set to required.
+     * This constructor instantiates a JavaFX ComboBox for displaying objects. The ComboBox displays placeholder text
+     * if required is set to true.
      * @param observableList And ObservableList of data objects to be displayed in the ComboBox.
      * @param required true = required.
      */
@@ -41,7 +42,8 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     }
 
     /**
-     * Method applies formatting to the ComboBox.
+     * This method applies formatting to the ComboBox. A lambda expression is used here to eliminate the need to refer
+     * to a private method.
      * @param promptText String to display as placeholder text.
      */
     private void format(String promptText) {
@@ -68,7 +70,7 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     }
 
     /**
-     * Method sets the initial value of the ComboBox and stores a copy for detecting later changes.
+     * This method sets the initial value of the ComboBox and stores a copy for detecting later changes.
      * @param obj The original data object to be selected in the ComboBox.
      */
     public void setInitialValue(T obj) {
@@ -77,7 +79,7 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     }
 
     /**
-     * Method to set the width of the ComboBox.
+     * This method to set the width of the ComboBox.
      * @param i Pixel value.
      */
     public void setWidth(int i) {
@@ -87,7 +89,7 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     }
 
     /**
-     * Method checks to see if the value of the ComboBox has changed.
+     * This method checks to see if the value of the ComboBox has changed.
      * @return Returns true if anything has changed.
      */
     public boolean isChanged() {

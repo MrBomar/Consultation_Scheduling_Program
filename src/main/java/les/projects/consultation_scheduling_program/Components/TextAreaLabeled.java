@@ -18,7 +18,9 @@ public class TextAreaLabeled extends VBox {
     private boolean changed = false;
 
     /**
-     * Initializes a VBox containing a TextArea and a Label.
+     * This constructor instantiates a VBox containing a TextArea and a Label. A lambda expression was used here to add
+     * a listener to the focused property, eliminating the need to instantiate an EventListener or reference a private
+     * method.
      * @param labelText String to display on the label.
      */
     public TextAreaLabeled(String labelText) {
@@ -58,7 +60,7 @@ public class TextAreaLabeled extends VBox {
     }
 
     /**
-     * Method returns the value entered in the TextArea.
+     * This method returns the value entered in the TextArea.
      * @return String value of the TextArea.
      */
     public String getInput() {

@@ -23,7 +23,7 @@ public enum Meridiem {
     public final String s;
 
     /**
-     * Instantiates the Meridiem object.
+     * This constructor instantiates the Meridiem object.
      * @param s The string representing AM or PM.
      */
     Meridiem(String s) {

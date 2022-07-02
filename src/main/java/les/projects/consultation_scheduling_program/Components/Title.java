@@ -12,7 +12,7 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 public class Title extends Text {
 
     /**
-     * Initializes the JavaFX Text element.
+     * This constructor instantiates the JavaFX Text element.
      * @param s String value to display on the text element.
      */
     public Title(String s) {

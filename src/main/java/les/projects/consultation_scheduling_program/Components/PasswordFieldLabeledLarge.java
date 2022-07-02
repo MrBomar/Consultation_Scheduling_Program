@@ -18,7 +18,9 @@ public class PasswordFieldLabeledLarge extends BorderPane {
     boolean changed = false;
 
     /**
-     * Initializes a JavaFX BorderPane containing a formatted Label and a PasswordField.
+     * This constructor instantiates a JavaFX BorderPane containing a formatted Label and a PasswordField. A lambda
+     * expression was used to add a listener to the focusedProperty, eliminating the need to reference a private
+     * method.
      * @param labelText String to display on the Label.
      * @param placeholder String to display as prompt in the PasswordField.
      * @param disabled Set to true if the Password field should be disabled.
@@ -54,7 +56,7 @@ public class PasswordFieldLabeledLarge extends BorderPane {
     }
 
     /**
-     * Method returns the user's input in the PasswordField.
+     * This method returns the user's input in the PasswordField.
      * @return String value entered in the PasswordField.
      */
     public final String getInput() {
@@ -62,7 +64,7 @@ public class PasswordFieldLabeledLarge extends BorderPane {
     }
 
     /**
-     * Method clears the value entered in the PasswordField.
+     * This method clears the value entered in the PasswordField.
      */
     public final void resetInput() {
         this.passwordField.setText("");

@@ -25,7 +25,8 @@ public class Login extends DialogBase {
     private final PasswordFieldLabeledLarge password = new PasswordFieldLabeledLarge(lrb.getString("Password"), "", false);
 
     /**
-     * Instantiates the login dialog.
+     * This constructor instantiates the login dialog. Two lambdas are used to eliminate instantiating EventListeners
+     * and to make the code more concise and readable.
      */
     public Login() {
         super(lrb.getString("program_title"));
@@ -46,7 +47,7 @@ public class Login extends DialogBase {
     }
 
     /**
-     * Attempts to match the username and password provided against the records in the database.
+     * This method attempts to match the username and password provided against the records in the database.
      * @param event Mouse event.
      */
     private void attemptLogin(Event event) {

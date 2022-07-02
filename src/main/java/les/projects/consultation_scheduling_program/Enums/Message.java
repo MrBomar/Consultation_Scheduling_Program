@@ -222,7 +222,7 @@ public enum Message {
     public final String title, message;
 
     /**
-     * Instantiates a Message enum value.
+     * This constructor instantiates a Message enum value.
      * @param title The title of the message.
      * @param message The content of the message.
      */

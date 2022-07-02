@@ -12,7 +12,7 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 public class DialogText extends Text {
 
     /**
-     * Creates a formatted JavaFX Text element.
+     * This constructor instantiates a formatted JavaFX Text element.
      * @param message String message to display in the Text element.
      */
     public DialogText(String message) {

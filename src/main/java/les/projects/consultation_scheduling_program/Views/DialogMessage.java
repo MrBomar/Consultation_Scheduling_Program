@@ -56,7 +56,8 @@ public class DialogMessage extends DialogBase {
     }
 
     /**
-     * This method builds the dialog.
+     * This method builds the dialog. A lambda is used to eliminate the use of an EventListener, which makes the cod
+     * more concise and readable.
      * @param m The String to display in the body of the dialog.
      */
     private void build(String m) {

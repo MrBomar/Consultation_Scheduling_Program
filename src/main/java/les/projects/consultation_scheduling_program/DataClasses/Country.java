@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
- * Country class stores and manages the country data from the database.
+ * This class stores and manages the country data from the database.
  *
  * @author Leslie C. Bomar 3rd
  * @version 1.0
@@ -27,13 +27,18 @@ public class Country {
     private final SimpleStringProperty name;
     public static ObservableList<Country> allCountries;
 
+    /**
+     * This constructor instantiates a Country object.
+     * @param countryId
+     * @param countryName
+     */
     public Country(int countryId, String countryName) {
         this.id = new SimpleIntegerProperty(countryId);
         this.name = new SimpleStringProperty(countryName);
     }
 
     /**
-     * Replaces the default toString() function. Returns the country name.
+     * This method replaces the default toString() function. Returns the country name.
      * @return Country name.
      */
     @Override
@@ -42,7 +47,7 @@ public class Country {
     }
 
     /**
-     * Adds a new country to the database and refreshes the country observable list.
+     * This method adds a new country to the database and refreshes the country observable list.
      * @param countryName The name of the country.
      */
     public static void add(String countryName) {
@@ -69,7 +74,7 @@ public class Country {
     }
 
     /**
-     * Deletes the country record from the database.
+     * This method deletes the country record from the database.
      */
     public final void delete() {
         try {
@@ -90,7 +95,7 @@ public class Country {
     }
 
     /**
-     * Updates the country information in the database.
+     * This method updates the country information in the database.
      * @param countryName The name of the country.
      */
     public final void update(String countryName){
@@ -115,7 +120,8 @@ public class Country {
     }
 
     /**
-     * Returns all division objects related to the country.
+     * This method returns all division objects related to the country. A lambda expression is used to filter the
+     * divisions list instead of using a Predicate which is more verbose and harder to understand.
      * @return Division data object.
      */
     public ObservableList<Division> getDivisions() {
@@ -125,7 +131,7 @@ public class Country {
     }
 
     /**
-     * Pulls all country data from the database and loads it into the application as Country objects.
+     * This method pulls all country data from the database and loads it into the application as Country objects.
      */
     public static void loadData() {
         //Query the database
@@ -165,19 +171,19 @@ public class Country {
     //Getters
 
     /**
-     * Gets the country record ID.
+     * This method gets the country record ID.
      * @return Country ID
      */
     public final int getId() { return this.id.get(); }
 
     /**
-     * Gets the country name.
+     * This method gets the country name.
      * @return Country name.
      */
     public final String getName() { return this.name.get(); }
 
     /**
-     * Returns a Country object using the country ID.
+     * This method returns a Country object using the country ID.
      * @param id Country record ID.
      * @return Country object.
      */
@@ -186,13 +192,13 @@ public class Country {
     //Property Getters
 
     /**
-     * Gets the ID property.
+     * This method gets the ID property.
      * @return Property value.
      */
     public final Property<Number> getIdProperty() { return this.id; }
 
     /**
-     * Gets the name property.
+     * This method gets the name property.
      * @return Name property of the country.
      */
     public final Property<String> getNameProperty() { return this.name; }
@@ -200,13 +206,13 @@ public class Country {
     //Setters
 
     /**
-     * Sets the country record ID
+     * This method sets the country record ID
      * @param id Country_ID
      */
     public final void setId(int id) { this.id.set(id); }
 
     /**
-     * Sets the country name.
+     * This method sets the country name.
      * @param countryName Country name.
      */
     public final void setName(String countryName) { this.name.set(countryName); }

@@ -4,7 +4,7 @@ import javafx.scene.control.Button;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
 /**
- * Class extends the JavaFX Button and produces a formatted button.
+ * This class extends the JavaFX Button and produces a formatted button.
  *
  * @author Leslie C. Bomar 3rd
  * @version 1.0
@@ -12,7 +12,9 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 public class ButtonWide extends Button {
 
     /**
-     * Produces a formatted JavaFX Button.
+     * The constructor instantiates a formatted JavaFX Button. Four lambda expressions are used to set the actions
+     * taken during the various onMouse events. Four lambda expressions are user here to reduce the amount of code
+     * written and eliminate the need for additional private methods.
      * @param s String to display on the button.
      */
     public ButtonWide(String s) {
@@ -26,9 +28,9 @@ public class ButtonWide extends Button {
         this.setBackground(Styles.BackgroundWhite);
 
         //Apply mouse effects.
-        this.setOnMousePressed((event) -> this.setEffect(Styles.ButtonInnerShadow));
-        this.setOnMouseReleased((event) -> this.setEffect(null));
-        this.setOnMouseEntered((event) -> this.setBackground(Styles.BackgroundButtonHover));
-        this.setOnMouseExited((event) -> this.setBackground(Styles.BackgroundWhite));
+        this.setOnMousePressed(e -> this.setEffect(Styles.ButtonInnerShadow));
+        this.setOnMouseReleased(e -> this.setEffect(null));
+        this.setOnMouseEntered(e -> this.setBackground(Styles.BackgroundButtonHover));
+        this.setOnMouseExited(e -> this.setBackground(Styles.BackgroundWhite));
     }
 }

@@ -313,7 +313,7 @@ public enum Minute {
     public final int number;
 
     /**
-     * Instantiates the enum.
+     * This constructor instantiates the enum.
      * @param number The number that represents the minute value.
      */
     Minute(int number) { this.number = number; }

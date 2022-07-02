@@ -33,7 +33,8 @@ public class CustomersView extends BorderPane {
     private final TableView<Customer> customerTable;
 
     /**
-     * This constructor instantiates the Customers view.
+     * This constructor instantiates the Customers view. Three lambdas are used here to eliminate the use of
+     * ChangeListeners which would be more verbose.
      */
     public CustomersView() {
         //Customer header
@@ -86,15 +87,12 @@ public class CustomersView extends BorderPane {
             });
 
             //Add listener to ComboBox(s)
-            //Used lambda expressions here to prevent myself from having to use and import a ChangeListener,
-            // reduced the amount of code needed.
             this.countryComboBox.valueProperty().addListener((observableValue, country, t1) -> {
                 countryRadio.setSelected(true);
                 divisionComboBox.setItems(countryComboBox.getValue().getDivisions());
                 selectByCountryAndDivision();
             });
-            //Used lambda expressions here to prevent myself from having to use and import a ChangeListener,
-            // reduced the amount of code needed.
+
             this.divisionComboBox.valueProperty().addListener(((observableValue, division, t1) -> {
                 countryRadio.setSelected(true);
                 selectByCountryAndDivision();
@@ -209,7 +207,11 @@ public class CustomersView extends BorderPane {
     }
 
     /**
-     * This method builds the TableView.
+     * This method builds the TableView. Thirteen lambda expressions are used in this method, each for eliminating
+     * excess code and enhancing readability.
+     *      Four lambdas are used to eliminate instantiating Callbacks.
+     *      Eight lambdas are used to eliminate instantiating EventListeners.
+     *      One lambda is used to eliminate instantiating a Predicate.
      * @return The Customers Table.
      */
     private TableView<Customer> buildCustomerTable() {
@@ -234,8 +236,8 @@ public class CustomersView extends BorderPane {
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
-        countryCol.setCellValueFactory(cellData -> cellData.getValue().getCountryProperty());
-        divisionCol.setCellValueFactory(cellData -> cellData.getValue().getDivisionProperty());
+        countryCol.setCellValueFactory(cellData -> cellData.getValue().getCountryProperty()); //Callback
+        divisionCol.setCellValueFactory(cellData -> cellData.getValue().getDivisionProperty()); //CallBack
         postalCol.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
@@ -244,16 +246,16 @@ public class CustomersView extends BorderPane {
         postalCol.setCellFactory(TextFieldTableCell.forTableColumn());
         phoneCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        nameCol.setOnEditCommit(e-> e.getRowValue().setName(e.getNewValue()));
-        addressCol.setOnEditCommit(e->e.getRowValue().setAddress(e.getNewValue()));
-        postalCol.setOnEditCommit(e->e.getRowValue().setPostalCode(e.getNewValue()));
-        phoneCol.setOnEditCommit(e->e.getRowValue().setPhone(e.getNewValue()));
+        nameCol.setOnEditCommit(e-> e.getRowValue().setName(e.getNewValue())); //EventListener
+        addressCol.setOnEditCommit(e->e.getRowValue().setAddress(e.getNewValue())); //EventListener
+        postalCol.setOnEditCommit(e->e.getRowValue().setPostalCode(e.getNewValue())); //EventListener
+        phoneCol.setOnEditCommit(e->e.getRowValue().setPhone(e.getNewValue())); //EventListener
 
-        countryCol.setCellFactory(cellData -> {
+        countryCol.setCellFactory(cellData -> { //Callback
             TableCell<Customer, Country> cell = new TableCell<>();
             ComboBox<Country> combo = new ComboBox<>(Country.allCountries);
             combo.valueProperty().bindBidirectional(cell.itemProperty());
-            combo.valueProperty().addListener(((observableValue, oldValue, newValue) -> {
+            combo.valueProperty().addListener(((observableValue, oldValue, newValue) -> { //EventListener
                 try {
                     cell.getTableRow().getItem().setCountry(newValue);
                 } catch (Exception e) {
@@ -262,21 +264,21 @@ public class CustomersView extends BorderPane {
 
             }));
             combo.focusedProperty()
-                    .addListener(e -> cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem()));
+                    .addListener(e -> cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem())); //EventListener
             cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(combo));
             return cell;
         });
 
-        divisionCol.setCellFactory(cellData -> {
+        divisionCol.setCellFactory(cellData -> { //Callback
             TableCell<Customer, Division> cell = new TableCell<>();
             ComboBox<Division> combo = new ComboBox<>(Division.allDivisions);
             combo.valueProperty().bindBidirectional(cell.itemProperty());
-            combo.focusedProperty().addListener(e->{
+            combo.focusedProperty().addListener(e->{ //EventListener
                 cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem());
                 Country country = cell.getTableRow().getItem().getCountry();
-                combo.setItems(Division.allDivisions.filtered(i->i.getCountry().equals(country)));
+                combo.setItems(Division.allDivisions.filtered(i->i.getCountry().equals(country))); //Predicate
             });
-            combo.valueProperty().addListener((observable, oldValue, newValue)->{
+            combo.valueProperty().addListener((observable, oldValue, newValue)->{ //EventListener
                 try {
                     cell.getTableRow().getItem().setDivision(newValue);
                 } catch (Exception e) {

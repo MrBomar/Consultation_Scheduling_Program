@@ -14,7 +14,8 @@ public class TabConsole extends Pane {
     private boolean active;
 
     /**
-     * Initializes a JavaFX Pane containing a Label and formatted to change color when selected.
+     * This constructor instantiates a JavaFX Pane containing a Label and formatted to change color when selected.
+     * Two lambda expressions were used to assign actions to the OnMouse events to eliminate the use of a Callback.
      * @param s String to display on the Tab.
      * @param active Set to true if Tab should display as selected.
      */
@@ -50,7 +51,7 @@ public class TabConsole extends Pane {
     }
 
     /**
-     * Method set the background color of the Tab to white.
+     * This method set the background color of the Tab to white.
      */
     private void setBackgroundWhite() {
         this.setBackground(Styles.BackgroundWhite);

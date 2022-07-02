@@ -28,7 +28,7 @@ public class Main extends Application {
 
 
     /**
-     * Required method for JavaFX.
+     * This method overrides the default start method for Application. This is a required method for JavaFX.
      * @param stage The base of the application view.
      * @throws IOException Self explanatory.
      */
@@ -48,7 +48,7 @@ public class Main extends Application {
     }
 
     /**
-     * Method called when the application is close. Is used to close the database connection on exit.
+     * This method is called when the application is closed. Is used to close the database connection on exit.
      */
     @Override
     public void stop() {
@@ -56,7 +56,7 @@ public class Main extends Application {
     }
 
     /**
-     * Required Java Method.
+     * This method is the entry method for the application. This is a required Java method.
      * @param args Array of string to use in starting arguments.
      */
     public static void main(String[] args) {
@@ -65,7 +65,7 @@ public class Main extends Application {
     }
 
     /**
-     * Method for closing the active windows and returning to the login screen.
+     * This method is used for closing the active windows and returning to the login screen.
      */
     public static void logoutView() {
         //Create Scene
@@ -82,7 +82,7 @@ public class Main extends Application {
     }
 
     /**
-     * Method for initial loading of data from the database.
+     * This method is used for the initial loading of data from the database.
      */
     public static void loadData() {
         Contact.loadData();

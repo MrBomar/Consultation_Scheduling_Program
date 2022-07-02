@@ -11,7 +11,7 @@ import les.projects.consultation_scheduling_program.Main;
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
- * Class extends the JavaFX VBox to create a clickable element for logging out of the program.
+ * This class extends the JavaFX VBox to create a clickable element for logging out of the program.
  *
  * @author Leslie C. Bomar 3rd
  * @version 1.0
@@ -19,7 +19,10 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 public class ButtonUserLogout extends BorderPane {
 
     /**
-     * Produces a JavaFX VBox containing an image and is clickable.
+     * This constructor instantiates a JavaFX VBox containing an image and is clickable. Two lambda expressions are
+     * used to set the actions taken during OnMouse events. Two lambda expressions were used here to prevent us from
+     * using the addListener method which is more verbose, it also eliminated the need to call private methods which
+     * makes the code more readable.
      */
     public ButtonUserLogout() {
         //Exit button
@@ -44,11 +47,11 @@ public class ButtonUserLogout extends BorderPane {
         logoutIcon.setBorder(Styles.BorderGrey);
         
         //Hover action
-        logoutIcon.setOnMouseEntered((EventHandler<? super MouseEvent>) (event) -> {
+        logoutIcon.setOnMouseEntered(e -> {
             logoutIcon.setBackground(Styles.BackgroundWhite);
             logoutIcon.setBorder(Styles.BorderBlack);
         });
-        logoutIcon.setOnMouseExited((EventHandler<? super MouseEvent>) (event) -> {
+        logoutIcon.setOnMouseExited(e -> {
             logoutIcon.setBackground(Styles.BackgroundGrey);
             logoutIcon.setBorder(Styles.BorderGrey);
         });

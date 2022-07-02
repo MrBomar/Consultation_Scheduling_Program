@@ -53,36 +53,39 @@ public abstract class DTC {
      * @return A ZonedDateTime set to the system default time zone.
      */
     public static ZonedDateTime timestampToZonedDateTime(Timestamp timestamp) {
-        //Create UTC ZonedDateTime
-        ZonedDateTime utcZDT = ZonedDateTime.of(timestamp.toLocalDateTime(), ZoneId.of("UTC"));
-        //Convert to the system zone and return
-        return ZonedDateTime.ofInstant(utcZDT.toInstant(), ZoneId.systemDefault());
+        //The timestamp on the database is the same as the virtual machine.
+        //The value converted to UTC should be 7 hours less than system time.
+
+        //We must assume that the timestamp from the database is set to UTC.
+        Instant databaseDateTime = timestamp.toInstant();
+//        System.out.println("Timestamp converted to Instant: " + databaseDateTime);
+
+        //We must take that time and add the UTC timezone.
+        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(databaseDateTime, ZoneId.of("UTC"));
+//        System.out.println("Instant converted to ZonedDateTime (Time should not have changed): " + zonedDateTime);
+
+        //We can now adjust the ZonedDateTime from UTC to the systemDefault() timezone.
+        ZonedDateTime localDateTime = zonedDateTime.withZoneSameInstant(ZoneId.systemDefault());
+//        System.out.println("UTC ZonedDateTime converted to systemDefault ZonedDateTime: " + localDateTime);
+        return localDateTime;
     }
 
     /**
-     * This method intakes a ZonedDateTime and converts it to UST time zone and returns a Timestamp.
+     * This method intakes a ZonedDateTime and converts it unadjusted to a Timestamp.
+     * We do not need to convert timezones the database does this automatically.
      * @param zdt Any ZonedDateTime.
      * @return A Timestamp set to UST time zone.
      */
     public static Timestamp zonedDateTimeToTimestamp(ZonedDateTime zdt) {
-        //Convert current time zone to UTC
-        ZonedDateTime zdtUTC = ZonedDateTime.ofInstant(zdt.toInstant(), ZoneId.of("UTC"));
-        //Convert ZonedDateTime to TimeStamp
-        return Timestamp.from(Instant.from(zdtUTC));
+        return Timestamp.valueOf(zdt.toLocalDateTime());
     }
 
     /**
-     * This method take the system date and time, adjusts it to UST, and returns a Timestamp.
-     * @return The system date and time, adjusted to UST.
+     * This method takes the system date and time and returns a Timestamp.
+     * @return The system date and time.
      */
     public static Timestamp currentTimestamp() {
-        //Capture the current time
-        ZonedDateTime now = ZonedDateTime.now();
-
-        //Convert to UTC time zone
-        ZonedDateTime nowUTC = ZonedDateTime.ofInstant(now.toInstant(), ZoneId.of("UTC"));
-
         //Return as time stamp
-        return Timestamp.from(nowUTC.toInstant());
+        return Timestamp.from(Instant.now());
     }
 }

@@ -15,6 +15,7 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
  */
 public class TextFieldLabeled extends BorderPane {
     private final TextField textField;
+    private final Label label;
     private String initValue = "";
     private boolean changed = false;
 
@@ -25,8 +26,8 @@ public class TextFieldLabeled extends BorderPane {
      * @param disabled Set to true to disallow user input.
      */
     public TextFieldLabeled(String labelText, boolean required, boolean disabled) {
-        Label label = new Label(labelText);
-        label.setFont(Styles.DefaultFont18);
+        this.label = new Label(labelText);
+        this.label.setFont(Styles.DefaultFont18);
 
         this.textField = new TextField();
         this.textField.setMinSize(200,25);
@@ -94,6 +95,8 @@ public class TextFieldLabeled extends BorderPane {
      * @return Returns true if the TextField is not empty.
      */
     public final boolean isNotBlank() {
-        return this.textField.getText().equals("") || this.textField.getText().equals(" ");
+        return (this.textField.getText().equals("") ||
+            this.textField.getText().equals(" ") ||
+            this.textField.getText().isEmpty()) ? false : true;
     }
 }

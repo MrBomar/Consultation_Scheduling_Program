@@ -34,7 +34,6 @@ public abstract class JDBC {
             Class.forName(driver);
             connection = DriverManager.getConnection(jdbcUrl, userName, password);
         } catch (Exception e) {
-            System.out.println("Error:" + e.getMessage());
             e.printStackTrace();
         }
     }

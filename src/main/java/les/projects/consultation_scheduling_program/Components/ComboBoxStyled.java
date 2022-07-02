@@ -4,6 +4,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import les.projects.consultation_scheduling_program.Enums.Styles;
 
+import static les.projects.consultation_scheduling_program.Main.lrb;
+
 /**
  * Class extends the JavaFX ComboBox and formats it visually.
  * @param <T> The data type of the object to be displayed in the ComboBox.
@@ -25,13 +27,17 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     }
 
     /**
-     * Creates a JavaFX ComboBox for displaying object. The ComboBox displays placeholder text.
+     * Creates a JavaFX ComboBox for displaying object. The ComboBox displays placeholder text if set to required.
      * @param observableList And ObservableList of data objects to be displayed in the ComboBox.
-     * @param promptText String to display as placeholder text.
+     * @param required true = required.
      */
-    public ComboBoxStyled(ObservableList<T> observableList, String promptText) {
+    public ComboBoxStyled(ObservableList<T> observableList, boolean required) {
         super(observableList);
-        format(promptText);
+        format("");
+        if(required) {
+            this.setPromptText("(" + lrb.getString("Required") + ")");
+            this.setStyle(Styles.StyleComboBoxRequired);
+        }
     }
 
     /**
@@ -84,5 +90,7 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
      * Method checks to see if the value of the ComboBox has changed.
      * @return Returns true if anything has changed.
      */
-    public boolean isChanged() { return this.changed; }
+    public boolean isChanged() {
+        return this.changed;
+    }
 }

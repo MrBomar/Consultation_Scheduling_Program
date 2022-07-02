@@ -14,7 +14,7 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
  */
 public class TextAreaLabeled extends VBox {
     private final TextArea text;
-    private String initValue = "";
+    private String initValue;
     private boolean changed = false;
 
     /**
@@ -35,9 +35,26 @@ public class TextAreaLabeled extends VBox {
         this.getChildren().addAll(label, this.text);
 
         //Event listeners
-        this.text.focusedProperty().addListener(
-                (x,y,z) -> changed = !this.initValue.equals(this.text.getText())
-        );
+        this.text.focusedProperty().addListener((x,y,z) -> {
+
+            boolean initialEmpty = this.initValue == null ||
+                    this.initValue.equals("") ||
+                    this.initValue.equals(" ") ||
+                    this.initValue.isEmpty();
+            boolean textEmpty = this.text.getText().isEmpty() ||
+                    this.text.getText().equals("") ||
+                    this.text.getText().equals(" ");
+
+            if(initialEmpty && textEmpty) {
+                this.changed = false;
+            } else if (initialEmpty && !textEmpty) {
+                this.changed = true;
+            } else if (this.initValue.equals(this.text.getText())){
+                this.changed = false;
+            } else {
+                this.changed = true;
+            }
+        });
     }
 
     /**
@@ -61,5 +78,7 @@ public class TextAreaLabeled extends VBox {
      * The method detects if the value of the TextArea has been changed.
      * @return Returns true if the value of the TextArea has been changed.
      */
-    public boolean isChanged() { return this.changed; }
+    public boolean isChanged() {
+        return this.changed;
+    }
 }

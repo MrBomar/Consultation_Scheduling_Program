@@ -6,7 +6,10 @@ import javafx.event.Event;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.util.Callback;
 import les.projects.consultation_scheduling_program.Components.ButtonWide;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
 import les.projects.consultation_scheduling_program.DataClasses.Contact;
@@ -17,6 +20,9 @@ import les.projects.consultation_scheduling_program.Enums.Styles;
 import les.projects.consultation_scheduling_program.Helpers.WeekComparator;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
@@ -171,8 +177,8 @@ public class AppointmentsView extends BorderPane {
         TableColumn<Appointment, String> descCol = new TableColumn<>(lrb.getString("Description"));
         TableColumn<Appointment, String> locCol = new TableColumn<>(lrb.getString("Location"));
         TableColumn<Appointment, String> typeCol = new TableColumn<>(lrb.getString("Type"));
-        TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("Start"));
-        TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("End"));
+        TableColumn<Appointment, String> startCol = new TableColumn<>(lrb.getString("Start"));
+        TableColumn<Appointment, String> endCol = new TableColumn<>(lrb.getString("End"));
         TableColumn<Appointment, Customer> customerCol = new TableColumn<>(lrb.getString("Customer"));
         TableColumn<Appointment, User> userCol = new TableColumn<>(lrb.getString("User"));
         TableColumn<Appointment, Contact> contactCol = new TableColumn<>(lrb.getString("Contact"));

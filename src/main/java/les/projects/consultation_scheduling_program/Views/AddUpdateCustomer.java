@@ -29,9 +29,9 @@ public class AddUpdateCustomer extends DialogBase {
     private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("Customer_Name"), true, false);
     private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("Customer_Address"), true, false);
     private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("ZIP_Code"), true, false);
-    private final ComboBoxStyled<Division> division = new ComboBoxStyled<>(Division.allDivisions, "");
+    private final ComboBoxStyled<Division> division = new ComboBoxStyled<>(Division.allDivisions, true);
     private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("Phone_Number"), true, false);
-    private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, "");
+    private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, true);
 
     /**
      * This constructor creates an instance of the Add/Update Customer modal in add mode.

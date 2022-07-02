@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.ArrayList;
-
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**

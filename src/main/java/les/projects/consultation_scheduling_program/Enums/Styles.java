@@ -119,7 +119,7 @@ public abstract class Styles {
     /**
      * This property stores a CSS String for formatting a JavaFX TextField where input is required.
      */
-    public static final String StyleTextFieldRequired = StyleTextField + "-fx-prompt-text-fill: rgb(255,0,0);";
+    public static final String StyleTextFieldRequired = StyleTextField + "-fx-prompt-text-fill: rgb(100,100,100);";
 
     /**
      * This property stores a CSS String for formatting a JavaFX ComboBox.
@@ -136,7 +136,7 @@ public abstract class Styles {
     /**
      * This property stores a CSS String for formatting a JavaFX ComboBox where input is required.
      */
-    public static final String StyleComboBoxRequired = StyleComboBox + "-fx-prompt-text-fill: rgb(255,0,0);";
+    public static final String StyleComboBoxRequired = StyleComboBox + "-fx-prompt-text-fill: rgb(100,100,100);";
 
     /**
      * This property stores a CSS String for formatting a JavaFX TextArea.

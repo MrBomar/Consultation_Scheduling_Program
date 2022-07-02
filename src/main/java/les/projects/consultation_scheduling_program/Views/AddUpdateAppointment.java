@@ -2,6 +2,7 @@ package les.projects.consultation_scheduling_program.Views;
 
 import javafx.event.Event;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import les.projects.consultation_scheduling_program.Components.*;
 import les.projects.consultation_scheduling_program.DataClasses.Appointment;
@@ -27,13 +28,13 @@ public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment;
 
     //Fields
-    private final ComboBoxStyled<Contact> contact = new ComboBoxStyled<>(Contact.allContacts, lrb.getString("Contact"));
-    private final ComboBoxStyled<Customer> customer = new ComboBoxStyled<>(Customer.allCustomers, lrb.getString("Customer"));
+    private final ComboBoxStyled<Contact> contact = new ComboBoxStyled<>(Contact.allContacts, true);
+    private final ComboBoxStyled<Customer> customer = new ComboBoxStyled<>(Customer.allCustomers, true);
     private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("Description"));
-    private final DateTimePicker end = new DateTimePicker(lrb.getString("End"));
+    private final DateTimePicker end = new DateTimePicker(lrb.getString("End"), true);
     private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("Appointment_ID"), false, true);
     private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("Location"), true, false);
-    private final DateTimePicker start = new DateTimePicker(lrb.getString("Start"));
+    private final DateTimePicker start = new DateTimePicker(lrb.getString("Start"), true);
     private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("Title"), true, false);
     private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("Type"), false, false);
 
@@ -108,6 +109,7 @@ public class AddUpdateAppointment extends DialogBase {
             //We have fields that require filling out.
             DialogMessage dialog = new DialogMessage(Message.InvalidInput);
             dialog.showAndWait();
+            return;
         }
 
         if(!this.validTimeRange()) return;
@@ -204,7 +206,6 @@ public class AddUpdateAppointment extends DialogBase {
             DialogMessage dialog = new DialogMessage(
                     Message.InvalidInputTime,
                     new String[]{
-                            lrb.getString("End"),
                             lrb.getString("End")
                     });
             dialog.showAndWait();
@@ -224,7 +225,6 @@ public class AddUpdateAppointment extends DialogBase {
             DialogMessage dialog = new DialogMessage(
                     Message.InvalidInputTime,
                     new String[] {
-                            lrb.getString("Start"),
                             lrb.getString("Start")
                     }
             );

@@ -10,6 +10,7 @@ import les.projects.consultation_scheduling_program.Enums.Hour;
 import les.projects.consultation_scheduling_program.Enums.Meridiem;
 import les.projects.consultation_scheduling_program.Enums.Minute;
 import les.projects.consultation_scheduling_program.Enums.Styles;
+import static les.projects.consultation_scheduling_program.Main.lrb;
 import java.time.*;
 
 /**
@@ -32,7 +33,7 @@ public class DateTimePicker extends BorderPane {
      * Produces a BorderPane containing a DatePicker and ComboBoxes for building a ZonedDateTime object.
      * @param labelText String to apply to DateTimePicker label.
      */
-    public DateTimePicker(String labelText) {
+    public DateTimePicker(String labelText, boolean required) {
         HBox hBox = new HBox();
         Label label = new Label(labelText);
         label.setFont(Styles.DefaultFont18);
@@ -51,13 +52,18 @@ public class DateTimePicker extends BorderPane {
         this.hourPicker.setPrefWidth(75);
         this.minutePicker.setPrefWidth(75);
         this.meridiemPicker.setPrefWidth(80);
-        this.datePicker.setStyle(Styles.StyleComboBox);
+        this.datePicker.setStyle(Styles.StyleComboBoxRequired);
         this.hourPicker.setStyle(Styles.StyleComboBox);
         this.minutePicker.setStyle(Styles.StyleComboBox);
         this.meridiemPicker.setStyle(Styles.StyleComboBox);
 
         //Format Border Pane
         this.setPadding(new Insets(10,0,10,0));
+
+        //Required property
+        if(required) {
+            this.datePicker.setPromptText("(" + lrb.getString("Required") + ")");
+        }
     }
 
     /**
@@ -65,6 +71,11 @@ public class DateTimePicker extends BorderPane {
      * @return Successful conversion returns 'true'.
      */
     public boolean validEntry() {
+        if(this.datePicker.getValue() == null ||
+                this.hourPicker.getValue() == null ||
+                this.minutePicker.getValue() == null ||
+                this.meridiemPicker.getValue() == null) return false;
+
         try {
             this.ld = this.datePicker.getValue();
         } catch (Exception e) {
@@ -85,7 +96,7 @@ public class DateTimePicker extends BorderPane {
      * @return Returns a ZonedDateTime set to the systemDefault zone.
      */
     public ZonedDateTime getEntry() {
-        return ZonedDateTime.of(this.ld,this.lt, ZoneId.systemDefault());
+        return ZonedDateTime.of(this.ld, this.lt, ZoneId.systemDefault());
     }
 
     /**
@@ -111,12 +122,14 @@ public class DateTimePicker extends BorderPane {
      * @return Returns true of the value has been changed.
      */
     public boolean isChanged() {
-        if(this.validEntry()) {
-            return getEntry().getMonth() != this.initialValue.getMonth() ||
-                    getEntry().getDayOfMonth() != this.initialValue.getDayOfMonth() ||
-                    getEntry().getYear() != this.initialValue.getYear() ||
-                    getEntry().getHour() != this.initialValue.getHour() ||
-                    getEntry().getMinute() != this.initialValue.getMinute();
+        if(this.validEntry() && this.initialValue != null) {
+            return (this.getEntry().getMonth() != this.initialValue.getMonth() ||
+                    this.getEntry().getDayOfMonth() != this.initialValue.getDayOfMonth() ||
+                    this.getEntry().getYear() != this.initialValue.getYear() ||
+                    this.getEntry().getHour() != this.initialValue.getHour() ||
+                    this.getEntry().getMinute() != this.initialValue.getMinute());
+        } else if (this.initialValue == null && this.ld == null && this.lt == null) {
+            return false;
         } else {
             return true;
         }

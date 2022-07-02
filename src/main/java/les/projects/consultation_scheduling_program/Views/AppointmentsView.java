@@ -37,14 +37,14 @@ public class AppointmentsView extends BorderPane {
 
             //Appointment header objects
             //First label
-            Label label1 = new Label(lrb.getString("view_appointments_by"));
+            Label label1 = new Label(lrb.getString("View_Appointments_by"));
             label1.setFont(Styles.DefaultFont18);
 
             //Radio Button Group
             final ToggleGroup appointmentsSelector = new ToggleGroup();
-            RadioButton currentMonth = new RadioButton(lrb.getString("current_month"));
-            RadioButton currentWeek = new RadioButton(lrb.getString("current_week"));
-            RadioButton allAppointments = new RadioButton(lrb.getString("all_appointments"));
+            RadioButton currentMonth = new RadioButton(lrb.getString("Current_Month"));
+            RadioButton currentWeek = new RadioButton(lrb.getString("Current_Week"));
+            RadioButton allAppointments = new RadioButton(lrb.getString("All_Appointments"));
             currentMonth.setFont(Styles.DefaultFont16);
             currentWeek.setFont(Styles.DefaultFont16);
             allAppointments.setFont(Styles.DefaultFont16);
@@ -92,13 +92,13 @@ public class AppointmentsView extends BorderPane {
         footerSpacer1.setMinWidth(555);
         footerSpacer2.setMinWidth(30);
         footerSpacer3.setMinWidth(30);
-        ButtonWide addAppointment = new ButtonWide(lrb.getString("add_appointment"));
+        ButtonWide addAppointment = new ButtonWide(lrb.getString("Add_Appointment"));
         //Used Lambda Here
         addAppointment.setOnMouseClicked(this::addAppointmentClick);
-        ButtonWide updateAppointment = new ButtonWide(lrb.getString("update_appointment"));
+        ButtonWide updateAppointment = new ButtonWide(lrb.getString("Update_Appointment"));
         //Used Lambda Here
         updateAppointment.setOnMouseClicked(this::updateAppointmentClick);
-        ButtonWide deleteAppointment = new ButtonWide(lrb.getString("delete_appointment"));
+        ButtonWide deleteAppointment = new ButtonWide(lrb.getString("Delete_Appointment"));
         //Used Lambda Here
         deleteAppointment.setOnMouseClicked(this::deleteAppointmentClick);
         footer.getChildren().addAll(footerSpacer1, addAppointment, footerSpacer3, updateAppointment, footerSpacer2, deleteAppointment);
@@ -166,16 +166,16 @@ public class AppointmentsView extends BorderPane {
      * This method constructs the table columns.
      */
     private void buildTable() {
-        TableColumn<Appointment, Integer> idCol = new TableColumn<>(lrb.getString("id"));
-        TableColumn<Appointment, String> titleCol = new TableColumn<>(lrb.getString("title"));
-        TableColumn<Appointment, String> descCol = new TableColumn<>(lrb.getString("description"));
-        TableColumn<Appointment, String> locCol = new TableColumn<>(lrb.getString("location"));
-        TableColumn<Appointment, String> typeCol = new TableColumn<>(lrb.getString("type"));
-        TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("start"));
-        TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("end"));
-        TableColumn<Appointment, Customer> customerCol = new TableColumn<>(lrb.getString("customer"));
-        TableColumn<Appointment, User> userCol = new TableColumn<>(lrb.getString("user"));
-        TableColumn<Appointment, Contact> contactCol = new TableColumn<>(lrb.getString("contact"));
+        TableColumn<Appointment, Integer> idCol = new TableColumn<>(lrb.getString("ID"));
+        TableColumn<Appointment, String> titleCol = new TableColumn<>(lrb.getString("Title"));
+        TableColumn<Appointment, String> descCol = new TableColumn<>(lrb.getString("Description"));
+        TableColumn<Appointment, String> locCol = new TableColumn<>(lrb.getString("Location"));
+        TableColumn<Appointment, String> typeCol = new TableColumn<>(lrb.getString("Type"));
+        TableColumn<Appointment, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("Start"));
+        TableColumn<Appointment, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("End"));
+        TableColumn<Appointment, Customer> customerCol = new TableColumn<>(lrb.getString("Customer"));
+        TableColumn<Appointment, User> userCol = new TableColumn<>(lrb.getString("User"));
+        TableColumn<Appointment, Contact> contactCol = new TableColumn<>(lrb.getString("Contact"));
 
         //Bind values to columns
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -205,7 +205,8 @@ public class AppointmentsView extends BorderPane {
      * This method checks the system date and filters all appointments for appointments occurring in the current month.
      */
     private void selectCurrentMonth() {
-        Appointment[] filteredAppointments = Appointment.allAppointments.stream().filter(i -> i.getStart().getMonth().equals(LocalDate.now().getMonth())).toArray(Appointment[]::new);
+        Appointment[] filteredAppointments = Appointment.allAppointments.stream()
+                .filter(i -> i.getStart().getMonth().equals(LocalDate.now().getMonth())).toArray(Appointment[]::new);
         ObservableList<Appointment> observableAppointments = FXCollections.observableArrayList(filteredAppointments);
         this.appointmentTable.setItems(observableAppointments);
     }

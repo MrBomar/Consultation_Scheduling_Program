@@ -25,20 +25,20 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
  */
 public class AddUpdateCustomer extends DialogBase {
     private Customer currentCustomer;
-    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("customer_id"), false, true);
-    private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("customer_name"), true, false);
-    private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("customer_address"), true, false);
-    private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("zip_code"), true, false);
+    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("Customer_ID"), false, true);
+    private final TextFieldLabeled name = new TextFieldLabeled(lrb.getString("Customer_Name"), true, false);
+    private final TextFieldLabeled address = new TextFieldLabeled(lrb.getString("Customer_Address"), true, false);
+    private final TextFieldLabeled zip = new TextFieldLabeled(lrb.getString("ZIP_Code"), true, false);
     private final ComboBoxStyled<Division> division = new ComboBoxStyled<>(Division.allDivisions, "");
-    private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("phone_number"), true, false);
+    private final TextFieldLabeled phone = new TextFieldLabeled(lrb.getString("Phone_Number"), true, false);
     private final ComboBoxStyled<Country> country = new ComboBoxStyled<>(Country.allCountries, "");
 
     /**
      * This constructor creates an instance of the Add/Update Customer modal in add mode.
      */
     public AddUpdateCustomer() {
-        super(lrb.getString("add_new_customer"));
-        this.id.setPromptText("(Auto generated)");
+        super(lrb.getString("Add_New_Customer"));
+        this.id.setPromptText("(" + lrb.getString("Auto-generated") + ")");
         this.build();
     }
 
@@ -47,7 +47,7 @@ public class AddUpdateCustomer extends DialogBase {
      * @param customer The customer object to be edited.
      */
     public AddUpdateCustomer( Customer customer) {
-        super(lrb.getString("update_customer"));
+        super(lrb.getString("Update_Customer"));
         this.build();
 
         //FIXME - Insert logic to pull customer record and populate fields.
@@ -86,13 +86,13 @@ public class AddUpdateCustomer extends DialogBase {
         borderPane.setCenter(center);
 
         HBox bottom = new HBox();
-        ButtonStandard save = new ButtonStandard(lrb.getString("save"));
+        ButtonStandard save = new ButtonStandard(lrb.getString("Save"));
         save.setOnMouseClicked(this::saveClick);
         Pane gap = new Pane();
         gap.setMinWidth(30);
         gap.setMaxWidth(30);
         gap.setPrefWidth(30);
-        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("Cancel"));
         cancel.setOnMouseClicked(this::confirmCancel);
         bottom.getChildren().addAll(save, gap, cancel);
         bottom.setAlignment(Pos.CENTER_RIGHT);

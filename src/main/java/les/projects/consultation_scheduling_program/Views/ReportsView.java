@@ -21,9 +21,9 @@ public class ReportsView extends Pane {
     public ReportsView() {
         TabPane tabPane = new TabPane();
 
-        Tab tab1 = new TabLeftStyled(lrb.getString("customer_appointments_by_type_and_month"));
-        Tab tab2 = new TabLeftStyled(lrb.getString("customer_appointment_schedule"));
-        Tab tab3 = new TabLeftStyled(lrb.getString("contact_appointment_schedule"));
+        Tab tab1 = new TabLeftStyled(lrb.getString("Customer_Appointments_by_Type_and_Month"));
+        Tab tab2 = new TabLeftStyled(lrb.getString("Customer_Appointment_Schedule"));
+        Tab tab3 = new TabLeftStyled(lrb.getString("Contact_Appointment_Schedule"));
 
         tabPane.getSelectionModel().selectedItemProperty().addListener(
                 (observableValue, oldTab, newTab) -> {

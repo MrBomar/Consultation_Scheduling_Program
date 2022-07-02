@@ -28,8 +28,8 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
 public class CustomersView extends BorderPane {
     private final ComboBox<Country> countryComboBox = new ComboBox<>(Country.allCountries);
     private final ComboBox<Division> divisionComboBox = new ComboBox<>(Division.allDivisions);
-    private final RadioButton countryRadio = new RadioButton(lrb.getString("country"));
-    private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("all_customers"));
+    private final RadioButton countryRadio = new RadioButton(lrb.getString("Country"));
+    private final RadioButton allCustomersRadio = new RadioButton(lrb.getString("All_Customers"));
     private final TableView<Customer> customerTable;
 
     /**
@@ -41,7 +41,7 @@ public class CustomersView extends BorderPane {
 
             //Customer header objects
             //First label
-            Label label1 = new Label(lrb.getString("view_customers_by"));
+            Label label1 = new Label(lrb.getString("View_Customers_by"));
             label1.setFont(Styles.DefaultFont18);
             Insets padding = new Insets(0,20,30,20);
             label1.setPadding(padding);
@@ -53,7 +53,7 @@ public class CustomersView extends BorderPane {
                 HBox dropDownGroup = new HBox();
 
                     //Dropdown group items
-                    Label divisionLabel = new Label(lrb.getString("division"));
+                    Label divisionLabel = new Label(lrb.getString("Division"));
 
                     //Set fonts
                     this.countryRadio.setFont(Styles.DefaultFont16);
@@ -102,11 +102,11 @@ public class CustomersView extends BorderPane {
 
             //Let's format the ComboBox(s)
             this.countryComboBox.setEditable(false);
-            this.countryComboBox.setBorder(Styles.ButtonBorder);
+            this.countryComboBox.setBorder(Styles.BorderBlack);
             this.countryComboBox.setMaxWidth(200);
             this.countryComboBox.setStyle(Styles.StyleComboBoxRequired);
             this.divisionComboBox.setEditable(false);
-            this.divisionComboBox.setBorder(Styles.ButtonBorder);
+            this.divisionComboBox.setBorder(Styles.BorderBlack);
             this.divisionComboBox.setMaxWidth(200);
             this.divisionComboBox.setStyle(Styles.StyleComboBoxRequired);
 
@@ -129,11 +129,11 @@ public class CustomersView extends BorderPane {
         footerSpacer1.setMinWidth(555);
         footerSpacer2.setMinWidth(30);
         footerSpacer3.setMinWidth(30);
-        ButtonWide addCustomer = new ButtonWide(lrb.getString("add_customer"));
+        ButtonWide addCustomer = new ButtonWide(lrb.getString("Add_Customer"));
         addCustomer.setOnMouseClicked(this::addCustomer);
-        ButtonWide updateCustomer = new ButtonWide(lrb.getString("update_customer"));
+        ButtonWide updateCustomer = new ButtonWide(lrb.getString("Update_Customer"));
         updateCustomer.setOnMouseClicked(this::updateCustomer);
-        ButtonWide deleteCustomer = new ButtonWide(lrb.getString("delete_customer"));
+        ButtonWide deleteCustomer = new ButtonWide(lrb.getString("Delete_Customer"));
         deleteCustomer.setOnMouseClicked(this::deleteCustomer);
         footer.getChildren().addAll(footerSpacer1, addCustomer, footerSpacer3, updateCustomer, footerSpacer2, deleteCustomer);
 
@@ -189,7 +189,8 @@ public class CustomersView extends BorderPane {
             dialog.showAndWait();
             if(dialog.getResult()) {
                 //The user wishes to delete the customer and all appointments.
-                Appointment[] customerAppointments = this.customerTable.getSelectionModel().getSelectedItem().getAppointments().toArray(Appointment[]::new);
+                Appointment[] customerAppointments = this.customerTable
+                        .getSelectionModel().getSelectedItem().getAppointments().toArray(Appointment[]::new);
                 for(Appointment appointment: customerAppointments) {
                     appointment.delete();
                 }
@@ -213,13 +214,13 @@ public class CustomersView extends BorderPane {
      */
     private TableView<Customer> buildCustomerTable() {
         TableView<Customer> table = new TableView<>(Customer.allCustomers);
-        TableColumn<Customer, Integer> idCol = new TableColumn<>(lrb.getString("id"));
-        TableColumn<Customer, String> nameCol = new TableColumn<>(lrb.getString("customer_name"));
-        TableColumn<Customer, String> addressCol = new TableColumn<>(lrb.getString("customer_address"));
-        TableColumn<Customer, Country> countryCol = new TableColumn<>(lrb.getString("country"));
-        TableColumn<Customer, Division> divisionCol = new TableColumn<>(lrb.getString("division"));
-        TableColumn<Customer, String> postalCol = new TableColumn<>(lrb.getString("zip_code"));
-        TableColumn<Customer, String> phoneCol = new TableColumn<>(lrb.getString("phone_number"));
+        TableColumn<Customer, Integer> idCol = new TableColumn<>(lrb.getString("ID"));
+        TableColumn<Customer, String> nameCol = new TableColumn<>(lrb.getString("Customer_Name"));
+        TableColumn<Customer, String> addressCol = new TableColumn<>(lrb.getString("Customer_Address"));
+        TableColumn<Customer, Country> countryCol = new TableColumn<>(lrb.getString("Country"));
+        TableColumn<Customer, Division> divisionCol = new TableColumn<>(lrb.getString("Division"));
+        TableColumn<Customer, String> postalCol = new TableColumn<>(lrb.getString("ZIP_Code"));
+        TableColumn<Customer, String> phoneCol = new TableColumn<>(lrb.getString("Phone_Number"));
 
         //Editable Properties
         table.setEditable(true);
@@ -260,7 +261,8 @@ public class CustomersView extends BorderPane {
                 }
 
             }));
-            combo.focusedProperty().addListener(e -> cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem()));
+            combo.focusedProperty()
+                    .addListener(e -> cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem()));
             cell.graphicProperty().bind(Bindings.when(cell.emptyProperty()).then((Node) null).otherwise(combo));
             return cell;
         });

@@ -46,7 +46,7 @@ public final class ReportsTab2 extends VBox {
         this.setBackground(Styles.BackgroundWhite);
 
         HBox dropDownGroup = new HBox();
-        Label comboBoxLabel = new Label(lrb.getString("select_desired_customer"));
+        Label comboBoxLabel = new Label(lrb.getString("Select_desired_customer"));
         comboBoxLabel.setFont(Styles.DefaultFont24);
         comboBoxLabel.setPadding(new Insets(0,30,30,0));
         dropDownGroup.getChildren().addAll(comboBoxLabel, selectCustomer);
@@ -80,12 +80,12 @@ public final class ReportsTab2 extends VBox {
             dialog.showAndWait();
         }
 
-        TableColumn<ReportTwoItem, Customer> customerCol = new TableColumn<>(lrb.getString("customer"));
-        TableColumn<ReportTwoItem, Contact> contactCol = new TableColumn<>(lrb.getString("contact"));
-        TableColumn<ReportTwoItem, String> typeCol = new TableColumn<>(lrb.getString("type"));
-        TableColumn<ReportTwoItem, String> titleCol = new TableColumn<>(lrb.getString("title"));
-        TableColumn<ReportTwoItem, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("start"));
-        TableColumn<ReportTwoItem, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("end"));
+        TableColumn<ReportTwoItem, Customer> customerCol = new TableColumn<>(lrb.getString("Customer"));
+        TableColumn<ReportTwoItem, Contact> contactCol = new TableColumn<>(lrb.getString("Contact"));
+        TableColumn<ReportTwoItem, String> typeCol = new TableColumn<>(lrb.getString("Type"));
+        TableColumn<ReportTwoItem, String> titleCol = new TableColumn<>(lrb.getString("Title"));
+        TableColumn<ReportTwoItem, ZonedDateTime> startCol = new TableColumn<>(lrb.getString("Start"));
+        TableColumn<ReportTwoItem, ZonedDateTime> endCol = new TableColumn<>(lrb.getString("End"));
 
         customerCol.setCellValueFactory(new PropertyValueFactory<>("customer"));
         contactCol.setCellValueFactory(new PropertyValueFactory<>("contact"));

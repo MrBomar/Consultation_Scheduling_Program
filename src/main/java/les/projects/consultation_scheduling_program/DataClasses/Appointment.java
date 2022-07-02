@@ -14,6 +14,8 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.util.ArrayList;
 
+import static les.projects.consultation_scheduling_program.Main.lrb;
+
 /**
  * This class manages the Appointment data object and related methods. It also handles all associated database methods.
  *
@@ -112,7 +114,9 @@ public class Appointment {
         } catch (Exception e) {
             e.printStackTrace();
             DialogMessage dialog = new DialogMessage(
-                    "Cannot Add Record", "The appointment could not be added to the database.");
+                    Message.RecordNotAdded,
+                    new String[]{lrb.getString("appointment")}
+                    );
             dialog.showAndWait();
             return false;
         }
@@ -158,7 +162,10 @@ public class Appointment {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage("Record Could Not Be Updated", "We are unable to update the appointment record.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotUpdated,
+                    new String[] {lrb.getString("appointment")}
+                    );
             dialog.showAndWait();
             return false;
         }
@@ -182,7 +189,10 @@ public class Appointment {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage("Can't Delete", "Something went wrong and we couldn't delete this appointment.");
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotDeleted,
+                    new String[]{"appointment"}
+                    );
             dialog.showAndWait();
             return false;
         }
@@ -229,7 +239,10 @@ public class Appointment {
             ResultSet rs = stmt.executeQuery(query);
 
             if(!rs.next()) {
-                DialogMessage dialog = new DialogMessage("Data Not Found", "No appointments were found in the database.");
+                DialogMessage dialog = new DialogMessage(
+                        Message.DataNotFound,
+                        new String[]{"appointments"}
+                        );
                 dialog.showAndWait();
             } else {
                 allAppointments = FXCollections.observableList(new ArrayList<>());
@@ -254,7 +267,9 @@ public class Appointment {
         } catch (Exception e) {
             e.printStackTrace();
             DialogMessage dialog = new DialogMessage(
-                    "Data Could Not Be Loaded","Appointment could not be loaded from the database.");
+                    Message.DataNotLoaded,
+                    new String[] {"appointment"}
+                    );
             dialog.showAndWait();
         }
     }

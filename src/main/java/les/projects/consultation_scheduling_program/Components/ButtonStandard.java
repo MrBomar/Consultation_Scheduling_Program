@@ -47,7 +47,7 @@ public class ButtonStandard extends Button {
     private void styleIt(String s) {
         this.setText(s);
         this.setFont(Styles.DefaultFont20);
-        this.setBorder(Styles.ButtonBorder);
+        this.setBorder(Styles.BorderBlack);
         this.setMinSize(120,40);
         this.setMaxSize(120,40);
         this.setPrefSize(120,40);

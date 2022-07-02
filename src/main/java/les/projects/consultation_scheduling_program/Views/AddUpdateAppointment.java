@@ -27,22 +27,22 @@ public class AddUpdateAppointment extends DialogBase {
     private Appointment currentAppointment;
 
     //Fields
-    private final ComboBoxStyled<Contact> contact = new ComboBoxStyled<>(Contact.allContacts, lrb.getString("contact"));
-    private final ComboBoxStyled<Customer> customer = new ComboBoxStyled<>(Customer.allCustomers, lrb.getString("customer"));
-    private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("description"));
-    private final DateTimePicker end = new DateTimePicker("End");
-    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("appointment_id"), false, true);
-    private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("location"), true, false);
-    private final DateTimePicker start = new DateTimePicker("Start");
-    private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("title"), true, false);
-    private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("type"), false, false);
+    private final ComboBoxStyled<Contact> contact = new ComboBoxStyled<>(Contact.allContacts, lrb.getString("Contact"));
+    private final ComboBoxStyled<Customer> customer = new ComboBoxStyled<>(Customer.allCustomers, lrb.getString("Customer"));
+    private final TextAreaLabeled description = new TextAreaLabeled(lrb.getString("Description"));
+    private final DateTimePicker end = new DateTimePicker(lrb.getString("End"));
+    private final TextFieldLabeled id = new TextFieldLabeled(lrb.getString("Appointment_ID"), false, true);
+    private final TextFieldLabeled location = new TextFieldLabeled(lrb.getString("Location"), true, false);
+    private final DateTimePicker start = new DateTimePicker(lrb.getString("Start"));
+    private final TextFieldLabeled title = new TextFieldLabeled(lrb.getString("Title"), true, false);
+    private final TextFieldLabeled type = new TextFieldLabeled(lrb.getString("Type"), false, false);
 
     /**
      * This constructor creates an instance of the Add/Update Appointment modal in add mode.
      */
     public AddUpdateAppointment() {
-        super(lrb.getString("create_new_appointment"));
-        this.id.setPromptText("(Auto generated)");
+        super(lrb.getString("Create_New_Appointment"));
+        this.id.setPromptText("(" + lrb.getString("Auto-generated") + ")");
         this.build();
     }
 
@@ -51,7 +51,7 @@ public class AddUpdateAppointment extends DialogBase {
      * @param appointment The appointment object to be edited.
      */
     public AddUpdateAppointment(Appointment appointment) {
-        super(lrb.getString("edit_appointment"));
+        super(lrb.getString("Edit_Appointment"));
         this.build();
 
         this.currentAppointment = appointment;
@@ -70,9 +70,9 @@ public class AddUpdateAppointment extends DialogBase {
      * This method is used to format components and add them to the view.
      */
     private void build() {
-        BorderPaneStyled customerPane = new BorderPaneStyled(lrb.getString("customer"), true);
+        BorderPaneStyled customerPane = new BorderPaneStyled(lrb.getString("Customer"), true);
         customerPane.setRight(this.customer);
-        BorderPaneStyled contactPane = new BorderPaneStyled(lrb.getString("contact"), true);
+        BorderPaneStyled contactPane = new BorderPaneStyled(lrb.getString("Contact"), true);
         contactPane.setRight(this.contact);
 
         VBox center = new VBox();
@@ -81,9 +81,9 @@ public class AddUpdateAppointment extends DialogBase {
         this.center.getChildren().add(center);
 
         //Add Buttons
-        ButtonStandard save = new ButtonStandard(lrb.getString("save"));
+        ButtonStandard save = new ButtonStandard(lrb.getString("Save"));
         save.setOnMouseClicked(this::saveClick);
-        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("Cancel"));
         cancel.setOnMouseClicked(this::confirmCancel);
         this.bottom.getChildren().addAll(save, new ButtonGap(), cancel);
 
@@ -295,7 +295,6 @@ public class AddUpdateAppointment extends DialogBase {
             isInWindow(this.end.getEntry(), appointment.getStart(),appointment.getEnd()) ||
             overlapsWindow(appointment.getStart(), appointment.getEnd())
             ) {
-                System.out.println("We have a problem.");
                 //The input conflicts with existing appointment.
                 DialogMessage dialog = new DialogMessage(Message.ConflictingAppointment);
                 dialog.showAndWait();

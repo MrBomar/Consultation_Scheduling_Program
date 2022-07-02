@@ -19,7 +19,7 @@ public class ButtonWide extends Button {
         //Apply styling.
         this.setText(s);
         this.setFont(Styles.DefaultFont16);
-        this.setBorder(Styles.ButtonBorder);
+        this.setBorder(Styles.BorderBlack);
         this.setMinSize(205,50);
         this.setMaxSize(205,50);
         this.setPrefSize(205,50);

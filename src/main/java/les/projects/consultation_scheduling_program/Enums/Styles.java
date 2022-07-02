@@ -30,9 +30,29 @@ public abstract class Styles {
     public static final Background BackgroundButtonHover = new Background(new BackgroundFill(Color.rgb(240,240,240), CornerRadii.EMPTY, Insets.EMPTY));
 
     /**
-     * This property stores a pre-formatted JavaFX Border.
+     * This property stores a 1px wide black JavaFX Border.
      */
-    public static final Border ButtonBorder = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderStroke.THIN));
+    public static final Border BorderBlack = new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderStroke.THIN));
+
+    /**
+     * This property stores a 1px wide blue JavaFX Border.
+     */
+    public static final Border BorderBlue = new Border(new BorderStroke(Color.BLUE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderStroke.THIN));
+
+    /**
+     * This property stores a 1px wide green JavaFX Border.
+     */
+    public static final Border BorderGreen = new Border(new BorderStroke(Color.GREEN, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderStroke.THIN));
+
+    /**
+     * This property stores a 1px wide purple JavaFX Border.
+     */
+    public static final Border BorderPurple = new Border(new BorderStroke(Color.PURPLE, BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderStroke.THIN));
+
+    /**
+     * This property stores a 1px wide grey JavaFX Border.
+     */
+    public static final Border BorderGrey = new Border(new BorderStroke(Color.rgb(220,220,220), BorderStrokeStyle.SOLID, CornerRadii.EMPTY,BorderStroke.THIN));
 
     /**
      * This property stores a grey JavaFX Background object.

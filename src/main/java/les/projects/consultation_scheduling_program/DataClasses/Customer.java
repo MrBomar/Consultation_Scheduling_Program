@@ -86,7 +86,10 @@ public class Customer {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded, new String[] {lrb.getString("customer")});
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotAdded,
+                    new String[] {lrb.getString("customer")}
+            );
             dialog.showAndWait();
         }
     }
@@ -104,7 +107,10 @@ public class Customer {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(Message.RecordNotDeleted, new String[]{lrb.getString("customer")});
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotDeleted,
+                    new String[]{lrb.getString("customer")}
+            );
             dialog.showAndWait();
         }
     }
@@ -135,7 +141,10 @@ public class Customer {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(Message.RecordNotUpdated,new String[]{lrb.getString("customer")});
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotUpdated,
+                    new String[]{lrb.getString("customer")}
+            );
             dialog.showAndWait();
         }
     }
@@ -161,7 +170,10 @@ public class Customer {
             ResultSet rs = stmt.executeQuery(qry);
 
             if(!rs.next()) {
-                DialogMessage dialog = new DialogMessage(Message.DataNotFound,new String[]{lrb.getString("customers")});
+                DialogMessage dialog = new DialogMessage(
+                        Message.DataNotFound,
+                        new String[]{lrb.getString("customers")}
+                );
                 dialog.showAndWait();
             } else {
                 allCustomers = FXCollections.observableList(new ArrayList<>());
@@ -182,7 +194,10 @@ public class Customer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(Message.DataNotLoaded,new String[]{lrb.getString("customer")});
+            DialogMessage dialog = new DialogMessage(
+                    Message.DataNotLoaded,
+                    new String[]{lrb.getString("customer")}
+            );
             dialog.showAndWait();
         }
     }

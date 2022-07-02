@@ -36,7 +36,7 @@ public class PasswordFieldLabeledLarge extends BorderPane {
         this.passwordField.setMinSize(276,38);
         this.passwordField.setMaxSize(276,38);
         this.passwordField.setPrefSize(276,38);
-        this.passwordField.setBorder(Styles.ButtonBorder);
+        this.passwordField.setBorder(Styles.BorderBlack);
         this.passwordField.setFont(Styles.DefaultFont20);
         if(disabled) {
             this.passwordField.setDisable(true);

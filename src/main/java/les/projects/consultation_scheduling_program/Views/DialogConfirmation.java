@@ -54,9 +54,9 @@ public class DialogConfirmation extends DialogBase {
      */
     private void format(String message) {
         this.center.getChildren().add(new DialogText(message));
-        ButtonStandard ok = new ButtonStandard(lrb.getString("ok"));
+        ButtonStandard ok = new ButtonStandard(lrb.getString("OK"));
         ok.setOnMouseClicked(this::okButtonClicked);
-        ButtonStandard cancel = new ButtonStandard(lrb.getString("cancel"));
+        ButtonStandard cancel = new ButtonStandard(lrb.getString("Cancel"));
         cancel.setOnMouseClicked(this::cancelButtonClicked);
         this.bottom.getChildren().addAll(ok,new ButtonGap(),cancel);
     }

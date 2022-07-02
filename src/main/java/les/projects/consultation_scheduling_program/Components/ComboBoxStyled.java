@@ -41,7 +41,7 @@ public class ComboBoxStyled<T> extends ComboBox<T> {
     private void format(String promptText) {
         //Apply formatting
         this.setEditable(false);
-        this.setBorder(Styles.ButtonBorder);
+        this.setBorder(Styles.BorderBlack);
         this.setMaxWidth(200);
         this.setStyle(Styles.StyleComboBoxRequired);
 

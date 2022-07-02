@@ -65,7 +65,10 @@ public class Division {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded,new String[]{lrb.getString("division")});
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotAdded,
+                    new String[]{lrb.getString("division")}
+            );
             dialog.showAndWait();
         }
     }

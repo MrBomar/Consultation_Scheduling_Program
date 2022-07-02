@@ -33,7 +33,7 @@ public class TextFieldLabeled extends BorderPane {
         this.textField.setMaxSize(200,25);
         this.textField.setPrefSize(200,25);
         this.textField.setStyle(Styles.StyleTextField);
-        this.textField.setBorder(Styles.ButtonBorder);
+        this.textField.setBorder(Styles.BorderBlack);
 
         this.setPadding(new Insets(10,0,10,0));
         this.setMinWidth(400);

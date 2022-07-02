@@ -60,8 +60,10 @@ public class Country {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("country")};
-            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotAdded,
+                    new String[] {lrb.getString("country")}
+            );
             dialog.showAndWait();
         }
     }
@@ -79,8 +81,10 @@ public class Country {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("country")};
-            DialogMessage dialog = new DialogMessage(Message.RecordNotDeleted, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotDeleted,
+                    new String[] {lrb.getString("country")}
+            );
             dialog.showAndWait();
         }
     }
@@ -102,8 +106,10 @@ public class Country {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("country")};
-            DialogMessage dialog = new DialogMessage(Message.RecordNotUpdated, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotUpdated,
+                    new String[] {lrb.getString("country")}
+            );
             dialog.showAndWait();
         }
     }
@@ -129,8 +135,10 @@ public class Country {
             ResultSet rs = stmt.executeQuery(qry);
 
             if(!rs.next()) {
-                String[] words = new String[] {lrb.getString("countries")};
-                DialogMessage dialog = new DialogMessage(Message.DataNotFound, words);
+                DialogMessage dialog = new DialogMessage(
+                        Message.DataNotFound,
+                        new String[] {lrb.getString("countries")}
+                );
                 dialog.showAndWait();
             } else {
                 allCountries = FXCollections.observableList(new ArrayList<>());
@@ -146,8 +154,10 @@ public class Country {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("countries")};
-            DialogMessage dialog = new DialogMessage(Message.DataNotLoaded, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.DataNotLoaded,
+                    new String[] {lrb.getString("countries")}
+            );
             dialog.showAndWait();
         }
     }

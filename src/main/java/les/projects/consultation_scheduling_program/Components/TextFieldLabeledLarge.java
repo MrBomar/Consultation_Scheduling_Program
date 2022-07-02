@@ -35,7 +35,7 @@ public class TextFieldLabeledLarge extends BorderPane {
         this.textField.setMinSize(276,38);
         this.textField.setMaxSize(276,38);
         this.textField.setPrefSize(276,38);
-        this.textField.setBorder(Styles.ButtonBorder);
+        this.textField.setBorder(Styles.BorderBlack);
         this.textField.setFont(Styles.DefaultFont20);
         if(disabled) {
             this.textField.setDisable(true);

@@ -67,8 +67,10 @@ public class Contact {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("contact")};
-            DialogMessage dialog = new DialogMessage(Message.RecordNotAdded, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotAdded,
+                    new String[] {lrb.getString("contact")}
+            );
             dialog.showAndWait();
             return false;
         }
@@ -107,8 +109,10 @@ public class Contact {
             ResultSet rs = stmt.executeQuery(qry);
 
             if(!rs.next()) {
-                String[] words = new String[] {lrb.getString("contacts")};
-                DialogMessage dialog = new DialogMessage(Message.DataNotFound, words);
+                DialogMessage dialog = new DialogMessage(
+                        Message.DataNotFound,
+                        new String[] {lrb.getString("contacts")}
+                );
                 dialog.showAndWait();
             } else {
                 allContacts = FXCollections.observableList(new ArrayList<>());
@@ -125,8 +129,10 @@ public class Contact {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("contacts")};
-            DialogMessage dialog = new DialogMessage(Message.DataNotLoaded, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.DataNotLoaded,
+                    new String[] {lrb.getString("contacts")}
+            );
             dialog.showAndWait();
         }
     }
@@ -150,8 +156,10 @@ public class Contact {
             loadData();
         } catch (Exception e) {
             e.printStackTrace();
-            String[] words = new String[] {lrb.getString("contact")};
-            DialogMessage dialog = new DialogMessage(Message.RecordNotUpdated, words);
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotUpdated,
+                    new String[] {lrb.getString("contact")}
+            );
             dialog.showAndWait();
         }
     }

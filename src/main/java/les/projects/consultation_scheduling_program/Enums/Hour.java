@@ -11,7 +11,7 @@ import javafx.collections.ObservableList;
  */
 public enum Hour {
     /**
-     * The number onw.
+     * The number one.
      */
     One(1),
 

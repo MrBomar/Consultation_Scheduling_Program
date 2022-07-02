@@ -19,9 +19,9 @@ import static les.projects.consultation_scheduling_program.Main.lrb;
  */
 public class Console extends VBox {
     //Instantiate tabs
-    private final TabConsole appointmentsTab = new TabConsole(lrb.getString("appointments"), false);
-    private final TabConsole customersTab = new TabConsole(lrb.getString("customers"), false);
-    private final TabConsole reportsTab = new TabConsole(lrb.getString("reports"), false);
+    private final TabConsole appointmentsTab = new TabConsole(lrb.getString("Appointments"), false);
+    private final TabConsole customersTab = new TabConsole(lrb.getString("Customers"), false);
+    private final TabConsole reportsTab = new TabConsole(lrb.getString("Reports"), false);
     private static Pane currentView;
 
     /**
@@ -57,12 +57,10 @@ public class Console extends VBox {
      * This method renders the bar which hold the tabs.
      * @return Return the tab bar at the top of the console.
      */
-    private HBox tabBar() {
+    private BorderPane tabBar() {
         //Create tab bar HBox and style it
-        HBox tabBar = new HBox();
-        tabBar.setMaxWidth(Main.appWidth);
+        BorderPane tabBar = new BorderPane();
         tabBar.setMinWidth(Main.appWidth);
-        tabBar.setPrefWidth(Main.appWidth);
         tabBar.setBackground(Styles.BackgroundGrey);
 
         //Instantiate a margin between tabs and logout button
@@ -79,7 +77,8 @@ public class Console extends VBox {
         this.reportsTab.setOnMouseClicked(e -> this.openReports());
 
         //Compile top bar
-        tabBar.getChildren().addAll(this.appointmentsTab,this.customersTab,this.reportsTab,region1,logoutButton);
+        tabBar.setLeft(new HBox(this.appointmentsTab, this.customersTab, this.reportsTab));
+        tabBar.setRight(new HBox(logoutButton));
         return tabBar;
     }
 

@@ -8,6 +8,8 @@ import les.projects.consultation_scheduling_program.Helpers.DTC;
 import les.projects.consultation_scheduling_program.Helpers.JDBC;
 import les.projects.consultation_scheduling_program.Main;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
+
+import javax.xml.transform.Result;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -305,7 +307,10 @@ public class Customer {
      * This method sets the address of the customer.
      * @param address The address of the customer.
      */
-    public final void setAddress(String address) { this.address.set(address); }
+    public final void setAddress(String address) {
+        this.address.set(address);
+        JDBC.updateStringValue(this.getId(), "customers","Address", address);
+    }
 
     /**
      * This method sets the Country object of the customer.
@@ -317,30 +322,44 @@ public class Customer {
      * This method sets the Division object of the customer.
      * @param division The Division object where the customer resides.
      */
-    public final void setDivision(Division division) { this.division.set(division);}
+    public final void setDivision(Division division) {
+        this.division.set(division);
+        JDBC.updateIntValue(this.getId(), "customers", "Division_ID", division.getId());
+    }
 
     /**
      * This method sets the record ID of the customer.
      * @param id The record ID of the customer.
      */
-    public final void setId(int id) { this.id.set(id); }
+    public final void setId(int id) {
+        this.id.set(id);
+        JDBC.updateIntValue(this.getId(), "customers", "Customer_ID", id);
+    }
 
     /**
      * This method sets the name of the customer.
      * @param name The name of the customer.
      */
-    public final void setName(String name) { this.name.set(name); }
+    public final void setName(String name) {
+        this.name.set(name);
+        JDBC.updateStringValue(this.getId(), "customers", "Customer_Name", name);
+    }
 
     /**
      * This method sets the phone number of the customer.
      * @param phone The phone number of the customer.
      */
-    public final void setPhone(String phone) { this.phone.set(phone); }
+    public final void setPhone(String phone) {
+        this.phone.set(phone);
+        JDBC.updateStringValue(this.getId(), "customers", "Phone", phone);
+    }
 
     /**
      * This method sets the postal code of the customer.
      * @param postalCode The postal code of the customer.
      */
-    public final void setPostalCode(String postalCode) { this.postalCode.set(postalCode); }
+    public final void setPostalCode(String postalCode) {
+        JDBC.updateStringValue(this.getId(), "customers", "Postal_Code", postalCode);
+    }
 }
 

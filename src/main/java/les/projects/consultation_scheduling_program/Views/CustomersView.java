@@ -17,6 +17,8 @@ import les.projects.consultation_scheduling_program.DataClasses.Customer;
 import les.projects.consultation_scheduling_program.DataClasses.Division;
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Enums.Styles;
+import les.projects.consultation_scheduling_program.Main;
+
 import static les.projects.consultation_scheduling_program.Main.lrb;
 
 /**
@@ -277,6 +279,29 @@ public class CustomersView extends BorderPane {
                 cell.getTableView().getSelectionModel().select(cell.getTableRow().getItem());
                 Country country = cell.getTableRow().getItem().getCountry();
                 combo.setItems(Division.allDivisions.filtered(i->i.getCountry().equals(country))); //Predicate
+
+                //Action to take when the division ComboBox looses focus
+                if(combo.getSelectionModel().isEmpty() && !combo.isFocused()) {
+                    //There is no value present.
+                    Console.preventViewChange();
+                    DialogMessage dialog = new DialogMessage(
+                            Message.InvalidInputSelected,
+                            new String[] {
+                                    lrb.getString("division"),
+                                    lrb.getString("division")
+                            }
+                    );
+                    try {
+                        dialog.showAndWait();
+                    } catch (IllegalStateException err) {
+                        Console.allowViewChange();
+                        Main.loadData();
+                        cell.getTableView().refresh();
+                    }
+                    combo.requestFocus();
+                } else {
+                    Console.allowViewChange();
+                }
             });
             combo.valueProperty().addListener((observable, oldValue, newValue)->{ //EventListener
                 try {

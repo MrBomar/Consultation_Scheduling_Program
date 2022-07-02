@@ -23,6 +23,7 @@ public class Console extends VBox {
     private final TabConsole customersTab = new TabConsole(lrb.getString("Customers"), false);
     private final TabConsole reportsTab = new TabConsole(lrb.getString("Reports"), false);
     private static Pane currentView;
+    private static boolean lockView = false;
 
     /**
      * This constructor instantiates the console view.
@@ -70,12 +71,34 @@ public class Console extends VBox {
 
         //Instantiate user log out button
         ButtonUserLogout logoutButton = new ButtonUserLogout();
-        logoutButton.setOnMouseClicked(logout);
+        logoutButton.setOnMouseClicked(e -> {
+            if(!lockView) {
+                DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmLogout);
+                dialog.showAndWait();
+                if(dialog.getResult()) Main.logoutView();
+            }
+        });
 
         //Add listeners
-        this.appointmentsTab.setOnMouseClicked(e -> this.openAppointments());
-        this.customersTab.setOnMouseClicked(e -> this.openCustomers());
-        this.reportsTab.setOnMouseClicked(e -> this.openReports());
+        this.appointmentsTab.setOnMouseClicked(e -> {
+            if(!lockView) {
+                currentView = new AppointmentsView();
+                this.setTabs();
+            }
+        });
+        this.customersTab.setOnMouseClicked(e -> {
+            if(!lockView) {
+                currentView = new CustomersView();
+                this.setTabs();
+            }
+
+        });
+        this.reportsTab.setOnMouseClicked(e -> {
+            if(!lockView) {
+                currentView = new ReportsView();
+                this.setTabs();
+            }
+        });
 
         //Compile top bar
         tabBar.setLeft(new HBox(this.appointmentsTab, this.customersTab, this.reportsTab));
@@ -84,38 +107,12 @@ public class Console extends VBox {
     }
 
     /**
-     * This method changes the console's inset view to render the Appointments view and adjusts the rendering of the
-     * tabs to show the Appointments tabs is selected.
+     * This method locks the view so it cannot be changed.
      */
-    private void openAppointments() {
-        currentView = new AppointmentsView();
-        this.setTabs();
-    }
+    public static void preventViewChange() { lockView = true; }
 
     /**
-     * This method changes the console's inset view to render the Customers view and adjusts the rendering of the
-     * tabs to show the Customers tabs is selected.
+     * This method unlocks the view so that it can be changed.
      */
-    private void openCustomers() {
-        currentView = new CustomersView();
-        this.setTabs();
-    }
-
-    /**
-     * This method changes the console's inset view to render the Reports view and adjusts the rendering of the
-     * tabs to show the Reports tabs is selected.
-     */
-    private void openReports() {
-        currentView = new ReportsView();
-        this.setTabs();
-    }
-
-    /**
-     * This method handles the user clicking on the logout button.
-     */
-    private final EventHandler<MouseEvent> logout = event -> {
-        DialogConfirmation dialog = new DialogConfirmation(Message.ConfirmLogout);
-        dialog.showAndWait();
-        if(dialog.getResult()) Main.logoutView();
-    };
+    public static void allowViewChange() { lockView = false; }
 }

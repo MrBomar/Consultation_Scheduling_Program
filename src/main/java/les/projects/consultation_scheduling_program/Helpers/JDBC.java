@@ -2,10 +2,13 @@ package les.projects.consultation_scheduling_program.Helpers;
 
 import les.projects.consultation_scheduling_program.Enums.Message;
 import les.projects.consultation_scheduling_program.Views.DialogMessage;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import static les.projects.consultation_scheduling_program.Main.lrb;
 
 
 /**
@@ -63,6 +66,85 @@ public abstract class JDBC {
             DialogMessage dialog = new DialogMessage(Message.DatabaseError);
             dialog.showAndWait();
             throw e;
+        }
+    }
+
+    /**
+     * This method pulls a single record from the specified table.
+     * @param recordID The ID number of the record
+     * @param table The table the record is located on.
+     * @return Returns the result of the executed query.
+     * @throws Exception Thrown if query cannot be executed.
+     */
+    public static ResultSet getRecord(int recordID, String table) throws Exception {
+        String idColumn;
+        switch(table){
+            case "appointments":
+                idColumn = "Appointment_ID";
+                break;
+            case "contacts":
+                idColumn = "Contact_ID";
+                break;
+            case "countries":
+                idColumn = "Country_ID";
+                break;
+            case "customers":
+                idColumn = "Customer_ID";
+                break;
+            case "first_level_divisions":
+                idColumn = "Division_ID";
+                break;
+            case "users":
+                idColumn = "User_ID";
+                break;
+            default:
+                idColumn = "";
+        }
+        try {
+            return newResultSet("SELECT * FROM " + table + " WHERE " + idColumn + " = " + recordID);
+        } catch (Exception e) {
+            DialogMessage dialog = new DialogMessage(
+                    Message.RecordNotUpdated,
+                    new String[] {lrb.getString("record")}
+            );
+            dialog.showAndWait();
+            throw e;
+        }
+    }
+
+    /**
+     * This method updates a single field on a single record in the database.
+     * @param recordID The ID number of the record to be modified.
+     * @param table The name of the table the record is stored on.
+     * @param column The name of the column to be edited.
+     * @param value The value to insert in the record column.
+     */
+    public static void updateStringValue(int recordID, String table, String column, String value) {
+        try {
+            ResultSet rs = getRecord(recordID, table);
+            rs.next();
+            rs.updateString(column, value);
+            rs.updateRow();
+        } catch (Exception e) {
+            //Do nothing
+        }
+    }
+
+    /**
+     * This method updates a single field on a single record in the database.
+     * @param recordID The ID number of the record to be modified.
+     * @param table The name of the table the record is stored on.
+     * @param column The name of the column to be edited.
+     * @param value The value to insert in the record column.
+     */
+    public static void updateIntValue(int recordID, String table, String column, int value) {
+        try {
+            ResultSet rs = getRecord(recordID, table);
+            rs.next();
+            rs.updateInt(column, value);
+            rs.updateRow();
+        } catch (Exception e) {
+            //Do nothing
         }
     }
 }

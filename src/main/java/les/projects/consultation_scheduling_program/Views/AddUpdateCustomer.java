@@ -80,7 +80,9 @@ public class AddUpdateCustomer extends DialogBase {
         this.division.setWidth(200);
 
         //Add listener to country ComboBox
-        country.valueProperty().addListener(((observableValue, country1, t1) -> division.setItems(country.getValue().getDivisions())));
+        this.country.valueProperty().addListener(
+                ((observableValue, country1, t1) -> division.setItems(country.getValue().getDivisions()))
+        );
 
         VBox center = new VBox();
         center.setPadding(new Insets(30,20,30,20));
